@@ -153,20 +153,6 @@ INSERT INTO `user_page` (`id_page`, `name_page`, `caption_page`, `uri_page`) VAL
 (2, 'user_credential', 'User Credential', 'dashboard/credential/');
 
 --
--- Triggers `user_page`
---
-DROP TRIGGER IF EXISTS `UPDATE_USER_PAGE`;
-DELIMITER //
-CREATE TRIGGER `UPDATE_USER_PAGE` AFTER UPDATE ON `user_page`
- FOR EACH ROW BEGIN
-    UPDATE user_credential SET user_credential.id_page = NEW.id_page WHERE user_credential.id_page = OLD.id_page;
-END
-//
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `user_role`
 --
 
@@ -184,19 +170,6 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 INSERT INTO `user_role` (`id_role`, `name_role`) VALUES
 (1, 'su_admin'),
 (2, 'admin');
-
---
--- Triggers `user_role`
---
-DROP TRIGGER IF EXISTS `UPDATE_USER_ROLE`;
-DELIMITER //
-CREATE TRIGGER `UPDATE_USER_ROLE` AFTER UPDATE ON `user_role`
- FOR EACH ROW BEGIN
-    UPDATE user_account SET user_account.name_role = NEW.name_role WHERE user_account.name_role = OLD.name_role;
-    UPDATE user_credential SET user_credential.id_role = NEW.id_role WHERE user_credential.id_role = OLD.id_role;
-END
-//
-DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
