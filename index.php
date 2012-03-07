@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Lulu[@]Delivery</title>
 <style type="text/css">
 .align {
 	text-align: center;
@@ -12,40 +12,64 @@
 }
 </style>
 </head>
-
+<?php include("configuration/config.php");?>
 <body>
 <table width="100%" border="0">
   <tr>
-    <td colspan="2" class="align">FORM PESANAN PELANGGAN</td>
+    <td colspan="4" class="align">FORM PESANAN PELANGGAN</td>
   </tr>
   <tr>
-    <td colspan="2"><strong>SO No: </strong></td>
+    <td colspan="4"><strong>SO No: </strong></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
   <tr>
-    <td width="48%"><strong>Data LULUKID: </strong></td>
-    <td width="52%"><strong>Data Pelanggan:</strong></td>
+    <td width="64%"><strong>Data LULUKID: </strong></td>
+    <td width="11%"><strong>Data Pelanggan</strong></td>
+    <td width="1%">&nbsp;</td>
+    <td width="24%">&nbsp;</td>
   </tr>
+  <?php
+  	$code = $_POST['txt_search'];
+  	$x = mysql_query("SELECT * FROM m_customer where code_customer = '".$code."' ") or die("query Salah".mysql_error());	
+  	$ax = mysql_fetch_array($x);
+  ?>
   <tr>
     <td>LuluKids</td>
+    <td>No. Pelanggan</td>
+    <td>:</td>
+    <form action="index.php" method="post">
+    <td>
+    	<input type="text" name="txt_search" id="txt_search" value="<?php echo $code; ?>" />
+    	<input type="submit" name="cari" id="cari" value="Cari" />
+    </td>
+    </form>
+  </tr>
+  <tr>
+    <td><?php echo $ax['address_customer']?></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><?php echo $ax['address_customer']?></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><?php echo $ax['address_customer']?></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
