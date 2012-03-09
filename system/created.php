@@ -1,6 +1,10 @@
 <?php
-mysql_connect('localhost','root','root');
+/*
+mysql_connect('localhost','root','admin');
 mysql_select_db('db_lulu');
+*/
+
+include("../configuration/config.php");
 
 	$save_product 	= $_POST['save_product'];
 	$code			= $_POST['kode'];
