@@ -1,0 +1,18 @@
+{
+	label:"name",
+	identifier: 'id',
+	items : [{
+		id: 'menu', 
+		name:'Menu', 
+		type:'rootNode',
+		children: [{
+			id: 'transaksi', 
+			name:'Transaksi', 
+			type:'subNode' 
+		},{
+			id: 'account', 
+			name:'Tambah Account', 
+			type:'subNode' 
+		}]
+	}]
+}

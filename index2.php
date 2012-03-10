@@ -1,32 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Lulu[@]Delivery</title>
-<style type="text/css">
-.align {
-	text-align: center;
-	font-weight: bold;
-	font-size: 12px;
-	font-family: Verdana, Geneva, sans-serif;
-}
-.align {
-	text-align: center;
-}
-.align2 {
-	text-align: center;
-	font-weight: bold;
-	font-size: 24px;
-}
-.align1234 {
-	text-align: center;
-}
-.aldfg {
-	text-align: center;
-}
-</style>
-
-</head>
 <?php include("configuration/config.php");
 	$kode_transaction = 'B001CS';
 ?>
@@ -64,7 +35,7 @@
   ?>
   <tr>
     <td colspan="3">LULUKids</td>
-    <form action="index.php" method="post">
+    <form action="index.php?page=dashboard" method="post">
     <td><select name="data_cust" id="data_cust">
       <option value="code_customer" <?php if($were == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
       <option value="name_customer" <?php if($were == 'name_customer'){echo "selected";}?>>Nama</option>
@@ -124,7 +95,7 @@
     </select></td>
   </tr>
   <tr>
-    <td colspan="3">Pilih Cabang :
+    <td colspan="3">Publikasi Ke :
       <select name="select" id="select">
         <option value="Cabang 1" selected="selected">Cabang 1</option>
         <option value="Cabang 2">Cabang 2</option>

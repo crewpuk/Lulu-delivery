@@ -1,3 +1,20 @@
-.myTextBox{
-	 padding:3px;
+.align {
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+.align {
+	text-align: center;
+}
+.align2 {
+	text-align: center;
+	font-weight: bold;
+	font-size: 24px;
+}
+.align1234 {
+	text-align: center;
+}
+.aldfg {
+	text-align: center;
 }
