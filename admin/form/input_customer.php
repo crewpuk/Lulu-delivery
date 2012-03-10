@@ -1,3 +1,4 @@
+
 <form id="form1" name="form1" method="post" action="system/simpan.php">
   <table width="424" border="0">
     <tr>

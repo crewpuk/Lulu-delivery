@@ -12,15 +12,15 @@ include("../configuration/config.php");
 	$qty			= $_POST['qty'];
 	$ket			= $_POST['ket'];
 	
-	if($save_product){
+	if(isset($save_product)){
 		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$code','$produk','$qty','$ket','')");
 		$x = $qty * $harga;
 		if ($simpan_pro){
 			echo"<script>
-					location='../index.php';
+					location='../index.php?page=transaksi_customer&kode=$code';
 				</script>" ;
 		}else{
-			echo"gagal";
+			echo"<script>alert('Terjadi Kesalahan pada Server');</script>";
 		}
 	}
 ?>

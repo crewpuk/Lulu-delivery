@@ -19,3 +19,9 @@ var tree = dijit.byId('idTree');
 	});
 
 });
+//~ 
+//~ var dialogSukses = new dijit.Dialog({
+		//~ id: 'dialogSukses',
+		//~ content: 'Data Berhasil di Simpan \n Terima Kasih ^^ !',
+		//~ style: 'height: 20px; width: 50px;'
+	//~ });

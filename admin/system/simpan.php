@@ -7,13 +7,12 @@
 		$alamat		= $_POST['alamat_cust'];
 		$kode_pos	= $_POST['kodePos_cust'];
 		$tlp		= $_POST['tlp_cust'];
-		$hp 		= $_POST['hp_cust'];
+		$tlpRmh		= $_POST['tlp_rmh_cust'];
 		$web 		= $_POST['web_cust'];
 		$email 		= $_POST['email_cust'];	
 		$status 	= $_POST['status_cust'];
-		$telepon	= $tlp.','.$hp;
 		
-		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$alamat','$kode_pos','$telepon','$email','$status')") or die("Salah Query");
+		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$alamat','$kode_pos','$tlp','$tlpRmh','$email','$status')") or die("Salah Query");
 		if($x){
 			echo "<script>
 					alert('Data BERHASIL disimpan')

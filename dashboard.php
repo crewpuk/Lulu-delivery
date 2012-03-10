@@ -21,4 +21,4 @@ else
 	<div dojoType="dijit.layout.ContentPane" id="panelCenter" region="center" splitter="true"></div>
 	<div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true"></div>
 </div>
-<?php } ?>
+<?php } ?>x

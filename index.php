@@ -11,6 +11,7 @@
 			@import "lib/dojo/dojox/grid/resources/Grid.css";
 			@import "lib/dojo/dojox/grid/resources/claroGrid.css";
 			@import "css/lulu.css";
+			@import "css/panel.css";
 			
 			</style>
 
@@ -22,13 +23,17 @@
 			<script type="text/javascript" src="js/main.js"></script>
 			<script type="text/javascript" src="js/require.js"></script>
 	</head>
-	<body class="soria">
+	<body class="claro">
 	<?php 
 		$page = $_GET['page'];
 		if($page == 'page_login'){
 			include("login/login_page.php");
 		} else if($page == 'dashboard'){
 			include("dashboard.php");
+		} else if($page == 'input_customer'){
+			include("user/input_customer.php");
+		} else if($page == 'transaksi_customer'){
+			include("user/transaksi_customer.php");
 		}
 	?>
 	

@@ -26,7 +26,7 @@
 	$were = $_POST['data_cust'];
 	if($code != null or $were != null){
 	$sql = "SELECT * FROM m_customer where ".$were." = '".$code."' ";
-	//echo $sql."<br>";
+	echo $sql."<br>";
   	$x = mysql_query($sql) or die("query Salah -> ".mysql_error());	
   	$ax = mysql_fetch_array($x);
 	} else{
@@ -35,7 +35,7 @@
   ?>
   <tr>
     <td colspan="3">LULUKids</td>
-    <form action="index.php?page=dashboard" method="post">
+    <form action="index2.php" method="post">
     <td><select name="data_cust" id="data_cust">
       <option value="code_customer" <?php if($were == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
       <option value="name_customer" <?php if($were == 'name_customer'){echo "selected";}?>>Nama</option>
