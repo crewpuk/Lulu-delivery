@@ -45,9 +45,21 @@
    
     <td colspan="2">
     	<input name="txt_search" type="text" id="txt_search" value="<?php echo $code;?>" />
-    	<input type="submit" name="button" id="button" value="Submit" /></td>
+    	<input type="submit" name="btn" id="btn" value="Submit" /></td>
      </form>
   </tr>
+  <?php
+  	$code = $_POST['txt_search'];
+	$were = $_POST['data_cust'];
+	if($code != null or $were != null and isset($_POST['btn'])){
+	$sql = "SELECT * FROM m_customer where ".$were." = '".$code."' ";
+	//echo $sql."<br>";
+  	$x = mysql_query($sql) or die("query Salah -> ".mysql_error());	
+  	$ax = mysql_fetch_array($x);
+	} else{
+			$were = "";
+	}
+  ?>
   <tr>
     <td colspan="3">&nbsp;</td>
     <td valign="top">Nama</td>
@@ -179,8 +191,8 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td bgcolor="#99FFFF"><strong>GRAND TOTAL</strong></td>
-    <td colspan="4" bgcolor="#99FFFF">: <?php echo  "Rp. ".number_format($total + $sale, 0,",","."); ?></td>
+    <td bgcolor="#FF0000"><strong>GRAND TOTAL</strong></td>
+    <td colspan="4" bgcolor="#FF0000">: <?php echo  "Rp. ".number_format($total + $sale, 0,",","."); ?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
