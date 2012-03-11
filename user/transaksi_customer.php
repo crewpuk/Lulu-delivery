@@ -1,8 +1,9 @@
 <?php include("configuration/config.php");
 
-	//include ("system/created.php");
-	$kode_transaction = $_POST['kode'];
-	
+	include ("system/created.php");
+
+	$code = $_POST['txt_search'];
+	$were = $_POST['data_cust'];
 ?>
 <div align="center">
 	<h1>Udah bisa manteman, dah masuk m_detail_transaction, tapi pas balik lg data'a blm muncul</h1>
@@ -32,14 +33,12 @@
 				data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Data Pelanggan" '>
 				 <?php
-					$code = $_POST['txt_search'];
-					$codeGet = $_GET['kode'];
-					$were = $_POST['data_cust'];
+					
 					if($code != null and $were != null){
 					$sql = "SELECT * FROM `m_customer` where ".$were." = '".$code."' ";
 					
 					} else {
-					$sql = "SELECT * FROM `m_customer` where name_customer LIKE '%$codeGet%' ";
+						$sql = "SELECT * FROM `m_customer` where name_customer = '".$getCust."' ";
 					}
 					//echo $sql."<br>";
 					$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
@@ -67,7 +66,7 @@
 							<td colspan="3"><hr /></td>
 						</tr>
 						<?php
-							if($num == null and $codeGet == null){
+							if($num == null and $kode_transaction == null){
 								echo "<tr>
 										<td colspan='3'><font color='red' >Data Tidak Ditemukan</font></td>
 									  </tr>";
@@ -124,25 +123,22 @@
 				$id = $arr['id_code_customer'];
 				$nama = $ax['name_customer'];
 				$date = date('d/m/y');
-				$kode_cust = $ax['code_customer'];;
+				$kode_cust = $ax['code_customer'];
 				if($code != null){
 				$genSo = $nama."-".$id."-".$date;
-				}elseif($codeGet != null){
-				$genSo = $codeGet;
+				}elseif($kode_transaction != null){
+				$genSo = $kode_transaction;
 				}
 				echo $genSo;
-				?><form action="system/created.php" method="POST">
+				?>
+				<div style="width: 600px; height: 200px" id="gridDivTransCust">
+				</div>
+				<form action="index.php?page=transaksi_customer" method="POST">
+						
 					<table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
-						<tr class="align">
-							<td width="24%" height="25">Produk</td>
-							<td width="21%">Keterangan</td>
-							<td width="26%">Qty</td>
-							<td width="26%">Harga</td>
-						</tr>
 						<?php
-
-						if($kode_transaction == null){
-							$kode_transaction = "";
+						if($genSo == null){
+							$genSo = "";
 						}
 						$cek = mysql_query("SELECT m_detail_transaction.*,
 											m_product.name_product,
@@ -150,9 +146,8 @@
 											(m_detail_transaction.quantity_detail_transaction * m_product.price_product) AS totalHarga 
 											FROM m_detail_transaction,m_product
 											where m_detail_transaction.code_transaction = 
-											'".$kode_transaction."' AND m_product.code_product = m_detail_transaction.code_product")  
-											or die("query product salah");
-											
+											'".$genSo."' AND m_product.code_product = m_detail_transaction.code_product")  
+											or die("query product salah");					
 						$length = mysql_num_rows($cek);
 						if($length == null){
 							echo "";
@@ -161,7 +156,8 @@
 						while($arr = mysql_fetch_array($cek)){
 					  ?>
 						<tr>
-							<td class="align1234"><?php echo $arr["name_product"];?></td>
+							<td class="align1234"><?php echo $arr["name_product"];?>
+							<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" /></td>
 							<td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
 							<td class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
 							<td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
@@ -174,12 +170,19 @@
 						
 							<tr>
 							<td>
-								<input class="myTextField" placeHolder="Kode Produk" dojoType="dijit.form.TextBox" name="produk" id="produk" />
-								<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" /></td>
+								<input class="myTextField" id="filter_product" placeHolder="Kode Produk" dojoType="dijit.form.FilteringSelect" store="null"  searchAttr="nama" name="produk"  />
+								<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
+								<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
+								<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
+								<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
+								</td>
 							<td>
 								<input class="myTextField" placeHolder="Keterangan" dojoType="dijit.form.TextBox" name="ket" id="ket" /></td>
 							<td>
-								<input class="myTextField" placeHolder="Quantity" dojoType="dijit.form.NumberTextBox" required="true" name="qty" id="qty" /></td>
+								<input class="myTextField"
+									placeHolder="Quantity"
+									dojoType="dijit.form.NumberTextBox"
+									required="true" name="qty" id="qty" /></td>
 							<td bgcolor="#000000"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
 							</tr>
 						

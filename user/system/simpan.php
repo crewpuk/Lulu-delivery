@@ -41,7 +41,7 @@
 		$simpan_trans  = mysql_query("INSERT INTO
 									m_transaction values('',
 									'$code_transaction',
-									'$code_customer','','$publikasi','$model_pembayaran','1')") or die("query salah".mysql_error());
+									'$code_customer',CURRENT_TIMESTAMP(),'$publikasi','$model_pembayaran','1')") or die("query salah".mysql_error());
 		//dijit.byId('dialogSukses').show();
 		if($simpan_trans){
 			echo "<script>

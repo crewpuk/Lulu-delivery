@@ -1,0 +1,15 @@
+{
+	identifier:"id",
+	items: [{
+		"id":"1",
+		"nama":"Feldy",
+		"product":"SUSU",
+		"harga":"1000"
+	}, {
+		"id":"2",
+		"nama":"Rian",
+		"product":"SESE",
+		"harga":"100"
+	}]
+}
+
