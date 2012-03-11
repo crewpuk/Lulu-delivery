@@ -1,5 +1,5 @@
 <?php
-session_start();
+@session_start();
 if(empty($_SESSION['username']) || empty($_SESSION['password']) || $_SESSION['level'] != 'su_admin')
 {
 echo"<script>
@@ -21,4 +21,4 @@ else
 	<div dojoType="dijit.layout.ContentPane" id="panelCenter" region="center" splitter="true"></div>
 	<div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true"></div>
 </div>
-<?php } ?>x
+<?php } ?>

@@ -8,4 +8,26 @@
 	function location($loc){
 		echo "<script>location='$loc';</script>";
 	}
+	
+	function ribbon($link,$title,$image)
+	{
+	$p = $_GET['p'];
+	$jumTD = count($title);
+	echo "<table width='100%' cellpadding='0' cellspacing='0' class='box-Ribbon'>";
+	echo "<tr>";
+	echo "<td>";
+		echo "<table width='100%' height='120' cellpadding='0' cellspacing='0'>";
+			echo "<tr>";
+				for($i=0;$i<$jumTD;$i++)
+				{
+					echo "<td align='center' valign='middle' class='menu-Ribbon'>";
+						echo "<a href='?p=$link[$i]' title='$title[$i]'><img src='images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
+					echo "</td>";
+				}
+			echo "</tr>";					
+		echo "</table>";
+	echo "</td>";
+	echo "</tr>";
+	echo "</table>";	
+	}
 ?>

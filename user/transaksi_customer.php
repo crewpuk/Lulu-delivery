@@ -1,4 +1,4 @@
-<?php include("configuration/config.php");
+<?php 
 
 	include ("system/created.php");
 
@@ -8,7 +8,6 @@
 <div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%;height: 100%; border: solid 1px;">
 <div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 100%; border: solid 1px;">
 <div align="center">
-	<h1>Udah bisa manteman, dah masuk m_detail_transaction, tapi pas balik lg data'a blm muncul</h1>
 	<br />
 	<br />
 	<br />

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 	<meta charset="utf-8"> 
-		<title>percobaan dialog dojo</title>
+		<title>Lulu Delivery App</title>
 			<style type="text/css">
 			@import "lib/dojo/dojo/resources/dojo.css";
 			@import "lib/dojo/dijit/themes/claro/claro.css";
@@ -19,21 +19,26 @@
 				var djConfig = { parseOnLoad: true };
 			</script>
 			
-			<script type="text/javascript" src="lib/dojo/dojo/dojo.js"></script>
+	<script type="text/javascript" src="lib/dojo/dojo/dojo.js"></script>
 			<script type="text/javascript" src="js/main.js"></script>
 			<script type="text/javascript" src="js/require.js"></script>
-	</head>
+	<link href="images/32x32/logo.png" rel="shortcut icon" />
+    </head>
 	<body class="claro">
 	<?php 
 		$page = $_GET['page'];
+		
 		if($page == 'page_login'){
 			include("login/login_page.php");
-		} else if($page == 'dashboard'){
-			include("dashboard.php");
+		} /*else if($page == 'dashboard'){
+			include("dashboard2.php");
 		} else if($page == 'input_customer'){
 			include("user/input_customer.php");
 		} else if($page == 'transaksi_customer'){
 			include("user/transaksi_customer.php");
+		}*/
+		else{
+		include("login/login_page.php");
 		}
 	?>
 	
