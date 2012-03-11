@@ -5,6 +5,8 @@
 	$code = $_POST['txt_search'];
 	$were = $_POST['data_cust'];
 ?>
+<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%;height: 100%; border: solid 1px;">
+<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 100%; border: solid 1px;">
 <div align="center">
 	<h1>Udah bisa manteman, dah masuk m_detail_transaction, tapi pas balik lg data'a blm muncul</h1>
 	<br />
@@ -112,6 +114,7 @@
 	<div class="contentInputTransaksi">
 		<div	data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Transaksi"'
+				overFlow="true"
 				style="height: 300px;"
 				>
 			
@@ -131,10 +134,10 @@
 				}
 				echo $genSo;
 				?>
-				<div style="width: 600px; height: 200px" id="gridDivTransCust">
+				<div  id="gridDivTransCust">
 				</div>
 				<form action="index.php?page=transaksi_customer" method="POST">
-						
+					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
 					<table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
 						<?php
 						if($genSo == null){
@@ -157,9 +160,10 @@
 					  ?>
 						<tr>
 							<td class="align1234"><?php echo $arr["name_product"];?>
-							<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" /></td>
+							</td>
 							<td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
 							<td class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
+							<td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
 							<td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
 						</tr>
 							
@@ -170,7 +174,12 @@
 						
 							<tr>
 							<td>
-								<input class="myTextField" id="filter_product" placeHolder="Kode Produk" dojoType="dijit.form.FilteringSelect" store="null"  searchAttr="nama" name="produk"  />
+								 <span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
+								<input class="myTextField" id="filter_product" placeHolder="Kode Produk"
+								dojoType="dijit.form.FilteringSelect"
+								store="storeFilterSelect"
+								searchAttr="nama"
+								name="produk"  />
 								<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
 								<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
 								<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
@@ -178,7 +187,7 @@
 								</td>
 							<td>
 								<input class="myTextField" placeHolder="Keterangan" dojoType="dijit.form.TextBox" name="ket" id="ket" /></td>
-							<td>
+							<td colspan="2">
 								<input class="myTextField"
 									placeHolder="Quantity"
 									dojoType="dijit.form.NumberTextBox"
@@ -213,3 +222,6 @@
 													</select></div>
 <div style="margin-left: 900px;"><button dojoType="dijit.form.Button" type="submit" name="simpan_transaction"> Save </button></div>
 </form>
+
+</div>
+</div>

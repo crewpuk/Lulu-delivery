@@ -15,8 +15,10 @@ dojo.require('dijit.layout.AccordionPane');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('dojo.store.JsonRest');
 dojo.require('dojo.data.ObjectStore');
-dojo.require('dojox.grid.EnhancedGrid');
+dojo.require('dijit.layout.BorderContainer');
+dojo.require('dijit.layout.ContentPane');
+//dojo.require('dojox.grid.EnhancedGrid');
 dojo.require('dijit.Tree');
-dojo.require('dojox.grid.enhanced.plugins.Pagination');
+//dojo.require('dojox.grid.enhanced.plugins.Pagination');
 
 
