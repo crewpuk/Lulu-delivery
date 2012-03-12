@@ -1,6 +1,6 @@
 .paneTransaksi div.contentTransaksi {
 	float: left;
-	width: 500px;
+	width: 400px;
 	margin-left: 7px;
 }
 .paneTransaksi{
@@ -8,8 +8,8 @@
 	margin: auto;
 }
 .contentInputTransaksi{
-	width: 1005px;
-	margin-left: -135px;
+	width: 700px;
+	margin-left: -230px;
 	margin-top: 15px;
 }
 .alignTable{

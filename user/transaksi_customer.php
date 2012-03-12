@@ -1,16 +1,14 @@
 <?php 
 
 	include ("system/created.php");
+	include ("system/simpan.php");
 
 	$code = $_POST['txt_search'];
 	$were = $_POST['data_cust'];
 ?>
-<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%;height: 100%; border: solid 1px;">
-<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 100%; border: solid 1px;">
-<div align="center">
-	<br />
-	<br />
-	<br />
+<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
+<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">
+<div align="center"><br />
 	<div class="paneTransaksi"> 
 		<div class="contentTransaksi" >
 			<div id="dataPerusahaan" 
@@ -47,8 +45,8 @@
 					$ax = mysql_fetch_array($x);
 					
 				?>
-				<form action="index.php?page=transaksi_customer" method="POST" >
-					<table cellspacing="3" cellpadding="3">
+				<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
+				  <table cellspacing="3" cellpadding="3">
 						<tr>
 							<td>
 								<select class="myTextField" name="data_cust" id="data_cust">
@@ -69,7 +67,7 @@
 						<?php
 							if($num == null and $kode_transaction == null){
 								echo "<tr>
-										<td colspan='3'><font color='red' >Data Tidak Ditemukan</font></td>
+										<td colspan='3'><font color='red' >Data Belum Ditemukan</font></td>
 									  </tr>";
 							} else {
 						?>
@@ -114,15 +112,20 @@
 		<div	data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Transaksi"'
 				overFlow="true"
-				style="height: 300px;"
+				style="height: 300px; width:100;"
 				>
 			
 			SO No: <?php
-				$sqlTrans = "SELECT * FROM m_transaction order by `id_code_customer` DESC LIMIT 0,1 ";
+				$sqlTrans = "SELECT * FROM `m_order` order by `nomor_order` DESC LIMIT 0,1 ";
 				$exeSql = mysql_query($sqlTrans);
 				$arr = mysql_fetch_array($exeSql);
 
-				$id = $arr['id_code_customer'];
+				$nomor = $arr['nomor_order'];
+				if($nomor == null){
+				$id = 1;	
+				}else{
+				$id = $nomor+1;	
+				}
 				$nama = $ax['name_customer'];
 				$date = date('d/m/y');
 				$kode_cust = $ax['code_customer'];
@@ -133,12 +136,19 @@
 				}
 				echo $genSo;
 				?>
-				<div  id="gridDivTransCust">
-				</div>
-				<form action="index.php?page=transaksi_customer" method="POST">
+		  <div  id="gridDivTransCust"><span style="clear: both;"><a href="#" onclick="window.open('user/cetak.php?kT=<?php echo $genSo; ?>&kC=<?php echo $kode_cust; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="images/32x32/printer.png" width="32" height="32" alt="cetak" title="Cetak" /></a></span></div>
+    <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
-					<table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
-						<?php
+			  <table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
+				  
+				  <tr>
+						  <th class="align1234">Nama Barang</th>
+				    <th class="align1234">Keterangan</th>
+				    <th class="align1234">Qty</th>
+				    <th class="align1234">Harga Satuan</th>
+						  <th class="align1234">Total</th>
+			    </tr>
+                <?php
 						if($genSo == null){
 							$genSo = "";
 						}
@@ -157,44 +167,44 @@
 						$total = 0;
 						while($arr = mysql_fetch_array($cek)){
 					  ?>
-						<tr>
-							<td class="align1234"><?php echo $arr["name_product"];?>
-							</td>
-							<td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
-							<td class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
-							<td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
-							<td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
-						</tr>
+				  <tr>
+					  <td class="align1234"><?php echo $arr["name_product"];?>
+					  </td>
+					  <td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
+					  <td align="center" class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
+					  <td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
+					  <td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
+				  </tr>
 							
-						<?php 
+				  <?php 
 						$total = $total + $arr["totalHarga"];
 					  
 						}} ?>
 						
-							<tr>
-							<td>
-								 <span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
-								<input class="myTextField" id="filter_product" placeHolder="Kode Produk"
+					  <tr>
+						<td>
+							 <span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
+							<input class="myTextField" id="filter_product" placeHolder="Kode Produk"
 								dojoType="dijit.form.FilteringSelect"
 								store="storeFilterSelect"
 								searchAttr="nama"
 								name="produk"  />
-								<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
-								<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
-								<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
-								<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
-								</td>
-							<td>
-								<input class="myTextField" placeHolder="Keterangan" dojoType="dijit.form.TextBox" name="ket" id="ket" /></td>
-							<td colspan="2">
-								<input class="myTextField"
+							<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
+							<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
+							<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
+							<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
+					    </td>
+						<td>
+						  <input class="myTextField" placeHolder="Keterangan" dojoType="dijit.form.TextBox" name="ket" id="ket" /></td>
+						<td colspan="2">
+						  <input name="qty" class="myTextField" id="qty" maxlength="3"
 									placeHolder="Quantity"
 									dojoType="dijit.form.NumberTextBox"
-									required="true" name="qty" id="qty" /></td>
-							<td bgcolor="#000000"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
-							</tr>
+									required="true" /></td>
+						<td bgcolor="#000000"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
+					  </tr>
 						
-					</table></form>
+			  </table></form>
 			<div>TOTAL &emsp;&emsp; : <strong><?php echo "Rp. ".number_format($total, 0,",","."); ?></strong></div>
 			<?php
 				if($total >= 200000 ){ $sale = 0;}else{ $sale = 3000;}
@@ -204,23 +214,22 @@
 		</div>
 	</div>
 	
-</div>
-<form action="user/system/simpan.php" method="POST">
-<div style="margin-left: 900px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
+</div><br />
+<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
+<div style="margin-left: 470px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
 														<option value="cabang1">Cabang 1</option>
 														<option value="cabang2">Cabang 2</option>
 														<option value="cabang3">Cabang 3</option>
 													</select>
 													<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
 													<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />
-													</div>
-<div style="margin-left: 900px;">Model Pembayaran : <select name="model_pembayaran">
+													</div><br />
+<div style="margin-left: 470px;">Model Pembayaran : <select name="model_pembayaran">
 														<option value="Transfer" selected="selected">Transfer</option>
 														<option value="COD">COD</option>
 														<option value="CashToko">Cash Toko</option>
-													</select></div>
-<div style="margin-left: 900px;"><button dojoType="dijit.form.Button" type="submit" name="simpan_transaction"> Save </button></div>
+													</select></div><br />
+<div style="margin-left: 550px;"><button dojoType="dijit.form.Button" type="submit" name="simpan_transaction"> Save </button></div>
 </form>
-
 </div>
 </div>

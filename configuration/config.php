@@ -22,7 +22,10 @@
 				for($i=0;$i<$jumTD;$i++)
 				{
 					echo "<td align='center' valign='middle' class='menu-Ribbon'>";
-						echo "<a href='?page=dashboard&sub=$link[$i]' title='$title[$i]'><img src='images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
+						//Link page pada gambar ribbon
+						echo "
+						<a href='?page=dashboard&sub=$link[$i]' title='$title[$i]'>
+						<img src='images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
 					echo "</td>";
 				}
 			echo "</tr>";					
