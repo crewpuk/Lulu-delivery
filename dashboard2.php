@@ -1,7 +1,7 @@
 <?php
 @session_start();
 include "configuration/config.php";
-if(empty($_SESSION['username']) || empty($_SESSION['password']) || $_SESSION['level'] != 'su_admin')
+if(empty($_SESSION['user']) || empty($_SESSION['pass']) || $_SESSION['level'] != 'admin')
 {
 echo"<script>
 location='index?page=page_login';
@@ -12,7 +12,7 @@ else
 $arrHari = array("Minggu","Senin","Selasa","Rabu","Kamis","Jum\'at","Sabtu");
 $hari = date('w');
 ?>
-<div id="headerMenu">Anda Login Sebagai : <?php echo $_SESSION['username']; ?>.
+<div id="headerMenu">Anda Login Sebagai : <?php echo $_SESSION['user']; ?>.
 <div id='jam'>
 <script language='javascript'>
 function jam(){
@@ -44,7 +44,7 @@ jam();
     <?php 
 	$page = $_GET['page'];
     $sub = $_GET['sub'];
-	include "user/$sub.php"; 
+	@include "user/$sub.php"; 
 	?>
     </div>
 </div>

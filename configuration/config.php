@@ -2,6 +2,8 @@
 	mysql_connect("localhost","root","root") or die("koneksi gagal");
 	mysql_select_db("db_lulu") or die ("database tidak Ditemukan");
 	
+	define (BASE,'http://localhost/Lulu-delivery/');
+	
 	function alert($psn){
 		echo "<script>alert('$psn');</script>";
 	}
@@ -23,9 +25,15 @@
 				{
 					echo "<td align='center' valign='middle' class='menu-Ribbon'>";
 						//Link page pada gambar ribbon
+						if($sub=='keluar'){
+						echo "
+						<a href='".BASE."logout.php' title='$title[$i]'>
+						<img src='".BASE."images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
+						}elseif($sub!='keluar'){
 						echo "
 						<a href='?page=dashboard&sub=$link[$i]' title='$title[$i]'>
-						<img src='images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
+						<img src='".BASE."images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
+						}
 					echo "</td>";
 				}
 			echo "</tr>";					

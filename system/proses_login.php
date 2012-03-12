@@ -25,21 +25,23 @@ $pass=$_REQUEST['kunci'];
 		if($user==$username and $pass==$password)
 		{
 		session_start();
-		$_SESSION['username']	= $username;
-		$_SESSION['password']	= $password;
 		$_SESSION['id']			= $id;
 		$_SESSION['level']		= $level;
 		
 			if($level=='su_admin')
 			{
+			$_SESSION['su_user']	= $username;
+			$_SESSION['su_pass']	= $password;
 			echo"<script>alert('SELAMAT DATANG ADMIN')
-			location='../index.php?page=dashboard';
+			location='../admin/index.php';
 				</script>";
 			}
 			elseif($level=='admin')
 			{
+			$_SESSION['user']		= $username;
+			$_SESSION['pass']		= $password;
 			echo"<script>alert('SELAMAT DATANG USER')
-			location='admin/index.php';
+			location='../index.php?page=dashboard';
 			</script>";
 			}
 		}

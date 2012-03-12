@@ -154,6 +154,7 @@
 						}
 						$cek = mysql_query("SELECT m_detail_transaction.*,
 											m_product.name_product,
+											m_product.size_product,
 											m_product.price_product AS harga,
 											(m_detail_transaction.quantity_detail_transaction * m_product.price_product) AS totalHarga 
 											FROM m_detail_transaction,m_product
@@ -168,8 +169,7 @@
 						while($arr = mysql_fetch_array($cek)){
 					  ?>
 				  <tr>
-					  <td class="align1234"><?php echo $arr["name_product"];?>
-					  </td>
+					  <td class="align1234"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
 					  <td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
 					  <td align="center" class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
 					  <td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>

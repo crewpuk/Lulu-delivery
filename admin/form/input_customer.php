@@ -17,14 +17,15 @@
     <tr>
       <td>Nama Customer</td>
       <td>:</td>
-      <td><input dojoType="dijit.form.ValidationTextBox" name="nama_cust" id="nama_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" require="true" name="nama_cust" id="nama_cust" /></td>
     </tr>
     <tr>
       <td valign="top">Alamat</td>
       <td valign="top">:</td>
       <td>
 		  <input dojoType="dijit.form.SimpleTextarea" 
-		name="alamat_cust" 
+		require="true"
+        name="alamat_cust" 
 		id="alamat_cust" 
 		cols="30" 
 		rows="5">
@@ -33,27 +34,27 @@
     <tr>
       <td>Kode Pos</td>
       <td>:</td>
-      <td><input type="text" name="kodePos_cust" id="kodePos_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="kodePos_cust" id="kodePos_cust" /></td>
     </tr>
     <tr>
       <td>Telepon</td>
       <td>:</td>
-      <td><input type="text" name="tlp_cust" id="tlp_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="tlp_cust" id="tlp_cust" /></td>
     </tr>
     <tr>
       <td>Telepon Rumah</td>
       <td>:</td>
-      <td><input type="text" name="tlp_rmh_cust" id="tlp_rmh_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="tlp_rmh_cust" id="tlp_rmh_cust" /></td>
     </tr>
     <tr>
       <td>Website</td>
       <td>:</td>
-      <td><input type="text" name="web_cust" id="web_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="web_cust" id="web_cust" /></td>
     </tr>
     <tr>
       <td>Email Sales</td>
       <td>:</td>
-      <td><input type="text" name="email_cust" id="email_cust" /></td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="email_cust" id="email_cust" /></td>
     </tr>
     <tr>
       <td>Status</td>
