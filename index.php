@@ -12,6 +12,9 @@
 			@import "lib/dojo/dojox/grid/resources/claroGrid.css";
 			@import "css/lulu.css";
 			@import "css/panel.css";
+            @import "css/ribbon.css";
+            @import "css/menu.css";
+            @import "css/layout.css";
 			
 			</style>
 
@@ -28,17 +31,14 @@
 	<?php 
 		$page = $_GET['page'];
 		
-		if($page == 'page_login'){
+		if($page == 'page_login' || $page == ''){
 			include("login/login_page.php");
-		} /*else if($page == 'dashboard'){
+		} else if($page == 'dashboard'){
 			include("dashboard2.php");
 		} else if($page == 'input_customer'){
 			include("user/input_customer.php");
 		} else if($page == 'transaksi_customer'){
 			include("user/transaksi_customer.php");
-		}*/
-		else{
-		include("login/login_page.php");
 		}
 	?>
 	

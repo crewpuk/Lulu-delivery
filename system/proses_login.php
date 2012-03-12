@@ -33,7 +33,7 @@ $pass=$_REQUEST['kunci'];
 			if($level=='su_admin')
 			{
 			echo"<script>alert('SELAMAT DATANG ADMIN')
-			location='../dashboard2.php';
+			location='../index.php?page=dashboard';
 				</script>";
 			}
 			elseif($level=='admin')
