@@ -2,7 +2,7 @@
 	mysql_connect("localhost","root","root") or die("koneksi gagal");
 	mysql_select_db("db_lulu") or die ("database tidak Ditemukan");
 	
-	define (BASE,'http://localhost/Lulu-delivery/');
+	define ("BASE",'http://localhost/Lulu-delivery/');
 	
 	function alert($psn){
 		echo "<script>alert('$psn');</script>";
@@ -13,8 +13,8 @@
 	
 	function ribbon($link,$title,$image)
 	{
-	$page = $_GET['page'];
-    $sub = $_GET['sub'];
+	$page = (isset($_GET['page']))?$_GET['page']:"";
+    $sub = (isset($_GET['sub']))?$_GET['sub']:"";
 	$jumTD = count($title);
 	echo "<table width='100%' cellpadding='0' cellspacing='0' class='box-Ribbon'>";
 	echo "<tr>";

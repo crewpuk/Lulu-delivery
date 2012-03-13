@@ -67,8 +67,8 @@ jam();
 <div id="container">
 	<div id="content">
     <?php 
-	$page = $_GET['page'];
-    $sub = $_GET['sub'];
+	$page = (isset($_GET['page']))?$_GET['page']:"";
+    $sub = (isset($_GET['sub']))?$_GET['sub']:"";
 	@include "form/$sub.php"; 
 	?>
     </div>

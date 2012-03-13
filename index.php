@@ -29,7 +29,7 @@
     </head>
 	<body class="claro">
 	<?php 
-		$page = $_GET['page'];
+		$page = (isset($_GET['page']))?$_GET['page']:"";
 		
 		if($page == 'page_login' || $page == ''){
 			include("login/login_page.php");
