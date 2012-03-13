@@ -24,6 +24,8 @@ $hari = date('w');
             @import "../css/ribbon.css";
             @import "../css/menu.css";
             @import "../css/layout.css";
+			@import "../css/style.css";
+			th{ text-align:center; color:#FFF; font-weight:bold; }
 			
 			</style>
 

@@ -2,6 +2,9 @@
 <body onLoad="print();">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" style="border:solid 1px;">
   <tr>
+    <th colspan="5" class="align2"><img src="../images/logo.png" width="150" height="100"></th>
+  </tr>
+  <tr>
     <th colspan="5" class="align2">FORM PESANAN PELANGGAN</th>
   </tr>
   <?php
