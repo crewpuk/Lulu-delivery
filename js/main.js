@@ -24,6 +24,8 @@ dojo.ready(function(){
 	var storeFil = dojo.data.ItemFileReadStore({
 				url: 'system/generate_produk.php'
 			});
+
+	//dijit.byId('tagDelete').set('href','ee');
 			//dijit.byId('filter_product').store = storeFil;
 
 

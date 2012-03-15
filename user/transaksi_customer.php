@@ -1,11 +1,15 @@
 <?php 
-
 	include ("system/created.php");
 	include ("system/simpan.php");
+	include ("system/delete_detail_transaction.php");
 
 	$code = $_POST['txt_search'];
-	$were = $_POST['data_cust'];
+	$were = $_POST['data_cust'] ;
+	function deleteRow(){
+		echo "<script>alert('halo');</script>";
+	}
 ?>
+
 <div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
 <div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">
 <div align="center"><br />
@@ -34,8 +38,7 @@
 				 <?php
 					
 					if($code != null and $were != null){
-					$sql = "SELECT * FROM `m_customer` where ".$were." = '".$code."' ";
-					
+						$sql = "SELECT * FROM `m_customer` where ".$were." = '".$code."' ";
 					} else {
 						$sql = "SELECT * FROM `m_customer` where name_customer = '".$getCust."' ";
 					}
@@ -108,6 +111,10 @@
 		</div>
 	</div>
 	<div style="clear: both;"></div>
+	<?php if($num == null and $kode_transaction == null){
+		echo "";
+
+	}else{	?>
 	<div class="contentInputTransaksi">
 		<div	data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Transaksi"'
@@ -141,12 +148,13 @@
 					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
 			  <table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
 				  
-				  <tr>
-						  <th class="align1234">Nama Barang</th>
+				<tr>
+					<th class="align1234">Nama Barang</th>
 				    <th class="align1234">Keterangan</th>
 				    <th class="align1234">Qty</th>
 				    <th class="align1234">Harga Satuan</th>
-						  <th class="align1234">Total</th>
+					<th class="align1234">Total</th>
+					<th class="align1234">Action</th>
 			    </tr>
                 <?php
 						if($genSo == null){
@@ -168,12 +176,15 @@
 						$total = 0;
 						while($arr = mysql_fetch_array($cek)){
 					  ?>
-				  <tr>
+				  <tr align="center">
 					  <td class="align1234"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
 					  <td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
 					  <td align="center" class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
 					  <td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
 					  <td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
+					  <td class="align1234" >
+						  <a href="index.php?page=dashboard&sub=transaksi_customer&txt_search=<?php echo $codeGet;?> &data_cust=<?php echo $wereGet;?>&halaman=delete&id=<?php echo $arr[0]; ?>">
+						<img src="images/32x32/cancel.png" width="25px" /></a></td>
 				  </tr>
 							
 				  <?php 
@@ -201,7 +212,7 @@
 									placeHolder="Quantity"
 									dojoType="dijit.form.NumberTextBox"
 									required="true" /></td>
-						<td bgcolor="#000000"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
+						<td bgcolor="#CEE2F4" colspan="2" align="center"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
 					  </tr>
 						
 			  </table></form>
@@ -213,7 +224,6 @@
 			<div>GRAND TOTAL  : <strong><?php echo  "Rp. ".number_format($total + $sale, 0,",","."); ?></strong></div>
 		</div>
 	</div>
-	
 </div><br />
 <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 <div style="margin-left: 470px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
@@ -232,4 +242,5 @@
 <div style="margin-left: 550px;"><button dojoType="dijit.form.Button" type="submit" name="simpan_transaction"> Save </button></div>
 </form>
 </div>
+<?php } ?>
 </div>
