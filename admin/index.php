@@ -44,15 +44,16 @@ $hari = date('w');
 			@import "../lib/dojo/dijit/themes/soria/soria.css";
 			@import "../lib/dojo/dojox/grid/resources/Grid.css";
 			@import "../lib/dojo/dojox/grid/resources/claroGrid.css";
-			@import "../css/lulu.css";
+			
 			@import "../css/panel.css";
             @import "../css/ribbon.css";
             @import "../css/menu.css";
             @import "../css/layout.css";
 			@import "../css/style.css";
-			th{ text-align:center; color:#FFF; font-weight:bold; }
-			
-			</style>
+			th{ text-align:center; color:#FFF; font-weight:bold; background: #00baff; padding: 0; }
+            a{text-decoration: none; color: black;}
+            a:hover{text-decoration: underline;}
+            </style>
 
 			<script type="text/javascript">
 				var djConfig = { parseOnLoad: true };
@@ -92,6 +93,7 @@ jam();
 </div>
 <div id="ribbon"><?php include "ribbon_ad.php"; ?></div>
 <div id="container">
+
 	<div id="content">
     <?php 
 	$page = (isset($_GET['page']))?$_GET['page']:"";
