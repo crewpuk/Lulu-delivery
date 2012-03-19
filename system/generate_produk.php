@@ -23,7 +23,7 @@ $data_all = array();
 
 include "../configuration/config.php";
 
-$q = mysql_query("SELECT code_product AS id,name_product AS nama,group_product AS product,price_product AS harga FROM m_product");
+$q = mysql_query("SELECT code_product AS id,CONCAT(name_product, ' - ', size_product) AS nama,group_product AS product,price_product AS harga FROM m_product");
 
 while($data = mysql_fetch_assoc($q)){
 	$data_all[] = $data;

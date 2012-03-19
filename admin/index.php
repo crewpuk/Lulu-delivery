@@ -24,6 +24,8 @@ $hari = date('w');
             @import "../css/ribbon.css";
             @import "../css/menu.css";
             @import "../css/layout.css";
+			@import "../css/style.css";
+			th{ text-align:center; color:#FFF; font-weight:bold; }
 			
 			</style>
 
@@ -66,11 +68,15 @@ jam();
 <div id="ribbon"><?php include "ribbon_ad.php"; ?></div>
 <div id="container">
 	<div id="content">
-    <?php 
-	$page = (isset($_GET['page']))?$_GET['page']:"";
-    $sub = (isset($_GET['sub']))?$_GET['sub']:"";
-	@include "form/$sub.php"; 
-	?>
+		<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
+			<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">	
+				<?php 
+				$page = (isset($_GET['page']))?$_GET['page']:"";
+				$sub = (isset($_GET['sub']))?$_GET['sub']:"";
+				@include "form/$sub.php"; 
+				?>
+			</div>
+		</div>
     </div>
 </div>
 <div id="footer">Copyright &copy; 2012 Lulu Delivery App <br />
