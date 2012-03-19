@@ -8,7 +8,9 @@ function ganti(){
 	}
 }
 </script>
-<?php if(!isset($_POST['tambah'])) { ?>
+<?php 
+error_reporting(E_ALL);
+if(!isset($_POST['tambah'])) { ?>
 <form name="form1" method="post" action="">
   <input type="submit" name="tambah" id="tambah" value="Tambah Produk">
 </form>
@@ -54,7 +56,124 @@ function ganti(){
   </table>
 </form>
 <br />
-<?php } if(isset($_GET['ubah'])) { ?>
+<?php
+}
+
+
+/**
+* Import Excel
+*/
+if(!isset($_POST['tambah_excel'])){ ?>
+
+<form name="form1" method="post" enctype="multipart/form-data" action="">
+  <input type="file" name="excel_file" id="excel_file" />
+  <input type="submit" name="tambah_excel" id="tambah_excel" value="Tambah Produk dari Excel">
+</form>
+<br />
+
+<?php } if(isset($_POST['tambah_excel'])&&!empty($_FILES['excel_file'])){
+
+$tmp_path = ".tmp/";
+if(!file_exists($tmp_path))mkdir($tmp_path);
+
+$file_excel_name = image_name($tmp_path,$_FILES['excel_file']['name'],TRUE);
+
+$file_path = $tmp_path.$file_excel_name['fullname'];
+
+move_uploaded_file($_FILES['excel_file']['tmp_name'], $file_path);
+
+require_once("../lib/phpexcel/PHPExcel.php");
+require_once("../lib/phpexcel/PHPExcel/IOFactory.php");
+
+$objReaderState = true;
+if($file_excel_name["ext"]=='xls') {
+  $objReader = PHPExcel_IOFactory::createReader('Excel5'); 
+}elseif($file_excel_name["ext"]=='xlsx') {
+  $objReader = PHPExcel_IOFactory::createReader('Excel2007'); 
+}elseif($file_excel_name["ext"]=='csv') {
+  $objReader = new PHPExcel_Reader_CSV();
+}else{
+  $objReaderState = false;
+}
+// $objReader = PHPExcel_IOFactory::createReader('Excel2007'); // 2007
+// $objReader = new PHPExcel_Reader_CSV(); // csv
+// $objReader = PHPExcel_IOFactory::createReader('Excel5'); // 2003
+
+if($objReaderState==true){
+
+    $check_field = mysql_query("SHOW FIELDS FROM m_product");
+    $check_field_num_fld = 0;
+    while($check_field_row = mysql_fetch_array($check_field)){
+      if(!empty($check_field_row))$check_field_num_fld++;
+    }
+
+    $objPHPExcel = $objReader->load($file_path);
+
+    $objWorksheet = $objPHPExcel->getActiveSheet();
+
+    $error_row=array();
+    $row_for_query=array();
+    $row_number=0;
+    foreach ($objWorksheet->getRowIterator() as $row) {
+      $row_number++;
+        
+      $cellIterator = $row->getCellIterator();
+      $cellIterator->setIterateOnlyExistingCells(false); // This loops all cells,
+                                                         // even if it is not set.
+                                                         // By default, only cells
+                                                         // that are set will be
+                                                         // iterated.
+      $col_for_row=array();
+      foreach($cellIterator as $cell){
+        if($cell->getValue()!=NULL&&$cell->getValue()!="") $col_for_row[] = $cell->getValue();
+      }
+      $col_for_row[] = "1"; // status
+      
+      if(count($col_for_row)==$check_field_num_fld&&
+        (!preg_match("#[^0-9]+#", $col_for_row[4]))&&
+        (!preg_match("#[^0-9]+#", $col_for_row[5]))){
+        $row_for_query[]=$col_for_row;
+      }
+      else $error_row[]=$row_number;
+    }
+    $num_update=0;
+    $num_insert=0;
+    $num_error=0;
+    for($i=0;$i<count($row_for_query);$i++) {
+        $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
+        if($check_CP>0){
+          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', stock_product = (m_product.stock_product+".$row_for_query[$i][4]."), price_product = '".$row_for_query[$i][5]."' WHERE code_product = '".$row_for_query[$i][0]."';\n";
+          $action="update";
+        }
+        else{
+          $query_import = "INSERT INTO m_product VALUES('".$row_for_query[$i][0]."','".$row_for_query[$i][1]."','".$row_for_query[$i][2]."','".$row_for_query[$i][3]."','".$row_for_query[$i][4]."','".$row_for_query[$i][5]."','".$row_for_query[$i][6]."');\n";
+          $action="insert";
+        }
+        $success=@mysql_query($query_import);
+        if($success){
+          if($action=="update")$num_update++;
+          else $num_insert++;
+        }
+        else $num_error++;
+    }
+
+    @unlink($file_path);
+
+    $num_row_error = count($error_row);
+    echo("Import Excel telah selesai.<br>\nSebanyak $num_insert telah berhasil diimport.<br>\nSebanyak $num_update telah berhasil diperbarui.<br>\nSebanyak $num_error gagal.<br>\nDan sebanyak $num_row_error baris gagal diimport dari $row_number baris pada excel.<br><br>");
+
+}
+else{
+  echo("Format file tidak dikenal!");
+}
+/**
+* End of Import Excel
+*/
+
+
+
+
+} if(isset($_GET['ubah'])) { ?>
 <form name="form3" method="post" action="">
 <?php
 $id = $_GET['no'];
@@ -105,7 +224,7 @@ $dataSQL = mysql_fetch_array($exeSQL);
 <?php } ?>
 <div class="e">
 <?php
-$e = $_GET['e'];
+$e = (isset($_GET['e']))?$_GET['e']:"";
 if($e==1){ echo "Data Kurang Lengkap"; }
 if($e==2){ echo "Kode Sudah Ada"; }
 ?>
@@ -119,7 +238,7 @@ if($e==2){ echo "Kode Sudah Ada"; }
           <a href="index.php?page=dashboard&sub=product">Lihat Semua</a></td>
       </tr>
       <?php
-      $keyword = $_POST['txtkey'];
+      $keyword = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
   if($keyword != null){
   $sql = "SELECT * FROM `m_product` Where `name_product` LIKE '%$keyword%' LIMIT 0,15";	  
   }else{
@@ -162,18 +281,18 @@ if($e==2){ echo "Kode Sudah Ada"; }
 </form>
 <?php
 if(isset($_POST['ubah1'])){
-$kode = $_POST['kode'];
+$kode = (isset($_POST['kode']))?$_POST['kode']:"";
 }else{
-$kode = $_POST['kode2'];
+$kode = (isset($_POST['kode2']))?$_POST['kode2']:"";
 }
-$grup = $_POST['grup'];
-$nama = $_POST['nama'];
-$ukur = $_POST['ukuran'];
-$stok = $_POST['stok'];
-$hrga = $_POST['harga'];
+$grup = (isset($_POST['grup']))?$_POST['grup']:"";
+$nama = (isset($_POST['nama']))?$_POST['nama']:"";
+$ukur = (isset($_POST['ukuran']))?$_POST['ukuran']:"";
+$stok = (isset($_POST['stok']))?$_POST['stok']:"";
+$hrga = (isset($_POST['harga']))?$_POST['harga']:"";
 $sqlDB = mysql_fetch_array(mysql_query("SELECT * FROM `m_product`"));
 $kodeDB = $sqlDB['code_product'];
-$id = $_GET['no'];
+$id = (isset($_GET['no']))?$_GET['no']:"";
 //Proses Tambah Produk
 if(isset($_POST['tambahkan'])){
 	$kode = $_POST['kode'];
