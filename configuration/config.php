@@ -10,7 +10,6 @@ function alert($psn){
 function location($loc){
 	echo "<script>location='$loc';</script>";
 }
-
 function ribbon($link,$title,$image)
 {
 $page = (isset($_GET['page']))?$_GET['page']:"";
@@ -98,10 +97,4 @@ function get_data($url){
   curl_close($ch);
   return $data;
 }
-// $mail = new eMail;
-// $mail->to = array($_POST['email']);
-// $mail->from = "taruna@smktarunabhakti.net";
-// $mail->body = '<html><body>Klik link <a href="http://e-learning.smktarunabhakti.net/verify/'.$pin.'" target="_blank">ini</a> untuk verifikasi email anda!<br><br>Atau kunjungi alamat ini : http://e-learning.smktarunabhakti.net/verify/'.$pin.'<br><br>Terimakasih atas kerjasamanya.</body></html>';
-// $mail->subject = "Verifikasi Email (no-reply)";
-// $mail->send();
 ?>
