@@ -160,15 +160,16 @@ while($data = mysql_fetch_array($q_data_perusahaan)){
 						if($genSo == null){
 							$genSo = "";
 						}
-						$cek = mysql_query("SELECT m_detail_transaction.*,
+						$c = ("SELECT m_detail_transaction.*,
 											m_product.name_product,
 											m_product.size_product,
 											m_product.price_product AS harga,
 											(m_detail_transaction.quantity_detail_transaction * m_product.price_product) AS totalHarga 
 											FROM m_detail_transaction,m_product
 											where m_detail_transaction.code_transaction = 
-											'".$genSo."' AND m_product.code_product = m_detail_transaction.code_product")  
-											or die("query product salah");					
+											'".$genSo."' AND m_product.code_product = m_detail_transaction.code_product"); 
+						//echo $c;
+						$cek = @mysql_query($c) or die("query product salah");				
 						$length = mysql_num_rows($cek);
 						if($length == null){
 							echo "";
