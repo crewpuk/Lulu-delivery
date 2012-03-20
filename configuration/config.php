@@ -1,6 +1,6 @@
 <?php
 
-@mysql_connect("localhost","root","admin") or die("Gagal Koneksi");
+@mysql_connect("localhost","root","root") or die("Gagal Koneksi");
 @mysql_select_db("db_lulu") or die ("Database Tidak Ditemukan");
 
 define ("BASE",'http://'.$_SERVER['HTTP_HOST'].'/Lulu-delivery/');
