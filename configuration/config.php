@@ -4,7 +4,7 @@
 	@mysql_select_db("db_lulu") or die ("Database Tidak Ditemukan");
 
 	
-	define ("BASE",'http://localhost/Lulu-delivery/');
+	define ("BASE",'http://'.$_SERVER['HTTP_HOST'].'/Lulu-delivery/');
 	
 	function alert($psn){
 		echo "<script>alert('$psn');</script>";

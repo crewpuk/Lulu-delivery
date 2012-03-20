@@ -3,10 +3,16 @@
 	include ("system/simpan.php");
 	include ("system/delete_detail_transaction.php");
 
-	$code = $_POST['txt_search'];
-	$were = $_POST['data_cust'] ;
-	function deleteRow(){
-		echo "<script>alert('halo');</script>";
+	if(isset($_POST['txt_search'])){
+		$code = $_POST['txt_search'];
+	}else{
+		$code = $_GET['txt_search'];
+	}
+	
+	if(isset($_POST['data_cust'])){
+		$were = $_POST['data_cust'];
+	}else{
+		$were = $_GET['data_cust'];
 	}
 ?>
 
@@ -119,15 +125,15 @@
 		<div	data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Transaksi"'
 				overFlow="true"
-				style="height: 300px; width:100;"
+				style="height: 300px; width:90%;"
 				>
 			
 			SO No: <?php
-				$sqlTrans = "SELECT * FROM `m_order` order by `nomor_order` DESC LIMIT 0,1 ";
+				$sqlTrans = "SELECT * FROM `m_transaction` order by `id_code_customer` DESC LIMIT 0,1 ";
 				$exeSql = mysql_query($sqlTrans);
 				$arr = mysql_fetch_array($exeSql);
 
-				$nomor = $arr['nomor_order'];
+				$nomor = $arr['id_code_customer'];
 				if($nomor == null){
 				$id = 1;	
 				}else{
@@ -137,24 +143,24 @@
 				$date = date('d/m/y');
 				$kode_cust = $ax['code_customer'];
 				if($code != null){
-				$genSo = $nama."-".$id."-".$date;
+					$genSo = $nama."-".$id."-".$date;
 				}elseif($kode_transaction != null){
-				$genSo = $kode_transaction;
+					$genSo = $kode_transaction;
 				}
 				echo $genSo;
 				?>
 		  <div  id="gridDivTransCust"><span style="clear: both;"><a href="#" onclick="window.open('user/cetak.php?kT=<?php echo $genSo; ?>&kC=<?php echo $kode_cust; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="images/32x32/printer.png" width="32" height="32" alt="cetak" title="Cetak" /></a></span></div>
     <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
-			  <table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
+			  <table width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
 				  
 				<tr>
-					<th class="align1234">Nama Barang</th>
-				    <th class="align1234">Keterangan</th>
-				    <th class="align1234">Qty</th>
-				    <th class="align1234">Harga Satuan</th>
-					<th class="align1234">Total</th>
-					<th class="align1234">Action</th>
+					<th width="48%" align="center" class="headerTab">Nama Barang</th>
+				   
+				    <th width="3%" align="center" class="headerTab">Qty</th>
+				    <th width="13%" align="center" class="headerTab">Harga Satuan</th>
+					<th width="20%" align="center" class="headerTab">Total</th>
+					<th width="5%" align="center" class="headerTab">Action</th>
 			    </tr>
                 <?php
 						if($genSo == null){
@@ -177,13 +183,13 @@
 						while($arr = mysql_fetch_array($cek)){
 					  ?>
 				  <tr align="center">
-					  <td class="align1234"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
-					  <td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
-					  <td align="center" class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
-					  <td class="align1234">Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
-					  <td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
-					  <td class="align1234" >
-						  <a href="index.php?page=dashboard&sub=transaksi_customer&txt_search=<?php echo $codeGet;?> &data_cust=<?php echo $wereGet;?>&halaman=delete&id=<?php echo $arr[0]; ?>">
+					  <td ><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
+					 
+					  <td align="center"><?php echo $arr["quantity_detail_transaction"];?></td>
+					  <td >Rp. <?php echo number_format($arr["harga"], 0, ",",".");?></td>
+					  <td >Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
+					  <td  >
+						  <a href="index.php?page=dashboard&sub=transaksi_customer&txt_search=<?php echo $code;?>&data_cust=<?php echo $were;?>&halaman=delete&id=<?php echo $arr[0]; ?>">
 						<img src="images/32x32/cancel.png" width="25px" /></a></td>
 				  </tr>
 							
@@ -195,7 +201,8 @@
 					  <tr>
 						<td>
 							 <span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
-							<input class="myTextField" id="filter_product" placeHolder="Kode Produk"
+							<input class="myTextField" id="filter_product" placeHolder="Nama Produk"
+								style="width: 30em;"
 								dojoType="dijit.form.FilteringSelect"
 								store="storeFilterSelect"
 								searchAttr="nama"
@@ -205,20 +212,20 @@
 							<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
 							<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
 					    </td>
-						<td>
-						  <input class="myTextField" placeHolder="Keterangan" dojoType="dijit.form.TextBox" name="ket" id="ket" /></td>
+						
 						<td colspan="2">
 						  <input name="qty" class="myTextField" id="qty" maxlength="3"
 									placeHolder="Quantity"
 									dojoType="dijit.form.NumberTextBox"
 									required="true" /></td>
-						<td bgcolor="#CEE2F4" colspan="2" align="center"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >save</button></td>
+						<td></td>
+						<td bgcolor="#CEE2F4" colspan="2" align="center"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >Save</button></td>
 					  </tr>
 						
 			  </table></form>
 			<div>TOTAL &emsp;&emsp; : <strong><?php echo "Rp. ".number_format($total, 0,",","."); ?></strong></div>
 			<?php
-				if($total >= 200000 ){ $sale = 0;}else{ $sale = 3000;}
+				if($total >= 200000 ){ $sale = 0;}else{ $sale = 5000;}
 			?>
 			<div>Biaya antar  : <strong><?php echo "Rp. ".number_format($sale,0,",",".");?></strong></div>
 			<div>GRAND TOTAL  : <strong><?php echo  "Rp. ".number_format($total + $sale, 0,",","."); ?></strong></div>

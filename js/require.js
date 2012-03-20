@@ -4,6 +4,7 @@ dojo.require('dijit.form.NumberTextBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('dijit.form.Form');
 dojo.require('dijit.form.SimpleTextarea');
+dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.ComboBox');
 dojo.require('dijit.layout.BorderContainer');
 dojo.require('dijit.layout.ContentPane');

@@ -4,14 +4,22 @@
 	margin-left: 7px;
 }
 .paneTransaksi{
-	width: 1024px;
+	width: 815px;
 	margin: auto;
 }
 .contentInputTransaksi{
-	width: 700px;
+	width: 75%;
 	margin-left: -230px;
 	margin-top: 15px;
 }
 .alignTable{
 	clear: both;
+}
+th.headerTab{
+	background-color: #4f8ce5;
+	text-align: center; 
+    color: #FFFFFF; 
+    font-weight: bold !important;
+    margin:0;
+    padding:3px; 
 }

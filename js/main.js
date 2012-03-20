@@ -24,6 +24,15 @@ dojo.ready(function(){
 	var storeFil = dojo.data.ItemFileReadStore({
 				url: 'system/generate_produk.php'
 			});
+	var radio = dijit.byId('rdKode');
+	dojo.connect(radio, "onClick", function(){
+			var txt = dijit.byId('kode_cust1');
+			if(radio.checked == true ){
+				txt.set('disabled', false);
+			}else{
+				txt.set('disabled', true);
+			}
+		});
 
 	//dijit.byId('tagDelete').set('href','ee');
 			//dijit.byId('filter_product').store = storeFil;

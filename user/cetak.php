@@ -142,14 +142,14 @@
 	  
 	  }} 
 	  $sumQty = mysql_fetch_array(mysql_query("SELECT 
-	  sum(`quantity_detail_transaction`) 
-	  FROM `m_detail_transaction` 
-	  Where `code_transaction`='$kode_transaction'"));
+		  sum(`quantity_detail_transaction`) 
+		  FROM `m_detail_transaction` 
+		  Where `code_transaction`='$kode_transaction'"));
 	  $sumPrice = mysql_fetch_array(mysql_query("SELECT 
-	  sum(`price_product`*`quantity_detail_transaction`) 
-	  FROM `m_detail_transaction`,`m_product` 
-	  Where `m_detail_transaction`.`code_product`=`m_product`.`code_product`
-	  and `m_detail_transaction`.`code_transaction`='$kode_transaction'"));
+		  sum(`price_product`*`quantity_detail_transaction`) 
+		  FROM `m_detail_transaction`,`m_product` 
+		  Where `m_detail_transaction`.`code_product`=`m_product`.`code_product`
+		  and `m_detail_transaction`.`code_transaction`='$kode_transaction'"));
 	  ?>
         <tr bgcolor="#FFFF00">
           <td class="align1234"><strong>TOTAL</strong></td>
@@ -158,7 +158,7 @@
           <td class="align1234">&nbsp;</td>
         </tr>
     <?php
-  	if($sumPrice[0] >= 200000 ){ $sale = 0;}else{ $sale = 3000;}
+  	if($sumPrice[0] >= 200000 ){ $sale = 0;}else{ $sale = 5000;}
     ?>
         <tr>
           <td class="align1234">Biaya Antar</td>

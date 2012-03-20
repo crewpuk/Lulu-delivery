@@ -1,5 +1,5 @@
 <?php
-mysql_connect('localhost','root','root');
+mysql_connect('localhost','root','admin');
 mysql_select_db('db_lulu');
 
 

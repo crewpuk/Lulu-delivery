@@ -1,10 +1,4 @@
 <?php
-/*
-mysql_connect('localhost','root','admin');
-mysql_select_db('db_lulu');
-*/
-
-//include("../configuration/config.php");
 
 	$save_product 		= $_POST['save_product'];
 	$kode_transaction	= $_POST['kode'];
@@ -12,24 +6,14 @@ mysql_select_db('db_lulu');
 	$produk				= $_POST['produk'];
 	$qty				= $_POST['qty'];
 	$ket				= $_POST['ket'];
-	$sqlProduct			= mysql_fetch_array(mysql_query("SELECT * FROM `m_product`"));
+	$sqlProduct			= mysql_fetch_array(mysql_query("SELECT * FROM `m_product` where code_product = '$produk'"));
 	$stokDB				= $sqlProduct['stock_product'];
 	if(isset($save_product)){
 		if($qty > $stokDB){
 			alert('Stok Tidak Cukup');	
 		}else{
-		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$qty','$ket','1')");
+		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$qty','ok','1')");
 		$x = $qty * $harga;
 		}
-/*
-		if ($simpan_pro){
-			echo"<script>
-					
-					location='../index.php?page=transaksi_customer&kode=$code&kC=$codeCust';
-				</script>" ;
-		}else{
-			echo"<script>alert('Terjadi Kesalahan pada Server');</script>";
-		}
-*/
 	}
 ?>
