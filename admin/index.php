@@ -26,14 +26,14 @@ function image_name($path,$file_name,$return_ext=FALSE){
 }
 
 
-if(empty($_SESSION['su_user']) || empty($_SESSION['su_pass']) || $_SESSION['level'] != 'su_admin')
-{
-echo"<script>
-location='../index?page=page_login';
-</script>";
-}
-else
-{
+// if(empty($_SESSION['su_user']) || empty($_SESSION['su_pass']) || $_SESSION['level'] != 'su_admin')
+// {
+// echo"<script>
+// location='../index.php?page=page_login';
+// </script>";
+// }
+// else
+// {
 $arrHari = array("Minggu","Senin","Selasa","Rabu","Kamis","Jum\'at","Sabtu");
 $hari = date('w');
 ?>
@@ -103,4 +103,4 @@ jam();
 <div id="footer">Copyright &copy; 2012 Lulu Delivery App <br />
 All Rights Reserved</div>
 </body>
-<?php } ?>
+<?php //} ?>

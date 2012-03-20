@@ -5,6 +5,14 @@
 
 	$code = $_POST['txt_search'];
 	$were = $_POST['data_cust'];
+
+$q_data_perusahaan=mysql_query("SELECT * FROM m_data");
+$data_lulu=array();
+while($data = mysql_fetch_array($q_data_perusahaan)){
+  $index=$data['name'];
+  $data_lulu[$index]=$data['value'];
+}
+
 ?>
 <div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
 <div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">
@@ -16,13 +24,13 @@
 				data-dojo-props='title:"Data LuluKID" '
 				>
 					<div class="alignTable">
-						LuluKids <br />
-						Jl. Pekapuran Raya No.xx <br />
-						16417 <br />
-						021-946424687 <br />
-						0875-65421687 <br />
-						<a href="#" >lulukid.net</a> <br />
-						lulu.kids@lulu-groups.com <br /><br /><br /><br /><br />
+						<?php
+						echo($data_lulu['company_name']."<br>
+							".nl2br($data_lulu['company_address'])."<br>
+							".nl2br($data_lulu['company_phone'])."<br>
+							<a href='".$data_lulu['company_url']."' target='_blank'>".$data_lulu['company_url']."</a><br>
+							<a href='mailto:".$data_lulu['company_email']."'>".$data_lulu['company_email']."</a><br><br><br><br><br>");
+						?>
 					</div>
 			</div>
 		</div>
@@ -136,7 +144,7 @@
 				}
 				echo $genSo;
 				?>
-		  <div  id="gridDivTransCust"><span style="clear: both;"><a href="#" onclick="window.open('user/cetak.php?kT=<?php echo $genSo; ?>&kC=<?php echo $kode_cust; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="images/32x32/printer.png" width="32" height="32" alt="cetak" title="Cetak" /></a></span></div>
+		  <div  id="gridDivTransCust"><span style="clear: both;"><a href="#" onclick="window.open('user/cetak.php?kT=<?php echo urlencode($genSo); ?>&kC=<?php echo urlencode($kode_cust); ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="images/32x32/printer.png" width="32" height="32" alt="cetak" title="Cetak" /></a></span></div>
     <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
 			  <table width="72%" border="1" align="center" cellpadding="0" cellspacing="0">
@@ -217,9 +225,12 @@
 </div><br />
 <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 <div style="margin-left: 470px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
-														<option value="cabang1">Cabang 1</option>
-														<option value="cabang2">Cabang 2</option>
-														<option value="cabang3">Cabang 3</option>
+														<?php
+														$sub_office_q = mysql_query("SELECT * FROM m_sub_office");
+														while($data_sub_office = mysql_fetch_array($sub_office_q)){
+															echo "<option value='".$data_sub_office['id_sub_office']."'>".$data_sub_office['name_sub_office']."</option>\n";
+														}
+														?>
 													</select>
 													<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
 													<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />

@@ -63,7 +63,7 @@ if(!isset($_POST['tambah'])) { ?>
 /**
 * Import Excel
 */
-if(!isset($_POST['tambah_excel'])){ ?>
+?>
 
 <form name="form1" method="post" enctype="multipart/form-data" action="">
   <input type="file" name="excel_file" id="excel_file" />
@@ -71,7 +71,7 @@ if(!isset($_POST['tambah_excel'])){ ?>
 </form>
 <br />
 
-<?php } if(isset($_POST['tambah_excel'])&&!empty($_FILES['excel_file'])){
+<?php if(isset($_POST['tambah_excel'])&&!empty($_FILES['excel_file'])){
 
 $tmp_path = ".tmp/";
 if(!file_exists($tmp_path))mkdir($tmp_path);
@@ -79,8 +79,6 @@ if(!file_exists($tmp_path))mkdir($tmp_path);
 $file_excel_name = image_name($tmp_path,$_FILES['excel_file']['name'],TRUE);
 
 $file_path = $tmp_path.$file_excel_name['fullname'];
-
-move_uploaded_file($_FILES['excel_file']['tmp_name'], $file_path);
 
 require_once("../lib/phpexcel/PHPExcel.php");
 require_once("../lib/phpexcel/PHPExcel/IOFactory.php");
@@ -100,6 +98,8 @@ if($file_excel_name["ext"]=='xls') {
 // $objReader = PHPExcel_IOFactory::createReader('Excel5'); // 2003
 
 if($objReaderState==true){
+
+    move_uploaded_file($_FILES['excel_file']['tmp_name'], $file_path);
 
     $check_field = mysql_query("SHOW FIELDS FROM m_product");
     $check_field_num_fld = 0;
@@ -164,7 +164,7 @@ if($objReaderState==true){
 
 }
 else{
-  echo("Format file tidak dikenal!");
+  echo("Format file tidak dikenal!<br><br>");
 }
 /**
 * End of Import Excel

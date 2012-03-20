@@ -8,6 +8,7 @@ while($data = mysql_fetch_array($q_data_perusahaan)){
 }
 
 
+
 $kode_transaction   = urldecode($_GET['kT']);
 $kode_customer    = urldecode($_GET['kC']);
 $sql = "SELECT * FROM `m_customer` Where `code_customer` = '$kode_customer'";
@@ -20,18 +21,29 @@ $sqlA = "SELECT `m_transaction`.*,`m_sub_office`.`name_sub_office`,`m_sub_office
 $xa = mysql_query($sqlA) or die("Query Salah -> ".mysql_error()); 
 $axa = mysql_fetch_array($xa);
 
-$html='<html>
+
+
+$mail = new eMail;
+$mail->to = array($axa['email_sub_office']);
+$mail->from = $data_lulu['email'];
+$mail->body = "coba";//get_data(BASE."user/cetak.php?kT=".$_GET['kT']."&kC=".$_GET['kC']);
+$mail->subject = "Bukti Cetak Lulu@Delivery";
+$mail->send();
+
+echo($data_lulu['email']." -> ".$axa['email_sub_office']);
+?>
+<html>
 <body onLoad="print();">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" style="border:solid 1px;">
   <tr>
-    <th colspan="5" class="align2"><img src="../images/logo.png" width="150" height="100" alt="Lulu@Delivery"></th>
+    <th colspan="5" class="align2"><img src="../images/logo.png" width="150" height="100"></th>
   </tr>
   <tr>
     <th colspan="5" class="align2">FORM PESANAN PELANGGAN</th>
   </tr>
   <tr>
     <td colspan="5"><strong>SO No : </strong>
-      <label id="lblSO">'.$kode_transaction.'</label></td>
+      <label id="lblSO"><?php echo $kode_transaction; ?></label></td>
   </tr>
   <tr>
     <td width="48%">&nbsp;</td>
@@ -54,27 +66,27 @@ $html='<html>
     </form>
   </tr>
   <tr>
-    <td>'.$data_lulu['company_name'].'</td>
+    <td><?php echo($data_lulu['company_name']);?></td>
     <td valign="top">Nama</td>
     <td valign="top">:</td>
-    <td>'.$ax['name_customer'].'</td>
+    <td><?php echo $ax['name_customer'];?>&nbsp;</td>
   </tr>
   <tr>
-    <td rowspan="2">'.nl2br($data_lulu['company_address']).'</td>
+    <td rowspan="2"><?php echo(nl2br($data_lulu['company_address']));?></td>
     <td valign="top">Alamat</td>
     <td valign="top">:</td>
-    <td>'.$ax['address_customer'].'</td>
+    <td><?php echo $ax['address_customer'];?></td>
   </tr>
   <tr>
     <td>Kode Pos</td>
     <td>:</td>
-    <td>'.$ax['postal_code_customer'].'</td>
+    <td><?php echo $ax['postal_code_customer'];?></td>
   </tr>
   <tr>
-    <td rowspan="2">'.nl2br($data_lulu['company_phone']).'</td>
+    <td rowspan="2"><?php echo(nl2br($data_lulu['company_phone']));?></td>
     <td>Telepon</td>
     <td>:</td>
-    <td>'.$ax['phone_customer'].'</td>
+    <td><?php echo $ax['phone_customer'];?></td>
   </tr>
   <tr>
     <td>Telp. Rumah</td>
@@ -82,19 +94,19 @@ $html='<html>
     <td>-</td>
   </tr>
   <tr>
-    <td><a href="#">'.$data_lulu['company_url'].'</a></td>
+    <td><a href="#"><?php echo($data_lulu['company_url']);?></a></td>
     <td>Email</td>
     <td>:</td>
-    <td>'.$ax['email_customer'].'</td>
+    <td><?php echo $ax['email_customer'];?></td>
   </tr>
   <tr>
-    <td>'.$data_lulu['company_email'].'</td>
+    <td><?php echo($data_lulu['company_email']);?></td>
     <td>Model Pembayaran</td>
     <td>:</td>
-    <td>'.$axa['cost_type_transaction'].'</td>
+    <td><?php echo $axa['cost_type_transaction']; ?></td>
   </tr>
   <tr>
-    <td>Publikasi ke : '.$axa['name_sub_office'].'</td>
+    <td>Publikasi ke : <?php echo $axa['name_sub_office']; ?></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -110,8 +122,8 @@ $html='<html>
   </tr>
   <tr>
     <td colspan="5">
-      <table width="72%" border="1" align="center" cellpadding="5" cellspacing="0">';
-        
+      <table width="72%" border="1" align="center" cellpadding="5" cellspacing="0">
+        <?php
     $cek = mysql_query("SELECT m_detail_transaction.*,
 							m_product.name_product,
 							m_product.size_product,
@@ -124,29 +136,31 @@ $html='<html>
 							
 		$length = mysql_num_rows($cek);
 		if($length == null){
-			$html.="<div align='center' style='color:#F00; font-weight:bold;'>Data Tidak Ditemukan atau Pelanggan ".$ax['name_customer']." Belum Memesan Hari Ini</div>";
+			echo "<div align='center' style='color:#F00; font-weight:bold;'>Data Tidak Ditemukan atau Pelanggan ".$ax['name_customer']." Belum Memesan Hari Ini</div>";
 		}else{
-    $html.='
+	?>
         <tr class="align">
           <th width="24%" height="25">Produk</th>
           <th width="21%">Qty</th>
           <th width="26%">Harga</th>
           <th width="26%">Keterangan</th>
-        </tr>';
+        </tr>
+        <?php 
 	  	
 		@mysql_query("INSERT INTO `m_order` Values('',CURRENT_TIMESTAMP())");
 		$total = 0;
 		while($arr = mysql_fetch_array($cek)){
-      $html.='
+	  ?>
         <tr>
-          <td class="align1234">'.$arr["name_product"].'-'.$arr['size_product'].'</td>
-          <td align="center" class="align1234">'.$arr["quantity_detail_transaction"].'</td>
-          <td class="align1234">Rp. '.number_format($arr["totalHarga"], 0, ",", ".").'</td>
-          <td class="align1234">'.$arr["description_detail_transaction"].'</td>
-        </tr>';
+          <td class="align1234"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
+          <td align="center" class="align1234"><?php echo $arr["quantity_detail_transaction"];?></td>
+          <td class="align1234">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
+          <td class="align1234"><?php echo $arr["description_detail_transaction"];?></td>
+        </tr>
+        <?php 
 	  	$total = $total + $arr["totalHarga"];
-	  }
-    } 
+	  
+	  }} 
 	  $sumQty = mysql_fetch_array(mysql_query("SELECT 
 	  sum(`quantity_detail_transaction`) 
 	  FROM `m_detail_transaction` 
@@ -156,28 +170,34 @@ $html='<html>
 	  FROM `m_detail_transaction`,`m_product` 
 	  Where `m_detail_transaction`.`code_product`=`m_product`.`code_product`
 	  and `m_detail_transaction`.`code_transaction`='$kode_transaction'"));
-    $html.='
+	  ?>
         <tr bgcolor="#FFFF00">
           <td class="align1234"><strong>TOTAL</strong></td>
-          <td align="center" class="align1234">'.$sumQty[0].'</td>
-          <td class="align1234">Rp. '.number_format($sumPrice[0],0,',','.').'</td>
+          <td align="center" class="align1234"><?php echo $sumQty[0]; ?></td>
+          <td class="align1234">Rp. <?php echo number_format($sumPrice[0],0,',','.'); ?></td>
           <td class="align1234">&nbsp;</td>
-        </tr>';
+        </tr>
+    <?php
   	if($sumPrice[0] >= 200000 ){ $sale = 0;}else{ $sale = 3000;}
-    $grandTotal = ($sumPrice[0] + $sale);
-    $html.='
+    ?>
         <tr>
           <td class="align1234">Biaya Antar</td>
           <td class="align1234">&nbsp;</td>
-          <td class="align1234">Rp. '.number_format($sale,0,",",".").'</td>
+          <td class="align1234">Rp. <?php echo number_format($sale,0,",",".");?></td>
           <td class="align1234">&nbsp;</td>
         </tr>
         <tr>
           <td class="align1234"><strong>GRAND TOTAL</strong></td>
           <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
-          <td class="align1234" bgcolor="#FF0000">Rp. '.number_format($grandTotal, 0,",",".").'</td>
+          <td class="align1234" bgcolor="#FF0000">Rp. 
+		  <?php 
+		  $grandTotal = ($sumPrice[0] + $sale); 
+		  echo number_format($grandTotal, 0,",","."); 
+		  ?></td>
           <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
         </tr>
+        
+        
       </table></td>
   </tr>
   <tr>
@@ -189,15 +209,15 @@ $html='<html>
       <tr>
         <td><strong>Pesanan Pelanggan :</strong><br />
           <br />
-          '.$ax['name_customer'].'<br />
-          '.$ax['code_customer'].'<br />
+          <?php echo $ax['name_customer']; ?><br />
+          <?php echo $ax['code_customer']; ?><br />
           <br />
           <br />
           <br />
           <br />
           Ttd<br />
-          Nama : '.$ax['name_customer'].'<br />
-          Tgl &ensp; : '.date('d-m-Y').'</td>
+          Nama : <?php echo $ax['name_customer']; ?><br />
+          Tgl &ensp; : <?php echo date('d-m-Y'); ?></td>
         <td><strong>Pengirim Oleh :</strong><br />
           <br />
           Staf Pengirim<br />
@@ -208,7 +228,7 @@ $html='<html>
           <br />
           Ttd<br />
           Nama : <br />
-          Tgl &ensp; : '.date('d-m-Y').'</td>
+          Tgl &ensp; : <?php echo date('d-m-Y'); ?></td>
         <td><strong>Diketahui Oleh :</strong><br />
           <br />
           Supervisor/kepala toko<br />
@@ -219,7 +239,7 @@ $html='<html>
           <br />
           Ttd<br />
           Nama : <br />
-          Tgl &ensp; : '.date('d-m-Y').'</td>
+          Tgl &ensp; : <?php echo date('d-m-Y'); ?></td>
       </tr>
     </table></td>
   </tr>
@@ -231,14 +251,4 @@ $html='<html>
   </tr>
 </table>
 </body>
-</html>';
-
-$mail = new eMail;
-$mail->to = array($axa['email_sub_office']);
-$mail->from = $data_lulu['company_email'];
-$mail->body = $html;
-$mail->subject = "Bukti Cetak Lulu@Delivery";
-$mail->send();
-
-echo($html);
-?>
+</html>
