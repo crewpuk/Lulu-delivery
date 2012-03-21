@@ -227,7 +227,9 @@ $dataSQL = mysql_fetch_array($exeSQL);
 $e = (isset($_GET['e']))?$_GET['e']:"";
 if($e==1){ echo "Data Kurang Lengkap"; }
 if($e==2){ echo "Kode Sudah Ada"; }
-
+?>
+</div>
+<?php
 /************ Fixed Paging ****************/
 $cari1 = (isset($_POST['cariPro']))?$_POST['cariPro']:"";
 $cari2 = (isset($_GET['cariGet']))?$_GET['cariGet']:"";
@@ -240,8 +242,6 @@ $key3 = "";
 if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
 if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 ?>
-</div>
-
 <form name="form1" method="post" action="">
     <table width="100%" border="1" cellspacing="0" cellpadding="10">
       <tr>
@@ -251,7 +251,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
           <option value="grup" <?php if($cari3 == 'grup'){echo "selected";}?>>Grup Produk</option>
           <option value="nama" <?php if($cari3 == 'nama'){echo "selected";}?>>Nama Produk</option>
           </select>
-          <input type="text" placeHolder="Nama Produk" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
+          <input type="text" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
           <input type="submit" name="cmdcari" id="cmdcari" value="Cari">
         <a href="index.php?page=dashboard&sub=product"><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a></td>
       </tr>
@@ -319,6 +319,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     </table>
 </form>
 <?php
+//Paging
     $batas = 10;
 	
 	/************ Fixed Paging ****************/
