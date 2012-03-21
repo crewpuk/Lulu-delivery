@@ -82,10 +82,9 @@ $axa = mysql_fetch_array($xa);
 	?>
       
       <tr>
-        <th width="25%" bgcolor="#CCCCCC" class="tableset">Produk</th>
+        <th width="50%" bgcolor="#CCCCCC" class="tableset">Produk</th>
         <th width="14%" bgcolor="#CCCCCC" class="tableset">Qty</th>
-        <th width="34%" bgcolor="#CCCCCC" class="tableset">Keterangan</th>
-        <th width="27%" bgcolor="#CCCCCC" class="tableset">Harga</th>
+        <th width="36%" bgcolor="#CCCCCC" class="tableset">Harga</th>
       </tr>
       <?php
 		@mysql_query("INSERT INTO `m_order` Values('',CURRENT_TIMESTAMP())");
@@ -95,7 +94,6 @@ $axa = mysql_fetch_array($xa);
       <tr>
         <td class="tableset"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
         <td class="tableset" align="center"><?php echo $arr["quantity_detail_transaction"];?></td>
-        <td class="tableset"><?php echo $arr["description_detail_transaction"];?></td>
         <td class="tableset">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
       </tr>
       <?php 

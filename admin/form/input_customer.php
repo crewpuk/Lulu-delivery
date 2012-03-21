@@ -287,7 +287,7 @@ if($e==2){ echo "Kode Sudah Ada"; }
         <th>No. Telepon Rumah</th>
         <th>Contact Online</th>
         <th>Email</th>
-        <th colspan="2">Tindakan</th>
+        <th colspan="3">Tindakan</th>
       </tr>
       <?php
 		while($data = mysql_fetch_array($exeSQL)){
@@ -305,6 +305,9 @@ if($e==2){ echo "Kode Sudah Ada"; }
 		<td><?php echo $data['email_customer'];?></td>
 		<td align="center"><a href="index.php?page=dashboard&sub=input_customer&vwUbah&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="vwUbah" title="Ubah"></a></td>
         <td align="center"><a href="index.php?page=dashboard&sub=input_customer&hapus&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
+        <td align="center">
+			<a href="#" onclick="window.open('form/print_customer.php?id=<?php echo $data['code_customer']; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="<?php echo BASE; ?>images/32x32/printer.png" width="16" height="16" alt="cetak" title="Cetak" /></a>
+        </td>
       </tr>
 		<?php } } ?>
 	</table>

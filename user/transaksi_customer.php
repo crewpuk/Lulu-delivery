@@ -45,9 +45,9 @@
 				 <?php
 					
 					if($code != null and $were != null){
-						$sql = "SELECT * FROM `m_customer` where ".$were." = '".$code."' ";
+						$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND ".$were." = '".$code."' ";
 					} else {
-						$sql = "SELECT * FROM `m_customer` where name_customer = '".$getCust."' ";
+						$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND name_customer = '".$getCust."' ";
 					}
 					//echo $sql."<br>";
 					$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
