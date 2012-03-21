@@ -227,19 +227,36 @@ $dataSQL = mysql_fetch_array($exeSQL);
 $e = (isset($_GET['e']))?$_GET['e']:"";
 if($e==1){ echo "Data Kurang Lengkap"; }
 if($e==2){ echo "Kode Sudah Ada"; }
+
+/************ Fixed Paging ****************/
+$cari1 = (isset($_POST['cariPro']))?$_POST['cariPro']:"";
+$cari2 = (isset($_GET['cariGet']))?$_GET['cariGet']:"";
+$cari3 = "";
+	
+$key1 = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
+$key2 = (isset($_GET['key']))?$_GET['key']:"";
+$key3 = "";
+    
+if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
+if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 ?>
 </div>
 
 <form name="form1" method="post" action="">
     <table width="100%" border="1" cellspacing="0" cellpadding="10">
       <tr>
-        <td colspan="9">Cari Nama Produk
-          <input type="text" placeHolder="Nama Produk" name="txtkey" id="txtkey">
+        <td colspan="9">Cari Berdasarkan 
+          <select name="cariPro" id="cariPro">
+          <option value="">--Pilih--</option>
+          <option value="grup" <?php if($cari3 == 'grup'){echo "selected";}?>>Grup Produk</option>
+          <option value="nama" <?php if($cari3 == 'nama'){echo "selected";}?>>Nama Produk</option>
+          </select>
+          <input type="text" placeHolder="Nama Produk" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
           <input type="submit" name="cmdcari" id="cmdcari" value="Cari">
-          <a href="index.php?page=dashboard&sub=product"><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a></td>
+        <a href="index.php?page=dashboard&sub=product"><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a></td>
       </tr>
       <?php
-    $batas = 10;
+	$batas = 10;
 	$halaman = isset($_GET['halaman'])?$_GET['halaman']:"";
     
     /********************* Menentukan Offset ******************************/
@@ -253,11 +270,11 @@ if($e==2){ echo "Kode Sudah Ada"; }
     if($halaman == 1){
 	$i = 0;
 	}else if($halaman > 1){ $i = ($offset + $i); }
- 
- 
-  $keyword = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
-  if($keyword != null){
-  $sql = "SELECT * FROM `m_product` Where `name_product` LIKE '%$keyword%' LIMIT $offset,$batas";	  
+  
+  if($cari3 == 'grup'){
+  $sql = "SELECT * FROM `m_product` Where `group_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
+  }elseif($cari3 == 'nama'){
+  $sql = "SELECT * FROM `m_product` Where `name_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
   }else{
   $sql = "SELECT * FROM `m_product` LIMIT $offset,$batas";
   }
@@ -303,16 +320,26 @@ if($e==2){ echo "Kode Sudah Ada"; }
 </form>
 <?php
     $batas = 10;
-    $key1 = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
+	
+	/************ Fixed Paging ****************/
+	$cari1 = (isset($_POST['cariPro']))?$_POST['cariPro']:"";
+	$cari2 = (isset($_GET['cariGet']))?$_GET['cariGet']:"";
+    $cari3 = "";
+	
+	$key1 = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
     $key2 = (isset($_GET['key']))?$_GET['key']:"";
     $key3 = "";
     
     if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
+	if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
+	
     echo "<br />";
     echo "<div align='center'>";
-                if($key3 != null){
-                $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` Where `name_product` LIKE '%$key3%'"));    
-                }else{
+                if($cari3 == 'grup'){
+                $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` Where (`group_product`) LIKE '%$key3%'"));    
+                }elseif($cari3 == 'nama'){
+				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` Where (`name_product`) LIKE '%$key3%'"));  
+				}else{
     			$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product`"));
     			}
                 $jumData = $q['jumData'];
@@ -324,7 +351,7 @@ if($e==2){ echo "Kode Sudah Ada"; }
                 if($key3 != null){
                     if($jumData > $batas){
     				if($noPage > 1){
-    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=".($noPage-1)."&key=".$key3."'>&lt; &lt; Sebelumnya</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=".($noPage-1)."&key=".$key3."&cariGet=".$cari3."'>&lt; &lt; Sebelumnya</a>";
     				}
     				//Nomor noPage dan Linknya
     				for($page = 1; $page <= $jumHal; $page++){
@@ -333,13 +360,13 @@ if($e==2){ echo "Kode Sudah Ada"; }
     						if(($showPage != ($jumHal-1)) && ($page==$jumHal)) { echo " ... "; }
     						if($page==$noPage){ echo "<b> $page </b>"; }
     						else{ 
-    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=$page&key=".$key3."'> $page </a>"; 
+    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=$page&key=".$key3."&cariGet=".$cari3."'> $page </a>"; 
     						$showPage=$page; }
     					}
     				}
     				//Next
     				if($noPage < $jumHal){
-    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=".($noPage+1)."&key=".$key3."'>Selanjutnya &gt; &gt;</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=product&halaman=".($noPage+1)."&key=".$key3."&cariGet=".$cari3."'>Selanjutnya &gt; &gt;</a>";
     				}
     			}
                 }else{
