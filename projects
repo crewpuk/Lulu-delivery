@@ -1,0 +1,24 @@
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+indent_mode=2
+
+[project]
+name=lulu
+base_path=/home/feldy/Desktop/pro2/Lulu-delivery
+description=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=3
+FILE_NAME_0=214;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/configuration/config.php;0;4
+FILE_NAME_1=9966;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/input_customer.php;0;4
+FILE_NAME_2=0;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/user/transaksi_customer.php;0;4
+FILE_NAME_3=270;None;0;16;1;1;1;/home/feldy/bug vrr 0.1;0;4
+FILE_NAME_4=7;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/print_customer.php;0;4
