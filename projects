@@ -16,10 +16,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
-FILE_NAME_0=139;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/configuration/config.php;0;4
-FILE_NAME_1=1370;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/user/transaksi_customer.php;0;4
-FILE_NAME_2=270;None;0;16;1;1;1;/home/feldy/bug vrr 0.1;0;4
-FILE_NAME_3=10240;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/input_customer.php;0;4
-FILE_NAME_4=165;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/print_customer.php;0;4
-FILE_NAME_5=4468;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/user/cetak.php;0;4
+current_page=7
+FILE_NAME_0=47;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/configuration/config.php;0;4
+FILE_NAME_1=1080;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/user/transaksi_customer.php;0;4
+FILE_NAME_2=108;None;0;16;1;1;1;/home/feldy/bug vrr 0.1;0;4
+FILE_NAME_3=165;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/print_customer.php;0;4
+FILE_NAME_4=18225;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/input_customer.php;0;4
+FILE_NAME_5=12088;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/admin/form/product.php;0;4
+FILE_NAME_6=4468;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/user/cetak.php;0;4
+FILE_NAME_7=359;PHP;0;16;1;1;1;/home/feldy/Desktop/pro2/Lulu-delivery/index.php;0;4
