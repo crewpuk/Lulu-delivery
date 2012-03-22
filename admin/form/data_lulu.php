@@ -59,44 +59,43 @@ $pop3_password = fgetsf2eol($mailconf, $text_pop3_password);
 //echo("<pre>".get_data("http://127.0.0.1/Lulu-delivery/admin/index.php?page=dashboard&sub=product")."</pre>")
 //print_r($_SERVER);
 ?><form name="data_lulu" method="post" action="" enctype="multipart/form-data">
-<table border="0" cellspacing="10" cellpadding="0">
+<table align="center" width="50%" border="0" cellspacing="0" cellpadding="0" style="border:solid 1px;">
 	<tr>
-		<td colspan="2">Data Perusahaan</td>
+		<th style="padding:5px;" colspan="2">Data Perusahaan</th>
 	</tr>
 	<tr>
-		<td valign="top">Nama Perusahaan</td>
-		<td><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_name" id="company_name" value="<?php echo($data_lulu['company_name']);?>" /></td>
+		<td style="padding:5px;" valign="top">Nama Perusahaan</td>
+		<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_name" id="company_name" value="<?php echo($data_lulu['company_name']);?>" /></td>
 	</tr>
 	<tr>
-		<td valign="top">Alamat Perusahaan</td>
-		<td><textarea dojoType="dijit.form.SimpleTextarea" require="true" name="company_address" id="company_address" cols="30" rows="2" /><?php echo($data_lulu['company_address']);?></textarea></td>
+		<td style="padding:5px;" valign="top">Alamat Perusahaan</td>
+		<td style="padding:5px;"><textarea dojoType="dijit.form.SimpleTextarea" require="true" name="company_address" id="company_address" cols="30" rows="2" /><?php echo($data_lulu['company_address']);?></textarea></td>
 	</tr>
 	<tr>
-		<td valign="top">Nomor Telepon</td>
-		<td><textarea dojoType="dijit.form.SimpleTextarea" require="true" name="company_phone" id="company_phone" cols="30" rows="2"><?php echo($data_lulu['company_phone']);?></textarea></td>
+		<td style="padding:5px;" valign="top">Nomor Telepon</td>
+		<td style="padding:5px;"><textarea dojoType="dijit.form.SimpleTextarea" require="true" name="company_phone" id="company_phone" cols="30" rows="2"><?php echo($data_lulu['company_phone']);?></textarea></td>
 	</tr>
 	<tr>
-		<td valign="top">Website Perusahaan</td>
-		<td><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_url" id="company_url" value="<?php echo($data_lulu['company_url']);?>" /></td>
+		<td style="padding:5px;" valign="top">Website Perusahaan</td>
+		<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_url" id="company_url" value="<?php echo($data_lulu['company_url']);?>" /></td>
 	</tr>
 	<tr>
-		<td valign="top">Email Perusahaan</td>
-		<td><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_email" id="company_email" value="<?php echo($data_lulu['company_email']);?>" />
+		<td style="padding:5px;" valign="top">Email Perusahaan</td>
+		<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_email" id="company_email" value="<?php echo($data_lulu['company_email']);?>" />
 			<table border="0" cellspacing="2" cellpadding="0">
 				<tr>
-					<td>Username</td>
-					<td><input dojoType="dijit.form.ValidationTextBox" require="true" name="email_username" id="email_username" value="<?php echo $auth_username;?>" /></td>
+					<td style="padding:5px;">Username</td>
+					<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="email_username" id="email_username" value="<?php echo $auth_username;?>" /></td>
 				</tr>
 				<tr>
-					<td>Password</td>
-					<td><input type="password" dojoType="dijit.form.ValidationTextBox" require="true" name="email_password" id="email_password" value="<?php echo $auth_password;?>" /></td>
+					<td style="padding:5px;">Password</td>
+					<td style="padding:5px;"><input type="password" dojoType="dijit.form.ValidationTextBox" require="true" name="email_password" id="email_password" value="<?php echo $auth_password;?>" /></td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td><input type="submit" name="save" value="Save" /><input type="reset" name="reset" value="Reset" /></td>
+		<td colspan="2" align="center" style="padding:5px;"><button dojoType="dijit.form.Button" type="submit" name="save">Save</button><button dojoType="dijit.form.Button" type="reset" name="reset">Reset</button></td>
 	</tr>
 </table>
 </form>
