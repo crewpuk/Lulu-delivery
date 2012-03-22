@@ -11,12 +11,16 @@ if(isset($_POST['tambah_user']))
       <th style="padding:5px;" colspan="2">Tambah User</th>
     </tr>
     <tr>
-      <td style="padding:5px;" width="33%">Username</td>
+      <td style="padding:5px;">Nama Lengkap</td>
+      <td style="padding:5px;"><input placeholder="Nama Lengkap" type="text" name="txtFull" id="txtFull" /></td>
+    </tr>
+    <tr>
+      <td style="padding:5px;" width="33%">Nama Pengguna</td>
       <td style="padding:5px;" width="67%"><label for="txtUser"></label>
       <input placeHolder="Nama User" type="text" name="txtUser" id="txtUser" /></td>
     </tr>
     <tr>
-      <td style="padding:5px;" class="Ustext">Password</td>
+      <td style="padding:5px;" class="Ustext">Kata Sandi</td>
       <td style="padding:5px;"><input placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
     </tr>
     <tr>
@@ -36,17 +40,21 @@ if(isset($_GET['upd']))
       <th style="padding:5px;" colspan="2">Ubah User</th>
     </tr>
      <?php
-		$sql = mysql_query("SELECT id_account,username_account,password_account,status_account FROM user_account where id_account = '$_REQUEST[idakun]' ");
+		$sql = mysql_query("SELECT id_account,username_account,fullname_account,password_account,status_account FROM user_account where id_account = '$_REQUEST[idakun]' ");
 		$array = mysql_fetch_array($sql);
 		$t = $array['id_account']
 	  ?>
     <tr>
-      <td style="padding:5px;" width="24%">Username</td>
+       <td style="padding:5px;">Nama Lengkap</td>
+       <td style="padding:5px;"><input name="txtFullUpd" type="text" id="txtFullUpd" value="<?php echo $array['fullname_account']; ?>" /></td>
+    </tr>
+    <tr>
+      <td style="padding:5px;" width="24%">Nama Pengguna</td>
       <td style="padding:5px;" width="76%"><input name="txtUserUpd" type="text" id="txtUserUpd" value="<?php echo $array['username_account']; ?>" />
       <input type="hidden" name="id" id="id" value="<?php echo $array['id_account']; ?>" /></td>
     </tr>
     <tr>
-      <td style="padding:5px;">Password</td>
+      <td style="padding:5px;"><span class="Ustext" style="padding:5px;">Kata Sandi</span></td>
       <td style="padding:5px;"><label for="txtPassUpd"></label>
       <input name="txtPassUpd" type="text" id="txtPassUpd" value="<?php echo $array['password_account']; ?>" /></td>
     </tr>
@@ -72,13 +80,14 @@ if(isset($_GET['upd']))
 <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0" class="Ustext">
   <tr>
     <th style="padding:5px;" width="143">No</th>
-    <th style="padding:5px;" width="143">Username</th>
-    <th style="padding:5px;" width="163">Password</th>
+    <th style="padding:5px;" width="143">Nama Lengkap</th>
+    <th style="padding:5px;" width="143">Nama Pengguna</th>
+    <th style="padding:5px;" width="163"><span class="Ustext" style="padding:5px;">Kata Sandi</span></th>
     <th style="padding:5px;" width="77">Status Aktif</th>
-    <th style="padding:5px;" colspan="2">Action</th>
+    <th style="padding:5px;" colspan="2">Tindakan</th>
     </tr>
   <?php
-  $sql = ("SELECT id_account,username_account,password_account,status_account FROM user_account ORDER BY id_account asc");
+  $sql = ("SELECT id_account,username_account,fullname_account,password_account,status_account FROM user_account ORDER BY id_account asc");
   $exeSQL = @mysql_query($sql) or die('Query Salah -> '.mysql_error());
   $i = 0;
   while($array = mysql_fetch_array($exeSQL)){
@@ -89,8 +98,9 @@ if(isset($_GET['upd']))
   ?>
   <tr bgcolor="<?php echo $bg; ?>" class="linkBorder">
     <td style="padding:5px;" align="center"><?php echo $i; ?></td>
-    <td style="padding:5px;" align="center"><?php echo $array['username_account'];?>&nbsp;</td>
-    <td style="padding:5px;" align="center"><?php echo $array['password_account'];?>&nbsp;</td>
+    <td style="padding:5px;" align="center"><?php echo $array['fullname_account'];?></td>
+    <td style="padding:5px;" align="center"><?php echo $array['username_account'];?></td>
+    <td style="padding:5px;" align="center"><?php echo $array['password_account'];?></td>
     <td style="padding:5px;" align="center"><?php if($rrq==1){
 	  echo"Aktif";}
 	   if($rrq==0){echo"Tidak Aktif";}?>&nbsp;
