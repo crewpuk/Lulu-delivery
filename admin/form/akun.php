@@ -6,7 +6,7 @@ if(isset($_POST['tambah_user']))
 {
 ?>
 <form id="form1" name="form1" method="post" action="system/proses_akun.php">
-  <table width="50%" border="1" align="center" cellpadding="0" cellspacing="0" class="Ustext">
+  <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
       <th style="padding:5px;" colspan="2">Tambah User</th>
     </tr>
@@ -35,7 +35,7 @@ if(isset($_GET['upd']))
 {
 ?>
 <form id="form2" name="form1" method="post" action="system/proses_akun.php">
-  <table width="50%" border="1" align="center" cellpadding="0" cellspacing="0" class="Ustext">
+  <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
       <th style="padding:5px;" colspan="2">Ubah User</th>
     </tr>
