@@ -478,7 +478,7 @@ if(isset($_POST['simpan_customer'])){
 		 }}
 }elseif(isset($_GET['hapus'])){
 	$id = $_GET['no'];
-	$sql = "DELETE FROM `m_customer` Where `code_customer` = '$id'";
+	$sql = "UPDATE `m_customer` SET `status_customer` = '0' Where `code_customer` = '$id'";
 	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 	if($ex){
 	location('index.php?page=dashboard&sub=input_customer');	
@@ -503,7 +503,7 @@ if(isset($_POST['simpan_customer'])){
 		$kode = $_POST['kode2'];
 		}
 		
-	if($kode == $kodeDB){
+	if($_POST['kode_cust'] == $kodeDB){
 		location('index.php?page=dashboard&sub=input_customer&e=2');
 	}else{
 		$sql = "UPDATE `m_customer` SET
