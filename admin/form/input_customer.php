@@ -341,7 +341,13 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         
         </td>
 		<td align="center" style="padding: 5px;"><a href="index.php?page=dashboard&sub=input_customer&vwUbah&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="vwUbah" title="Ubah"></a></td>
-        <td align="center" style="padding: 5px;"><a href="index.php?page=dashboard&sub=input_customer&hapus&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
+        <td align="center" style="padding: 5px;">
+        	<?php if($data["status_customer"]==1){?>
+        		<a href="index.php?page=dashboard&sub=input_customer&hapus&no=<?php echo $data['code_customer']; ?>" onclick="return confirm('Menghapus ini hanya akan membuatnya TIDAK AKTIF?')"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus?"></a>
+        	<?php }else{?>
+        		<a href="index.php?page=dashboard&sub=input_customer&aktifasi&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/yes.png" width="16" height="16" alt="hapus" title="Aktifkan?"></a>
+        	<?php }?>
+        </td>
         <td align="center" style="padding: 5px;">
 			<a href="#" onclick="window.open('form/print_customer.php?id=<?php echo $data['code_customer']; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="<?php echo BASE; ?>images/32x32/printer.png" width="16" height="16" alt="cetak" title="Cetak" /></a>
         </td>
@@ -433,7 +439,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     }elseif($cari3 == 'name_customer'){
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `name_customer` LIKE '%$key3%'"));
 	}else{
-	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer`"));	
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer`"));
 	}
 	
 	echo "Jumlah Data Customer : <strong>$sumCustomer[0]</strong>";
@@ -481,6 +487,16 @@ if(isset($_POST['simpan_customer'])){
 }elseif(isset($_GET['hapus'])){
 	$id = $_GET['no'];
 	$sql = "DELETE FROM `m_customer` Where `code_customer` = '$id'";
+	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
+	if($ex){
+	location('index.php?page=dashboard&sub=input_customer');	
+	}else{
+	alert('Terjadi Kesalahan Pada Server');
+	location('index.php?page=dashboard&sub=input_customer');
+	}
+}elseif(isset($_GET['aktifasi'])){
+	$id = $_GET['no'];
+	$sql = "UPDATE `m_customer` SET `status_customer` = '1' Where `code_customer` = '$id'";
 	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 	if($ex){
 	location('index.php?page=dashboard&sub=input_customer');	
