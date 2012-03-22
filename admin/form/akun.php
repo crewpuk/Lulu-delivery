@@ -58,6 +58,7 @@ if(isset($_GET['upd']))
       <td style="padding:5px;"><label for="txtPassUpd"></label>
       <input name="txtPassUpd" type="text" id="txtPassUpd" value="<?php echo $array['password_account']; ?>" /></td>
     </tr>
+    <?php if($t['id_account']!='1'){?>
     <tr>
       <td style="padding:5px;">Status</td>
       <td style="padding:5px;"><label>
@@ -68,6 +69,7 @@ if(isset($_GET['upd']))
       Tidak Aktif
       </label></td>
     </tr>
+    <?php }?>
     <tr>
       <td style="padding:5px;" colspan="2" align="center"><button dojoType="dijit.form.Button" name="ubah_akun" type="submit" class="useTextAddNew" id="ubah_akun">Ubah Akun</button></td>
     </tr>
@@ -101,9 +103,7 @@ if(isset($_GET['upd']))
     <td style="padding:5px;" align="center"><?php echo $array['fullname_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['username_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['password_account'];?></td>
-    <td style="padding:5px;" align="center"><?php if($rrq==1){
-	  echo"Aktif";}
-	   if($rrq==0){echo"Tidak Aktif";}?>&nbsp;
+    <td style="padding:5px;" align="center"><?php if($rrq=='1'){echo"Aktif";}else{echo"Tidak Aktif";}?>&nbsp;
       <input type="hidden" name="idDel" id="idDel" value="<?php echo $array['id_account']; ?>" /></td>
     <td style="padding:5px;" width="90" align="center"><a href="index.php?page=dashboard&sub=akun&upd&idakun=<?php echo $array['id_account'];?>" class="Usetext2"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
     <td style="padding:5px;" width="90" align="center"><a href="system/proses_akun.php?del&idDel=<?php echo $array['id_account'];?>" class="Usetext2"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
