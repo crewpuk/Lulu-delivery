@@ -4,7 +4,7 @@ include "configuration/config.php";
 if(empty($_SESSION['user']) || empty($_SESSION['pass']) || $_SESSION['level'] != 'admin')
 {
 echo"<script>
-location='index?page=page_login';
+location='index.php?page=page_login';
 </script>";
 }
 else
@@ -44,7 +44,10 @@ jam();
     <?php 
 	$page = (isset($_GET['page']))?$_GET['page']:"";
     $sub = (isset($_GET['sub']))?$_GET['sub']:"";
-	@include "user/$sub.php"; 
+	@include "user/$sub.php";
+    if($page == 'dashboard' and $sub == 'keluar'){
+                    location('logout.php');                    
+    }
 	?>
     </div>
 </div>
