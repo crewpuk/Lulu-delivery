@@ -54,7 +54,7 @@ if(isset($_GET['upd']))
       <input type="hidden" name="id" id="id" value="<?php echo $array['id_account']; ?>" /></td>
     </tr>
     <tr>
-      <td style="padding:5px;"><span class="Ustext" style="padding:5px;">Kata Sandi</span></td>
+      <td style="padding:5px;">Kata Sandi</td>
       <td style="padding:5px;"><label for="txtPassUpd"></label>
       <input name="txtPassUpd" type="text" id="txtPassUpd" value="<?php echo $array['password_account']; ?>" /></td>
     </tr>
