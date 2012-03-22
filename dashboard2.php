@@ -4,15 +4,20 @@ include "configuration/config.php";
 if(empty($_SESSION['user']) || empty($_SESSION['pass']) || $_SESSION['level'] != 'admin')
 {
 echo"<script>
-location='index?page=page_login';
+location='index.php?page=page_login';
 </script>";
 }
 else
 {
 $arrHari = array("Minggu","Senin","Selasa","Rabu","Kamis","Jum\'at","Sabtu");
 $hari = date('w');
+
+$id = $_SESSION['id'];
+$q_user = mysql_query("SELECT fullname_account FROM user_account WHERE id_account = '$id' LIMIT 1");
+$data_user = mysql_fetch_array($q_user);
+
 ?>
-<div id="headerMenu">Anda Login Sebagai : <?php echo $_SESSION['user']; ?>.
+<div id="headerMenu">Anda Login Sebagai : <?php echo $data_user['fullname_account']; ?>.
 <div id='jam'>
 <script language='javascript'>
 function jam(){
@@ -44,7 +49,10 @@ jam();
     <?php 
 	$page = (isset($_GET['page']))?$_GET['page']:"";
     $sub = (isset($_GET['sub']))?$_GET['sub']:"";
-	@include "user/$sub.php"; 
+	@include "user/$sub.php";
+    if($page == 'dashboard' and $sub == 'keluar'){
+                    location('logout.php');                    
+    }
 	?>
     </div>
 </div>

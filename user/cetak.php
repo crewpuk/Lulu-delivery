@@ -1,4 +1,7 @@
-<html>
+<?php
+include "../configuration/config.php";
+
+$html='<html>
 <head>
 <title>Nota Pemesanan Lulu-delivery</title>
 <style>
@@ -8,9 +11,7 @@
 .style5 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; }
 </style>
 </head>
-<body onLoad="print();">
-<?php
-include "../configuration/config.php";
+<body onLoad="print();">';
 
 $q_data_perusahaan=mysql_query("SELECT * FROM m_data");
 $data_lulu=array();
@@ -32,16 +33,25 @@ $ax = mysql_fetch_array($x);
 $sqlA = "SELECT `m_transaction`.*,`m_sub_office`.`name_sub_office`,`m_sub_office`.`email_sub_office` FROM `m_transaction`,`m_sub_office` Where `m_transaction`.`code_customer` = '$kode_customer' AND `m_sub_office`.`id_sub_office` = `m_transaction`.`sub_office_transaction`";
 $xa = mysql_query($sqlA) or die("Query Salah -> ".mysql_error()); 
 $axa = mysql_fetch_array($xa);
-?>
+
+
+$id = $axa['id_account'];
+$q_user = mysql_query("SELECT fullname_account FROM user_account WHERE id_account = '$id' LIMIT 1");
+$data_user = mysql_fetch_array($q_user);
+$employee_fullname = $data_user['fullname_account'];
+
+
+
+$html.='
 <table width="600" border="0" align="center" cellpadding="5" cellspacing="0" style="border:1px solid #333333;">
   <tr>
     <td width="102" valign="top"><span class="style5"><img src="../images/64x64/logo.png" width="64" height="43" alt="Lulu-delivery"></span></td>
-    <td width="209" height="54" valign="top"><span class="style5"><?php echo($data_lulu['company_name']);?><br />
-	<?php echo(nl2br($data_lulu['company_address']));?> <br />
-	<?php echo(nl2br($data_lulu['company_phone']));?><br />
-	<a href="#"><?php echo($data_lulu['company_url']);?></a></span></td>
-	<td align="right" valign="top" class="style5">No Resi : <label id="lblSO"><?php echo $kode_transaction; ?></label><br>
-    Tgl Transaksi :<?php echo date('d - m - Y'); ?> </td>
+    <td width="209" height="54" valign="top"><span class="style5">'.$data_lulu['company_name'].'<br />
+	'.nl2br($data_lulu['company_address']).' <br />
+	'.nl2br($data_lulu['company_phone']).' <br />
+	<a href="#">'.$data_lulu['company_url'].'</a></span></td>
+	<td align="right" valign="top" class="style5">SO. No. : <label id="lblSO">'.$kode_transaction.'</label><br>
+    Tgl Transaksi :'.date('d - m - Y').' </td>
   </tr>
   <tr>
     <td height="32" colspan="3" align="center" valign="middle" bgcolor="#CCCCCC"><span class="style1">Nota Pesanan</span></td>
@@ -51,10 +61,10 @@ $axa = mysql_fetch_array($xa);
       Alamat  <br>
       No Telp <br>
     Pembayaran	</td>
-    <td valign="top">: <?php echo $ax['name_customer'];?><br>
-      : <?php echo $ax['address_customer'];?><br>
-      : <?php echo $ax['phone_customer'];?><br>
-      : <?php echo $axa['cost_type_transaction']; ?></td>
+    <td valign="top">: '.$ax['name_customer'].'<br>
+      : '.$ax['address_customer'].'<br>
+      : '.$ax['phone_customer'].'<br>
+      : '.$axa['cost_type_transaction'].'</td>
     <td valign="top"><br>
     <br>
     <br></td>
@@ -63,8 +73,8 @@ $axa = mysql_fetch_array($xa);
     <td colspan="3" valign="top"><hr noshade="noshade"/></td>
   </tr>
   <tr>
-    <td colspan="3" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" class="header">
-      <?php
+    <td colspan="3" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="2" cellspacing="0" class="header">';
+      
     $cek = mysql_query("SELECT m_detail_transaction.*,
 							m_product.name_product,
 							m_product.size_product,
@@ -77,26 +87,27 @@ $axa = mysql_fetch_array($xa);
 							
 		$length = mysql_num_rows($cek);
 		if($length == null){
-			echo "<div align='center' style='color:#F00; font-weight:bold;'>Data Tidak Ditemukan atau Pelanggan ".$ax['name_customer']." Belum Memesan Hari Ini</div>";
+			$html .= "<div align='center' style='color:#F00; font-weight:bold;'>Data Tidak Ditemukan atau Pelanggan ".$ax['name_customer']." Belum Memesan Hari Ini</div>";
 		}else{
-	?>
-      
+
+      $html.='
       <tr>
         <th width="50%" bgcolor="#CCCCCC" class="tableset">Produk</th>
         <th width="14%" bgcolor="#CCCCCC" class="tableset">Qty</th>
         <th width="36%" bgcolor="#CCCCCC" class="tableset">Harga</th>
-      </tr>
-      <?php
+      </tr>';
+
 		@mysql_query("INSERT INTO `m_order` Values('',CURRENT_TIMESTAMP())");
 		$total = 0;
 		while($arr = mysql_fetch_array($cek)){
-	  ?>
+
+    $html.='
       <tr>
-        <td class="tableset"><?php echo $arr["name_product"].'-'.$arr['size_product'];?></td>
-        <td class="tableset" align="center"><?php echo $arr["quantity_detail_transaction"];?></td>
-        <td class="tableset">Rp. <?php echo number_format($arr["totalHarga"], 0, ",", ".");?></td>
-      </tr>
-      <?php 
+        <td class="tableset">'.$arr["name_product"].'-'.$arr['size_product'].'</td>
+        <td class="tableset" align="center">'.$arr["quantity_detail_transaction"].'</td>
+        <td class="tableset">Rp. '.number_format($arr["totalHarga"], 0, ",", ".").'</td>
+      </tr>';
+
 	  	$total = $total + $arr["totalHarga"];
 	  
 	  }} 
@@ -109,34 +120,31 @@ $axa = mysql_fetch_array($xa);
 		  FROM `m_detail_transaction`,`m_product` 
 		  Where `m_detail_transaction`.`code_product`=`m_product`.`code_product`
 		  and `m_detail_transaction`.`code_transaction`='$kode_transaction'"));
-	  ?>
+
+    $html.='
         <tr bgcolor="#FFFF00">
           <td class="align1234"><strong>TOTAL</strong></td>
-          <td align="center" class="align1234"><?php echo $sumQty[0]; ?></td>
-          <td class="align1234">Rp. <?php echo number_format($sumPrice[0],0,',','.'); ?></td>
+          <td align="center" class="align1234">'.$sumQty[0].'</td>
+          <td class="align1234">Rp. '.number_format($sumPrice[0],0,',','.').'</td>
           <td class="align1234">&nbsp;</td>
-        </tr>
-    <?php
+        </tr>';
+
   	if($sumPrice[0] >= 200000 ){ $sale = 0;}else{ $sale = 5000;}
-    ?>
+      $grandTotal = ($sumPrice[0] + $sale); 
+
+    $html.='
         <tr>
           <td class="align1234">Biaya Antar</td>
           <td class="align1234">&nbsp;</td>
-          <td class="align1234">Rp. <?php echo number_format($sale,0,",",".");?></td>
+          <td class="align1234">Rp. '.number_format($sale,0,",",".").'</td>
           <td class="align1234">&nbsp;</td>
         </tr>
         <tr>
           <td class="align1234"><strong>GRAND TOTAL</strong></td>
           <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
-          <td class="align1234" bgcolor="#FF0000">Rp. 
-		  <?php 
-		  $grandTotal = ($sumPrice[0] + $sale); 
-		  echo number_format($grandTotal, 0,",","."); 
-		  ?></td>
+          <td class="align1234" bgcolor="#FF0000">Rp. '.number_format($grandTotal, 0,",",".").'</td>
           <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
         </tr>
-        
-        
       </table></td>
   </tr>
   <tr>
@@ -149,13 +157,13 @@ $axa = mysql_fetch_array($xa);
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td bgcolor="#CCCCCC" class="tableset">Biaya Antar</td>
-        <td bgcolor="#CCCCCC" class="tableset">Rp. <?php echo number_format($sale,0,",",".");?></td>
+        <td bgcolor="#CCCCCC" class="tableset">Rp. '.number_format($sale,0,",",".").'</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td bgcolor="#CCCCCC" class="tableset">Total</td>
-        <td bgcolor="#CCCCCC" class="tableset">Rp. <?php echo number_format($sumPrice[0],0,',','.'); ?></td>
+        <td bgcolor="#CCCCCC" class="tableset">Rp. '.number_format($sumPrice[0],0,',','.').'</td>
       </tr>
     </table></td>
   </tr>
@@ -166,13 +174,26 @@ $axa = mysql_fetch_array($xa);
     <td height="74" colspan="2" valign="top">
 		Penerima<br>
         <br>
-        [ditulis manual]<br>
+        <br>
    	<br>	</td>
     <td width="269" align="right" valign="top" class="header">
-	Depok , <?php echo date('d - m - Y'); ?><br>
+	Depok , '.date('d - m - Y').'<br><br><br><br>
     <br>
-    [print nama karyawan]</td>
+    '.$employee_fullname.'
+    </td>
   </tr>
 </table>
 </body>
-</html>
+</html>';
+
+if(isset($_GET['email'])&&$_GET['email']=='1'){
+  $mail = new eMail;
+  $mail->to = array($axa['email_sub_office']);
+  $mail->from = $data_lulu['company_email'];
+  $mail->body = $html;
+  $mail->subject = "Bukti Cetak Lulu@Delivery";
+  $mail->send();
+}
+
+echo($html);
+?>

@@ -14,7 +14,7 @@ $pass=$_REQUEST['kunci'];
 	}
 	else
 	{
-	$que=mysql_query("select * from user_account where username_account='$user' and password_account='$pass'") or die("query Salah  ->   ".mysql_error());
+	$que=mysql_query("select * from user_account where username_account='$user' and password_account='$pass' and status_account = '1'") or die("query Salah  ->   ".mysql_error());
 	$lock=mysql_fetch_array($que);
 	
 	$id			= $lock['id_account'];
