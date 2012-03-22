@@ -335,8 +335,8 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 		<td align="center" style="padding: 5px;">
 		<?php 
 		$status = $data['status_customer'];
-		if($status == 0){ echo "Tidak Aktif"; }
-		elseif($status == 1){ echo "Aktif"; }		
+		if($status == 0){ echo "<span style='color: #9e3f3f;'>Tidak Aktif</span>"; }
+		elseif($status == 1){ echo "<span style='color: #3f679e;'>Aktif</span>"; }		
 		?>
         
         </td>
