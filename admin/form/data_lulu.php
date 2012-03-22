@@ -90,12 +90,12 @@ $pop3_password = fgetsf2eol($mailconf, $text_pop3_password);
 		<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="company_email" id="company_email" value="<?php echo($data_lulu['company_email']);?>" />
 			<table border="0" cellspacing="2" cellpadding="0">
 				<tr>
-					<td>Username email</td>
-					<td><input dojoType="dijit.form.ValidationTextBox" require="true" name="email_username" id="email_username" value="<?php echo $auth_username;?>" /></td>
+					<td style="padding:5px;">Username email</td>
+					<td style="padding:5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" name="email_username" id="email_username" value="<?php echo $auth_username;?>" /></td>
 				</tr>
 				<tr>
-					<td>Password email</td>
-					<td><input type="password" dojoType="dijit.form.ValidationTextBox" require="true" name="email_password" id="email_password" value="<?php echo $auth_password;?>" /></td>
+					<td style="padding:5px;">Password email</td>
+					<td style="padding:5px;"><input type="password" dojoType="dijit.form.ValidationTextBox" require="true" name="email_password" id="email_password" value="<?php echo $auth_password;?>" /></td>
 				</tr>
 			</table>
 		</td>
