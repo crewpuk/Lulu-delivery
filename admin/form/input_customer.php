@@ -103,14 +103,6 @@ if(!isset($_POST['tambah'])){?>
       <td style="padding: 5px;"><input placeHolder="Contact Online" dojoType="dijit.form.ValidationTextBox" name="contact_cust" id="contact_cust" /></td>
     </tr>
     <tr>
-      <td style="padding: 5px;">Status</td>
-      <td style="padding: 5px;">:</td>
-      <td style="padding: 5px;"><select name="status_cust" id="status_cust">
-        <option value="1" selected="selected">Aktif</option>
-        <option value="0">Tidak Aktif</option>
-      </select></td>
-    </tr>
-    <tr>
       <td style="padding: 5px;">&nbsp;</td>
       <td style="padding: 5px;">&nbsp;</td>
       <td style="padding: 5px;">

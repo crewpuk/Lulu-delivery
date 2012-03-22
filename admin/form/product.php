@@ -51,8 +51,11 @@ if(!isset($_POST['tambah'])) { ?>
       <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga"></td>
     </tr>
     <tr>
-      <td style="padding: 5px;" colspan="2">
-      <button dojoType="dijit.form.Button" type="submit" name="tambahkan" id="tambahkan">Tambah</button>
+      <td colspan="2" align="center" style="padding: 5px;">
+      <button dojoType="dijit.form.Button" type="submit" name="tambahkan" id="tambahkan">Save</button>
+      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+	  Reset
+	  </button>
       </td>
     </tr>
   </table>
@@ -218,7 +221,13 @@ $dataSQL = mysql_fetch_array($exeSQL);
       <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga" value="<?php echo $dataSQL['price_product']; ?>"></td>
     </tr>
     <tr>
-      <td style="padding: 5px;" colspan="2"><button dojoType="dijit.form.Button" type="submit" name="ubah" id="ubah">Ubah</button></td>
+      <td colspan="2" align="center" style="padding: 5px;">
+      <button dojoType="dijit.form.Button" type="submit" name="ubah" id="ubah">Save</button>
+      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+	  Reset
+	  </button>
+      </td>
+      
     </tr>
   </table>
 </form>

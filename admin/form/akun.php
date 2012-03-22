@@ -1,5 +1,5 @@
 <form id="form4" name="form4" method="post" action="">
-  <button dojoType="dijit.form.Button" type="submit" name="tambah_user" id="tambah_user">Tambah</button>
+  <button dojoType="dijit.form.Button" type="submit" name="tambah_user" id="tambah_user">Tambah Akun</button>
 </form>
 <?php
 if(isset($_POST['tambah_user']))
@@ -24,7 +24,12 @@ if(isset($_POST['tambah_user']))
       <td style="padding:5px;"><input placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
     </tr>
     <tr>
-      <td colspan="2" align="center" style="padding:5px;"><button dojoType="dijit.form.Button" name="save" type="submit" class="useTextAddNew" id="save">Tambah Akun</button></td>
+      <td colspan="2" align="center" style="padding:5px;">
+      <button dojoType="dijit.form.Button" name="save" type="submit" class="useTextAddNew" id="save">Save</button>
+      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+	  Reset
+	  </button>
+      </td>
     </tr>
     <?php } ?>
   </table>
@@ -71,7 +76,12 @@ if(isset($_GET['upd']))
     </tr>
     <?php }?>
     <tr>
-      <td style="padding:5px;" colspan="2" align="center"><button dojoType="dijit.form.Button" name="ubah_akun" type="submit" class="useTextAddNew" id="ubah_akun">Ubah Akun</button></td>
+      <td style="padding:5px;" colspan="2" align="center">
+      <button dojoType="dijit.form.Button" name="ubah_akun" type="submit" class="useTextAddNew" id="ubah_akun">Save</button>
+      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+	  Reset
+	  </button>
+      </td>
     </tr>
 	
   </table>
