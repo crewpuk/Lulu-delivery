@@ -1,5 +1,10 @@
 <html>
 	<head><title>Print!</title></head>
+	<style type="text/css">
+	@media print{
+		.print{display: none;}
+	}
+	</style>
 	<body>
 		
 		<table border="0" cellspacing="0" cellpadding="3" width="70%" align="center" style="border: solid 3px #000000">
@@ -61,7 +66,7 @@
 				<td>Email Customer</td>
 				<td colspan="3">: <?php echo $arr['email_customer'];?></td>
 			</tr>
-			<tr>
+			<tr class="print">
 				<td colspan="4"><a href="#" onClick="print();">Print</a></td>
 			</tr>
 		</table>
