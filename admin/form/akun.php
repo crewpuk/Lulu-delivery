@@ -103,7 +103,7 @@ if(isset($_GET['upd']))
     <td style="padding:5px;" align="center"><?php echo $array['fullname_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['username_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['password_account'];?></td>
-    <td style="padding:5px;" align="center"><?php if($rrq=='1'){echo"Aktif";}else{echo"Tidak Aktif";}?>&nbsp;
+    <td style="padding:5px;" align="center"><?php if($rrq=='1'){echo"<span style='color: #3f679e;'>Aktif</span>";}else{echo"<span style='color: #9e3f3f;'>Tidak Aktif</span>";}?>&nbsp;
       <input type="hidden" name="idDel" id="idDel" value="<?php echo $array['id_account']; ?>" /></td>
     <td style="padding:5px;" width="90" align="center"><a href="index.php?page=dashboard&sub=akun&upd&idakun=<?php echo $array['id_account'];?>" class="Usetext2"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
     <td style="padding:5px;" width="90" align="center"><a href="system/proses_akun.php?del&idDel=<?php echo $array['id_account'];?>" class="Usetext2"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
