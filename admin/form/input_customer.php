@@ -257,7 +257,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 <form form name="form1" method="post" action="">
 	<table width="100%" border="1" cellspacing="0" cellpadding="10">
 		<tr>
-			<td colspan="11	">
+			<td colspan="13">
 				Cari Berdasarkan:
 				<select name="cariPro" >
                 	<option value="">--Pilih--</option>
@@ -312,7 +312,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <th style="padding: 5px;">No. Telepon Rumah</th>
         <th style="padding: 5px;">Contact Online</th>
         <th style="padding: 5px;">Email</th>
-        <th style="padding: 5px;">Status</th>
+        <th style="padding: 5px;">Status Aktif</th>
         <th style="padding: 5px;" colspan="3">Tindakan</th>
       </tr>
       <?php
@@ -332,7 +332,14 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 		<td style="padding: 5px;"><?php echo $data['home_phone_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['contact_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['email_customer'];?></td>
-		<td style="padding: 5px;"><?php echo ($data['status_customer']=='1')?"<span style='color: #3f679e;'>Aktif</span>":"<span style='color: #9e3f3f;'>Tidak Aktif</span>";?></td>
+		<td align="center" style="padding: 5px;">
+		<?php 
+		$status = $data['status_customer'];
+		if($status == 0){ echo "Tidak Aktif"; }
+		elseif($status == 1){ echo "Aktif"; }		
+		?>
+        
+        </td>
 		<td align="center" style="padding: 5px;"><a href="index.php?page=dashboard&sub=input_customer&vwUbah&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="vwUbah" title="Ubah"></a></td>
         <td align="center" style="padding: 5px;">
         	<?php if($data["status_customer"]==1){?>
@@ -432,7 +439,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     }elseif($cari3 == 'name_customer'){
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `name_customer` LIKE '%$key3%'"));
 	}else{
-	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where"));	
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer`"));
 	}
 	
 	echo "Jumlah Data Customer : <strong>$sumCustomer[0]</strong>";
@@ -479,7 +486,7 @@ if(isset($_POST['simpan_customer'])){
 		 }}
 }elseif(isset($_GET['hapus'])){
 	$id = $_GET['no'];
-	$sql = "UPDATE `m_customer` SET `status_customer` = '0' Where `code_customer` = '$id'";
+	$sql = "DELETE FROM `m_customer` Where `code_customer` = '$id'";
 	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 	if($ex){
 	location('index.php?page=dashboard&sub=input_customer');	
