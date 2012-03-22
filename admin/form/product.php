@@ -12,7 +12,9 @@ function ganti(){
 error_reporting(E_ALL);
 if(!isset($_POST['tambah'])) { ?>
 <form name="form1" method="post" action="">
-  <input type="submit" name="tambah" id="tambah" value="Tambah Produk">
+  <button dojotype="dijit.form.Button" type="submit" name="tambah" id="tambah">
+		Tambah Produk
+  </button>
 </form>
 <br />
 <?php } if(isset($_POST['tambah'])) { ?>
@@ -67,7 +69,7 @@ if(!isset($_POST['tambah'])) { ?>
 
 <form name="form1" method="post" enctype="multipart/form-data" action="">
   <input type="file" name="excel_file" id="excel_file" />
-  <input type="submit" name="tambah_excel" id="tambah_excel" value="Tambah Produk dari Excel">
+  <button dojoType="dijit.form.Button" type="submit" name="tambah_excel" id="tambah_excel">Tambah Produk dari Excel</button>
 </form>
 <br />
 
@@ -252,7 +254,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
           <option value="nama" <?php if($cari3 == 'nama'){echo "selected";}?>>Nama Produk</option>
           </select>
           <input type="text" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
-          <input type="submit" name="cmdcari" id="cmdcari" value="Cari">
+          <button dojoType="dijit.form.Button" type="submit" name="cmdcari" id="cmdcari">Cari</button>
         <a href="index.php?page=dashboard&sub=product"><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a></td>
       </tr>
       <?php
@@ -395,13 +397,21 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     			}
                 }
     echo "<br />";           
-    
-    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
-    echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
+    if($cari3 == 'grup'){
+    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
+	}elseif($cari3 == 'nama'){
+	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
+	}else{
+	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product`"));
+	}
+		
+	echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
      
     echo "<br />";
     
-    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product`"));
     echo "Stok Keseluruhan : <strong>$sumStok[0]</strong>";
     
     echo "</div>";
