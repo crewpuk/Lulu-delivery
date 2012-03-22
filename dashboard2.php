@@ -11,8 +11,13 @@ else
 {
 $arrHari = array("Minggu","Senin","Selasa","Rabu","Kamis","Jum\'at","Sabtu");
 $hari = date('w');
+
+$id = $_SESSION['id'];
+$q_user = mysql_query("SELECT fullname_account FROM user_account WHERE id_account = '$id' LIMIT 1");
+$data_user = mysql_fetch_array($q_user);
+
 ?>
-<div id="headerMenu">Anda Login Sebagai : <?php echo $_SESSION['user']; ?>.
+<div id="headerMenu">Anda Login Sebagai : <?php echo $data_user['fullname_account']; ?>.
 <div id='jam'>
 <script language='javascript'>
 function jam(){

@@ -150,8 +150,7 @@
 				}
 				echo $genSo;
 				?>
-		  <div  id="gridDivTransCust"><span style="clear: both;"><a href="#" onclick="window.open('user/cetak.php?kT=<?php echo $genSo; ?>&kC=<?php echo $kode_cust; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="images/32x32/printer.png" width="32" height="32" alt="cetak" title="Cetak" /></a></span></div>
-    <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
+		  <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
 			  <table width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
 				  
@@ -233,21 +232,45 @@
 		</div>
 	</div>
 </div><br />
-<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
+
+
+<script type="text/javascript">
+// Fungsi untuk simpan transaksi dan pengontrol kirim email atau tidak
+function save_transaction(){
+	if(confirm("Anda yakin?")){
+		if(confirm("Kirim email?")){
+			document.getElementById("send_email").value = "1";
+		}
+		else{
+			document.getElementById("send_email").value = "0";
+		}
+		document.forms["form_transaction"].submit();
+	}
+	else return false;
+}
+</script>
+
+
+<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">
 <div style="margin-left: 470px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
-														<option value="cabang1">Cabang 1</option>
-														<option value="cabang2">Cabang 2</option>
-														<option value="cabang3">Cabang 3</option>
+														<?php
+														$sub_office_q = mysql_query("SELECT * FROM m_sub_office");
+														while($data_sub_office = mysql_fetch_array($sub_office_q)){
+															echo "<option value='".$data_sub_office['id_sub_office']."'>".$data_sub_office['name_sub_office']."</option>\n";
+														}
+														?>
 													</select>
 													<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
 													<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />
+													<input type="hidden" name="simpan_transaction" value="1" />
+													<input type="hidden" name="send_email" id="send_email" value="0" />
 													</div><br />
 <div style="margin-left: 470px;">Model Pembayaran : <select name="model_pembayaran">
 														<option value="Transfer" selected="selected">Transfer</option>
 														<option value="COD">COD</option>
 														<option value="CashToko">Cash Toko</option>
 													</select></div><br />
-<div style="margin-left: 550px;"><button dojoType="dijit.form.Button" type="submit" name="simpan_transaction"> Save </button></div>
+<div style="margin-left: 550px;"><button dojoType="dijit.form.Button" type="button" name="simpan_transaction" onclick="save_transaction()"> Save </button></div>
 </form>
 </div>
 <?php } ?>
