@@ -141,7 +141,7 @@ $html.='
         </tr>
         <tr>
           <td class="align1234"><strong>GRAND TOTAL</strong></td>
-          <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
+          <td class="align1234" bgcolor="#FF0000">'.$sumQty[0].'</td>
           <td class="align1234" bgcolor="#FF0000">Rp. '.number_format($grandTotal, 0,",",".").'</td>
           <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
         </tr>
@@ -150,8 +150,7 @@ $html.='
   <tr>
     <td colspan="5">&nbsp;</td>
   </tr>
-  
-  <tr>
+  <!--<tr>
     <td colspan="5"><table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
       <tr>
         <td>&nbsp;</td>
@@ -166,7 +165,7 @@ $html.='
         <td bgcolor="#CCCCCC" class="tableset">Rp. '.number_format($sumPrice[0],0,',','.').'</td>
       </tr>
     </table></td>
-  </tr>
+  </tr>-->
   <tr>
     <td colspan="3" align="center" valign="top"><hr noshade="noshade"/></td>
   </tr>
@@ -186,14 +185,14 @@ $html.='
 </body>
 </html>';
 
-if(isset($_GET['email'])&&$_GET['email']=='1'){
-  $mail = new eMail;
-  $mail->to = array($axa['email_sub_office']);
-  $mail->from = $data_lulu['company_email'];
-  $mail->body = $html;
-  $mail->subject = "Bukti Cetak Lulu@Delivery";
-  $mail->send();
-}
+// if(isset($_GET['email'])&&$_GET['email']=='1'){
+//   $mail = new eMail;
+//   $mail->to = array($axa['email_sub_office']);
+//   $mail->from = $data_lulu['company_email'];
+//   $mail->body = $html;
+//   $mail->subject = "Bukti Cetak Lulu@Delivery";
+//   $mail->send();
+// }
 
 echo($html);
 ?>
