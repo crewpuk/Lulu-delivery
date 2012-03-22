@@ -100,7 +100,10 @@ jam();
 				<?php 
 				$page = (isset($_GET['page']))?$_GET['page']:"";
 				$sub = (isset($_GET['sub']))?$_GET['sub']:"";
-				@include "form/$sub.php"; 
+				@include "form/$sub.php";
+                if($page == 'dashboard' and $sub == 'keluar'){
+                    location('../logout.php');                    
+                }
 				?>
 			</div>
 		</div>
