@@ -266,7 +266,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 				</select>
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
 				<button type="submit" dojoType="dijit.form.Button" name="btnCariCust">Cari</button>
-				<a href="index.php?page=dashboard&sub=input_customer" >Lihat Semua</a>
+				<a href="index.php?page=dashboard&sub=input_customer" ><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a>
 			</td>
 		</tr>
 		<?php
@@ -417,10 +417,17 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     				}
     			}
                 }
-    echo "<br />";           
-    
-    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `status_customer` = '1'"));
-    echo "Jumlah Data Customer : <strong>$sumBarang[0]</strong>";
+    echo "<br />";    
+	       
+    if($cari3 == 'code_customer'){
+    $sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `status_customer` = '1' and `code_customer` = '$key3'"));
+    }elseif($cari3 == 'name_customer'){
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `status_customer` = '1' and `name_customer` LIKE '%$key3%'"));
+	}else{
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `status_customer` = '1'"));	
+	}
+	
+	echo "Jumlah Data Customer : <strong>$sumCustomer[0]</strong>";
     
     echo "</div>";
 
