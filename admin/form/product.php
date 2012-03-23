@@ -195,9 +195,9 @@ $dataSQL = mysql_fetch_array($exeSQL);
     </tr>
     <tr>
       <td style="padding: 5px;">Kode Produk</td>
-      <td style="padding: 5px;"><input name="kode" type="text" disabled="disabled" id="k" value="<?php echo $dataSQL['code_product']; ?>" size="29" require="true" placeHolder="Kode Produk">
-      <label><input type="radio" name="ubah1" id="u1" value="ubah" onClick="javascript:ganti();">
-      Ubah ?</label>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" name="kode" type="text" disabled="disabled" id="k" value="<?php echo $dataSQL['code_product']; ?>" size="29" require="true" placeHolder="Kode Produk">
+      <label><input dojoType="dijit.form.CheckBox" name="ubah1" id="pdKode" value="ubah" />
+			Ubah ?</label>
       <input name="kode2" type="hidden" id="kode2" value="<?php echo $dataSQL['code_product']; ?>"></td>
     </tr>
     <tr>
@@ -256,7 +256,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 <form name="form1" method="post" action="">
     <table width="100%" border="1" cellspacing="0" cellpadding="10">
       <tr>
-        <td colspan="9">Cari Berdasarkan 
+        <td colspan="12">Cari Berdasarkan 
           <select name="cariPro" id="cariPro">
           <option value="">--Pilih--</option>
           <option value="grup" <?php if($cari3 == 'grup'){echo "selected";}?>>Grup Produk</option>
@@ -303,7 +303,10 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <th style="padding: 5px;">Grup Produk</th>
         <th style="padding: 5px;">Nama Produk</th>
         <th style="padding: 5px;">Ukuran Produk</th>
-        <th style="padding: 5px;">Stok</th>
+        <th style="padding: 5px;">Stok Depok</th>
+        <th style="padding: 5px;">Stok Sawangan</th>
+        <th style="padding: 5px;">Stok Cibubur</th>
+        <th style="padding: 5px;">Stok Total</th>
         <th style="padding: 5px;">Harga Barang</th>
         <th style="padding: 5px;" colspan="2">Tindakan</th>
       </tr>
@@ -321,7 +324,10 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <td style="padding: 5px;"><?php echo $data['group_product']; ?></td>
         <td style="padding: 5px;"><?php echo $data['name_product']; ?></td>
         <td style="padding: 5px;" align="center"><?php echo $data['size_product']; ?></td>
-        <td style="padding: 5px;" align="center"><?php echo $data['stock_product']; ?></td>
+        <td align="center" style="padding: 5px;"><?php echo $data['stock_depok']; ?></td>
+        <td align="center" style="padding: 5px;"><?php echo $data['stock_sawangan']; ?></td>
+        <td align="center" style="padding: 5px;"><?php echo $data['stock_cibubur']; ?></td>
+        <td align="center" style="padding: 5px;"><?php echo $data['stock_product']; ?></td>
         <td style="padding: 5px;">Rp. <?php echo number_format($data['price_product'],0,',','.'); ?></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&ubah&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&hapus&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>

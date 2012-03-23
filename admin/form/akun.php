@@ -1,10 +1,8 @@
+<?php if(!isset($_POST['tambah_user'])) { ?>
 <form id="form4" name="form4" method="post" action="">
   <button dojoType="dijit.form.Button" type="submit" name="tambah_user" id="tambah_user">Tambah Akun</button>
 </form>
-<?php
-if(isset($_POST['tambah_user']))
-{
-?>
+<?php }if(isset($_POST['tambah_user'])) { ?>
 <form id="form1" name="form1" method="post" action="system/proses_akun.php">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
@@ -31,14 +29,11 @@ if(isset($_POST['tambah_user']))
 	  </button>
       </td>
     </tr>
-    <?php } ?>
+    
   </table>
 </form>
 <br />
-<?php
-if(isset($_GET['upd']))
-{
-?>
+<?php } if(isset($_GET['upd'])){ ?>
 <form id="form2" name="form1" method="post" action="system/proses_akun.php">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
@@ -86,8 +81,8 @@ if(isset($_GET['upd']))
 	
   </table>
 </form>
-<?php }  ?>
 <br />
+<?php }  ?>
 <form id="form3" name="form3" method="post" action="">
 <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0" class="Ustext">
   <tr>
