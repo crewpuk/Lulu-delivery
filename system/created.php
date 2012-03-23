@@ -6,8 +6,8 @@
 	$produk				= $_POST['produk'];
 	$qty				= $_POST['qty'];
 	$ket				= $_POST['ket'];
-	$sqlProduct			= mysql_fetch_array(mysql_query("SELECT * FROM `m_product` where code_product = '$produk'"));
-	$stokDB				= $sqlProduct['stock_product'];
+	$sqlProduct			= mysql_fetch_array(mysql_query("SELECT * FROM `m_stock` where code_product = '$produk'"));
+	$stokDB				= $sqlProduct['stock'];
 	if(isset($save_product)){
 		if($qty > $stokDB){
 			alert('Stok Tidak Cukup');	

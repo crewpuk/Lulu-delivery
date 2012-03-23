@@ -121,10 +121,12 @@ for ($i = 2012; $i <= 2015; $i++) {
 	  $thn = date('Y');
 	  $bln = date('m');
 	  $day = date('d');
+	  //per tanggal
 	  $queryAwal = mysql_query("SELECT * FROM m_transaction WHERE time_transaction >= '$cboYear-$cboMonth-$cboDay' AND time_transaction <= '$cboYear2-$cboMonth2-$cboDay2'")or die ("salah");
 	  //$queryAwal = mysql_query("SELECT * FROM m_transaction WHERE YEAR(time_transaction) ='".$dateYear."'") or die ("salah");
         while($tzz=mysql_fetch_array($queryAwal)){
-			$ax = $tzz["code_transaction"]; 
+			$ax = $tzz["code_transaction"];
+		
 		$queRy = mysql_query("SELECT SUM(price_product) FROM m_product INNER JOIN m_detail_transaction ON m_product.code_product=m_detail_transaction.code_product WHERE m_detail_transaction.code_transaction = '".$ax."'") or die ("salah");
 		while($array=mysql_fetch_array($queRy)){
 			$sum += $array['SUM(price_product)'];
