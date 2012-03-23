@@ -18,6 +18,7 @@ dojo.require('dojo.store.JsonRest');
 dojo.require('dojo.data.ObjectStore');
 dojo.require('dijit.layout.BorderContainer');
 dojo.require('dijit.layout.ContentPane');
+dojo.require("dijit.form.DateTextBox");
 //dojo.require('dojox.grid.EnhancedGrid');
 dojo.require('dijit.Tree');
 //dojo.require('dojox.grid.enhanced.plugins.Pagination');

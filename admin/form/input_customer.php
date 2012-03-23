@@ -244,11 +244,13 @@ $key3 = "";
     
 if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
 if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
+$first = $_POST['first'];
+$last  = $_POST['last'];
 ?>
 <form form name="form1" method="post" action="">
 	<table width="100%" border="1" cellspacing="0" cellpadding="10">
 		<tr>
-			<td colspan="13">
+			<td colspan="7">
 				Cari Berdasarkan:
 				<select name="cariPro" >
                 	<option value="">--Pilih--</option>
@@ -258,6 +260,28 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
 				<button type="submit" dojoType="dijit.form.Button" name="btnCariCust">Cari</button>
 				<a href="index.php?page=dashboard&sub=input_customer" ><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a>
+			</td>
+			<td colspan="6">&emsp;
+				 Filter : <input dojoType="dijit.form.DateTextBox" 
+					constraints={datePattern:'yy-MM-dd'} 
+					lang="en"
+					style="width: 8em;"
+					name="first"
+					value="<?php echo $first;?>"
+					promptMessage="mm/dd/yy" 
+					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					class="myTextField" /> 
+				S/D
+				<input dojoType="dijit.form.DateTextBox" 
+					constraints={datePattern:'yy-MM-dd'} 
+					lang="en"
+					style="width: 8em;"
+					name="last"
+					value="<?php echo $last;?>"
+					promptMessage="mm/dd/yy" 
+					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					class="myTextField" />
+				<button dojoType="dijit.form.Button" type="submit" name="btnFilter">Filter</button>
 			</td>
 		</tr>
 		<?php
@@ -277,15 +301,22 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 	}else if($halaman > 1){ $i = ($offset + $i); }
 		
 		
+		$btnFilter  = $_POST['btnFilter'];
+		$btnCari  = $_POST['btnCariCust'];
+		if(isset($btnCari)){
 			if($cari3 != null){
 				if($cari3 == 'code_customer'){
 					$sql = "SELECT * FROM `m_customer` where `code_customer` = '$key3' LIMIT $offset,$batas";
 				}elseif($cari3 == 'name_customer'){
 					$sql = "SELECT * FROM `m_customer` where `name_customer` LIKE '%$key3%' LIMIT $offset,$batas";
 				}
-			}else{
-				$sql = "SELECT * FROM `m_customer` LIMIT $offset,$batas";
 			}
+		}elseif(isset($btnFilter)){
+			$sql = "SELECT * FROM `m_customer` WHERE DATE(`created_date`) BETWEEN '$first' AND '$last' LIMIT $offset, $batas ";
+
+		}else{
+			$sql = "SELECT * FROM `m_customer` LIMIT $offset,$batas";
+		}
 			$exeSQL = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 			  $i=0;
 			  $num = mysql_num_rows($exeSQL);
@@ -466,7 +497,7 @@ if(isset($_POST['simpan_customer'])){
 	}elseif($kode==$kodeDB){
 		location('index.php?page=dashboard&sub=input_customer&e=2');
 	}else{
-		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email','1')") or die("Salah Query Simpan".mysql_error());
+		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email',CURRENT_TIMESTAMP,'1')") or die("Salah Query Simpan".mysql_error());
 
 		 if($x){
 			alert('Data Berhasil Disimpan');
