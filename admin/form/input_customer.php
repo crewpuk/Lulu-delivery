@@ -383,7 +383,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
       </tr>
 		<?php } } ?>
 	</table>
-	<a href="#" onClick="window.open('form/print_all_customer.php?sql=<?php echo rawurlencode($sql);?>','Print','width=70%, height=100%, scrollbars=yes');">print</a>
+    <br />
+	<div align="center"><a href="#" onClick="window.open('form/print_all_customer.php?sql=<?php echo rawurlencode($sql);?>&tglF=<?php echo $first3; ?>&tglL=<?php echo $last3; ?>','Print','width=700px, height=800px, scrollbars=yes');"><img title="Print" src="<?php echo BASE; ?>images/64x64/printer.png" width="64" height="64" alt="print" /></a></div>
 </form>
 
 <?php

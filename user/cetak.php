@@ -11,7 +11,7 @@ $html='<html>
 .style5 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; }
 </style>
 </head>
-<body onLoad="print();">';
+<body>';
 
 $q_data_perusahaan=mysql_query("SELECT * FROM m_data");
 $data_lulu=array();
