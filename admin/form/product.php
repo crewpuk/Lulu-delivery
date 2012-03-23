@@ -1,13 +1,3 @@
-<script type="text/javascript">
-function ganti(){
-	var kode = document.getElementById('k');
-	var ubah1 = document.getElementById('u1');
-	
-	if(ubah1.checked==true){
-		kode.disabled=false;	
-	}
-}
-</script>
 <?php 
 error_reporting(E_ALL);
 if(!isset($_POST['tambah'])) { ?>
@@ -17,52 +7,7 @@ if(!isset($_POST['tambah'])) { ?>
   </button>
 </form>
 <br />
-<?php } if(isset($_POST['tambah'])) { ?>
-<form name="form2" method="post" action="">
-  <table width="50%" border="0" align="center" cellpadding="5" cellspacing="3" style="border:solid 1px;">
-    <tr>
-      <th style="padding: 5px;" colspan="2">Tambah Produk</th>
-    </tr>
-    <tr>
-      <td style="padding: 5px;" colspan="2">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Kode Produk</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Kode Produk" name="kode" id="kode"></td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Grup Produk</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" placeHolder="Grup Produk" name="grup" id="grup"></td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Nama Produk</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Nama Produk" name="nama" id="nama"></td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Ukuran Produk</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Ukuran Produk" name="ukuran" id="ukuran"></td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Stok</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Stok" name="stok" id="stok"></td>
-    </tr>
-    <tr>
-      <td style="padding: 5px;">Harga Barang</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga"></td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center" style="padding: 5px;">
-      <button dojoType="dijit.form.Button" type="submit" name="tambahkan" id="tambahkan">Save</button>
-      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
-	  Reset
-	  </button>
-      </td>
-    </tr>
-  </table>
-</form>
-<br />
-<?php
-}
+<?php }
 
 
 /**
@@ -177,6 +122,59 @@ else{
 
 
 
+} if(isset($_POST['tambah'])) { ?>
+<form name="form2" method="post" action="">
+  <table width="50%" border="0" align="center" cellpadding="5" cellspacing="3" style="border:solid 1px;">
+    <tr>
+      <th style="padding: 5px;" colspan="2">Tambah Produk</th>
+    </tr>
+    <tr>
+      <td style="padding: 5px;" colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Kode Produk</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Kode Produk" name="kode" id="kode"></td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Grup Produk</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" placeHolder="Grup Produk" name="grup" id="grup"></td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Nama Produk</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Nama Produk" name="nama" id="nama"></td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Ukuran Produk</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Ukuran Produk" name="ukuran" id="ukuran"></td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Stok</td>
+      <td style="padding: 5px;">
+      <?php
+      $q_soffice = @mysql_query("SELECT * FROM m_sub_office");
+        while($a_soffice = @mysql_fetch_array($q_soffice)){
+            echo($a_soffice['name_sub_office'].' : <input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Stok '.$a_soffice['name_sub_office'].'" name="stok['.$a_soffice['id_sub_office'].']" id="stok['.$a_soffice['id_sub_office'].']"><br />');
+        }
+	  ?>
+      
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 5px;">Harga Barang</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga"></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center" style="padding: 5px;">
+      <button dojoType="dijit.form.Button" type="submit" name="tambahkan" id="tambahkan">Save</button>
+      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+	  Reset
+	  </button>
+      </td>
+    </tr>
+  </table>
+</form>
+<br />
+<?php
 
 } if(isset($_GET['ubah'])) { ?>
 <form name="form3" method="post" action="">
@@ -214,7 +212,19 @@ $dataSQL = mysql_fetch_array($exeSQL);
     </tr>
     <tr>
       <td style="padding: 5px;">Stok</td>
-      <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Stok" name="stok" id="stok" value="<?php echo $dataSQL['stock_product']; ?>"></td>
+      <td style="padding: 5px;">
+      <?php
+      $q_soffice = @mysql_query("SELECT * FROM m_sub_office");
+        while($a_soffice = @mysql_fetch_array($q_soffice)){
+            $q_stock = @mysql_query("SELECT * FROM m_stock WHERE code_product = '".$dataSQL['code_product']."' AND id_sub_office = '".$a_soffice['id_sub_office']."'");
+            while($a_stock = @mysql_fetch_array($q_stock)){
+                echo($a_soffice['name_sub_office'].' : <input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Stok" name="stok['.$a_soffice['id_sub_office'].']" id="stok['.$a_soffice['id_sub_office'].']" value="'.$a_stock['stock'].'"><br />');
+            }
+        }
+	  ?>
+      
+      
+      </td>
     </tr>
     <tr>
       <td style="padding: 5px;">Harga Barang</td>
@@ -303,10 +313,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <th style="padding: 5px;">Grup Produk</th>
         <th style="padding: 5px;">Nama Produk</th>
         <th style="padding: 5px;">Ukuran Produk</th>
-        <th style="padding: 5px;">Stok Depok</th>
-        <th style="padding: 5px;">Stok Sawangan</th>
-        <th style="padding: 5px;">Stok Cibubur</th>
-        <th style="padding: 5px;">Stok Total</th>
+        <th style="padding: 5px;">Stok</th>
         <th style="padding: 5px;">Harga Barang</th>
         <th style="padding: 5px;" colspan="2">Tindakan</th>
       </tr>
@@ -324,10 +331,17 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <td style="padding: 5px;"><?php echo $data['group_product']; ?></td>
         <td style="padding: 5px;"><?php echo $data['name_product']; ?></td>
         <td style="padding: 5px;" align="center"><?php echo $data['size_product']; ?></td>
-        <td align="center" style="padding: 5px;"><?php echo $data['stock_depok']; ?></td>
-        <td align="center" style="padding: 5px;"><?php echo $data['stock_sawangan']; ?></td>
-        <td align="center" style="padding: 5px;"><?php echo $data['stock_cibubur']; ?></td>
-        <td align="center" style="padding: 5px;"><?php echo $data['stock_product']; ?></td>
+        <td align="center" style="padding: 5px;">
+        <?php
+        $q_soffice = @mysql_query("SELECT * FROM m_sub_office");
+        while($a_soffice = @mysql_fetch_array($q_soffice)){
+            $q_stock = @mysql_query("SELECT * FROM m_stock WHERE code_product = '".$data['code_product']."' AND id_sub_office = '".$a_soffice['id_sub_office']."'");
+            while($a_stock = @mysql_fetch_array($q_stock)){
+                echo($a_soffice['name_sub_office'].' : '.$a_stock['stock'].'<br />');
+            }
+        }
+        ?>
+        </td>
         <td style="padding: 5px;">Rp. <?php echo number_format($data['price_product'],0,',','.'); ?></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&ubah&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&hapus&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
@@ -414,13 +428,13 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     echo "<br />";           
     if($cari3 == 'grup'){
     $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
-    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
 	}elseif($cari3 == 'nama'){
 	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));
-    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
 	}else{
 	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
-    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock_product`) FROM `m_product`"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock`"));
 	}
 		
 	echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
