@@ -13,7 +13,7 @@ if(!isset($_POST['tambah'])){?>
     </tr>
 	<?php
 		//Generate Kode Customer
-		
+
 		/*$sql = "SELECT * FROM `m_customer` ORDER BY code_customer DESC LIMIT 0 , 1";
 		$exSql2 = mysql_query($sql);
 		$arrExSql2 = mysql_fetch_array($exSql2);
@@ -30,8 +30,7 @@ if(!isset($_POST['tambah'])){?>
 				}
 				$code_cust = 'CD'.$nol.($parsing + 1);
 			}*/
-
-	?>
+		?>
     <tr>
       <td style="padding: 5px;" width="109">No. Pelanggan</td>
       <td style="padding: 5px;" width="5">:</td>
@@ -241,14 +240,25 @@ $cari3 = "";
 $key1 = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
 $key2 = (isset($_GET['key']))?$_GET['key']:"";
 $key3 = "";
+
+$first1 = (isset($_POST['first']))?$_POST['first']:"";
+$last1  = (isset($_POST['last']))?$_POST['last']:"";
+$first2 = (isset($_GET['firstget']))?$_GET['firstget']:"";
+$last2  = (isset($_GET['lastget']))?$_GET['lastget']:"";
+
+$first3 = "";
+$last3 	= "";
     
 if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
 if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
+if($first1){$first3=$first1;}elseif($first2){$first3=$first2;}
+if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
+
 ?>
 <form form name="form1" method="post" action="">
 	<table width="100%" border="1" cellspacing="0" cellpadding="10">
 		<tr>
-			<td colspan="13">
+			<td colspan="7">
 				Cari Berdasarkan:
 				<select name="cariPro" >
                 	<option value="">--Pilih--</option>
@@ -258,6 +268,28 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
 				<button type="submit" dojoType="dijit.form.Button" name="btnCariCust">Cari</button>
 				<a href="index.php?page=dashboard&sub=input_customer" ><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a>
+			</td>
+			<td colspan="6">&emsp;
+				 Filter : <input dojoType="dijit.form.DateTextBox" 
+					constraints={datePattern:'yy-MM-dd'} 
+					lang="en"
+					style="width: 8em;"
+					name="first"
+					value="<?php echo $first3;?>"
+					promptMessage="mm/dd/yy" 
+					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					class="myTextField" /> 
+				S/D
+				<input dojoType="dijit.form.DateTextBox" 
+					constraints={datePattern:'yy-MM-dd'} 
+					lang="en"
+					style="width: 8em;"
+					name="last"
+					value="<?php echo $last3;?>"
+					promptMessage="mm/dd/yy" 
+					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					class="myTextField" />
+				<button dojoType="dijit.form.Button" type="submit" name="btnFilter">Filter</button>
 			</td>
 		</tr>
 		<?php
@@ -277,17 +309,23 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 	}else if($halaman > 1){ $i = ($offset + $i); }
 		
 		
+		$btnFilter  = $_POST['btnFilter'];
+		$btnCari  = $_POST['btnCariCust'];
+		if(isset($btnCari)){
 			if($cari3 != null){
 				if($cari3 == 'code_customer'){
 					$sql = "SELECT * FROM `m_customer` where `code_customer` = '$key3' LIMIT $offset,$batas";
 				}elseif($cari3 == 'name_customer'){
 					$sql = "SELECT * FROM `m_customer` where `name_customer` LIKE '%$key3%' LIMIT $offset,$batas";
 				}
-			}else{
-				$sql = "SELECT * FROM `m_customer` LIMIT $offset,$batas";
 			}
+		}elseif(isset($btnFilter)){
+			$sql = "SELECT * FROM `m_customer` WHERE DATE(`created_date`) BETWEEN '$first3' AND '$last3' LIMIT $offset, $batas ";
+
+		}else{
+			$sql = "SELECT * FROM `m_customer` LIMIT $offset,$batas";
+		}
 			$exeSQL = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
-			  $i=0;
 			  $num = mysql_num_rows($exeSQL);
 			  if($num == 0){
 			  echo "<font color='#FF0000'>Data Tidak Ditemukan</font>";
@@ -345,6 +383,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
       </tr>
 		<?php } } ?>
 	</table>
+	<a href="#" onClick="window.open('form/print_all_customer.php?sql=<?php echo rawurlencode($sql);?>','Print','width=70%, height=100%, scrollbars=yes');">print</a>
 </form>
 
 <?php
@@ -359,9 +398,19 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 	$key1 = (isset($_POST['txtkey']))?$_POST['txtkey']:"";
     $key2 = (isset($_GET['key']))?$_GET['key']:"";
     $key3 = "";
+
+    $first1 = (isset($_POST['first']))?$_POST['first']:"";
+	$last1  = (isset($_POST['last']))?$_POST['last']:"";
+	$first2 = (isset($_GET['firstget']))?$_GET['firstget']:"";
+	$last2  = (isset($_GET['lastget']))?$_GET['lastget']:"";
+
+	$first3 = "";
+	$last3 	= "";
     
     if($key1){$key3=$key1;}elseif($key2){$key3=$key2;}
 	if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
+	if($first1){$first3=$first1;}elseif($first2){$first3=$first2;}
+	if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 	
     echo "<br />";
     echo "<div align='center'>";
@@ -369,6 +418,8 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
                 $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where `code_customer` = '$key3'"));    
                 }elseif($cari3 == 'name_customer'){
 				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where `name_customer` LIKE '%$key3%'"));  
+				}elseif($first3 != null || $last3 != null){
+				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where DATE(`created_date`) BETWEEN '$first3' AND '$last3'"));
 				}else{
     			$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` "));
     			}
@@ -399,7 +450,30 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage+1)."&key=".$key3."&cariGet=".$cari3."'>Selanjutnya &gt; &gt;</a>";
     				}
     			}
-                }else{
+                }
+                elseif($first3 != null || $last3 != null){
+					if($jumData > $batas){
+    				if($noPage > 1){
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage-1)."&firstget=".$first3."&lastget=".$last3."'>&lt; &lt; Sebelumnya</a>";
+    				}
+    				//Nomor noPage dan Linknya
+    				for($page = 1; $page <= $jumHal; $page++){
+    					if((($page >= $noPage - 3) && ($page <= $noPage + 3) || ($page==1) || $page==$jumHal)) {
+    						if(($showPage == 1 ) && ($page != 2)){ echo " ... "; }
+    						if(($showPage != ($jumHal-1)) && ($page==$jumHal)) { echo " ... "; }
+    						if($page==$noPage){ echo "<b> $page </b>"; }
+    						else{ 
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=$page&firstget=".$first3."&lastget=".$last3."'> $page </a>"; 
+    						$showPage=$page; }
+    					}
+    				}
+    				//Next
+    				if($noPage < $jumHal){
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage+1)."&firstget=".$first3."&lastget=".$last3."'>Selanjutnya &gt; &gt;</a>";
+    				}
+				}
+				}
+				else{
                 
                 /************** Jika tak ada pencarian ********************/
     			if($jumData > $batas){
@@ -429,6 +503,8 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     $sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `code_customer` = '$key3'"));
     }elseif($cari3 == 'name_customer'){
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `name_customer` LIKE '%$key3%'"));
+	}elseif($first3 != null || $last3 != null){
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where DATE(`created_date`) BETWEEN '$first3' AND '$last3'"));
 	}else{
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer`"));
 	}
@@ -466,7 +542,7 @@ if(isset($_POST['simpan_customer'])){
 	}elseif($kode==$kodeDB){
 		location('index.php?page=dashboard&sub=input_customer&e=2');
 	}else{
-		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email','1')") or die("Salah Query Simpan".mysql_error());
+		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email',CURRENT_TIMESTAMP,'1')") or die("Salah Query Simpan".mysql_error());
 
 		 if($x){
 			alert('Data Berhasil Disimpan');
