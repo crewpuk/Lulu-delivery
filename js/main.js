@@ -33,7 +33,16 @@ dojo.ready(function(){
 				txt.set('disabled', true);
 			}
 		});
-
+		
+	var radio_product = dijit.byId('pdKode');
+	dojo.connect(radio_product, "onClick", function(){
+			var kode_produk = dijit.byId('k');
+			if(radio_product.checked == true){
+				kode_produk.set('disabled', false);	
+			}else{
+				kode_produk.set('disabled', true);
+			}
+	});
 	//dijit.byId('tagDelete').set('href','ee');
 			//dijit.byId('filter_product').store = storeFil;
 

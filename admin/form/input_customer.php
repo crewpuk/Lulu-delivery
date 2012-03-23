@@ -5,7 +5,6 @@ if(!isset($_POST['tambah'])){?>
 		Tambah Customer
 	</button>
 </form>
-<br />
 <?php } if(isset($_POST['tambah'])) { ?>
 <form id="inCust2" name="inCust2" method="post" action="">
   <table width="50%" border="0" align="center" cellpadding="5" cellspacing="3" style="border:solid 1px;">
@@ -13,8 +12,9 @@ if(!isset($_POST['tambah'])){?>
       <th style="padding: 5px;" colspan="3">Input Customer</th>
     </tr>
 	<?php
-
-		$sql = "SELECT * FROM `m_customer` ORDER BY code_customer DESC LIMIT 0 , 1";
+		//Generate Kode Customer
+		
+		/*$sql = "SELECT * FROM `m_customer` ORDER BY code_customer DESC LIMIT 0 , 1";
 		$exSql2 = mysql_query($sql);
 		$arrExSql2 = mysql_fetch_array($exSql2);
 		$num = mysql_num_rows($exSql2);
@@ -29,7 +29,7 @@ if(!isset($_POST['tambah'])){?>
 					
 				}
 				$code_cust = 'CD'.$nol.($parsing + 1);
-			}
+			}*/
 
 	?>
     <tr>
@@ -37,10 +37,9 @@ if(!isset($_POST['tambah'])){?>
       <td style="padding: 5px;" width="5">:</td>
       <td style="padding: 5px;" width="296">
 		<input dojoType="dijit.form.ValidationTextBox" 
-		require="true"
-		readonly="readonly"
+		placeHolder="No. Pelanggan"
+        require="true"
 		name="kode_cust"
-		value="<?php echo $code_cust; ?>"
 		id="kode_cust" />
 	  </td>
     </tr>
@@ -253,7 +252,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 				Cari Berdasarkan:
 				<select name="cariPro" >
                 	<option value="">--Pilih--</option>
-					<option value="code_customer" <?php if($cari3 == 'code_customer'){echo "selected";}?>>Kode Customer</option>
+					<option value="code_customer" <?php if($cari3 == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
 					<option value="name_customer" <?php if($cari3 == 'name_customer'){echo "selected";}?>>Nama Customer</option>
 				</select>
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
@@ -318,10 +317,10 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 		<td align="center"><?php echo $i;?></td>
 		<td  style="padding: 5px;" ><?php echo $data['code_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['name_customer'];?></td>
-		<td style="padding: 5px;"><?php echo $data['pengenal_customer'];?></td>
+		<td align="center" style="padding: 5px;"><?php echo $data['pengenal_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['address_customer'].", ".$data['kota_customer'].", ".$data['provinsi_customer'].", ".$data['postal_code_customer'];?></td>
-		<td style="padding: 5px;"><?php echo $data['phone_customer'];?></td>
-		<td style="padding: 5px;"><?php echo $data['home_phone_customer'];?></td>
+		<td align="center" style="padding: 5px;"><?php echo $data['phone_customer'];?></td>
+		<td align="center" style="padding: 5px;"><?php echo $data['home_phone_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['contact_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['email_customer'];?></td>
 		<td align="center" style="padding: 5px;">

@@ -1,7 +1,8 @@
+<?php if(!isset($_POST['tambah_cabang'])) { ?>
 <form name="form1" method="post" action="">
-<button dojoType="dijit.form.Button" type="submit" name="tambah_cabang" id="tambah_cabang">Tambah Cabang</button>
+	<button dojoType="dijit.form.Button" type="submit" name="tambah_cabang" id="tambah_cabang">Tambah Cabang</button>
 </form>
-<?php if(isset($_POST['tambah_cabang'])) { ?>
+<?php } if(isset($_POST['tambah_cabang'])) { ?>
 <form name="form2" method="post" action="">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:solid 1px;">
     <tr>
@@ -104,17 +105,16 @@ $dataUbah = @mysql_fetch_array(mysql_query($sqlUbah)) or die('Query Salah - >'.m
 </table>
 <?php
 //CRUD
-//Proses Simpan
-
-	$nama = $_POST['nama_cabang'];
-	$email = $_POST['email_cabang'];
+	$nama 		= $_POST['nama_cabang'];
+	$email 		= $_POST['email_cabang'];
 	
-	$nama_upd = $_POST['nama_cabang_upd'];
-	$email_upd = $_POST['email_cabang_upd'];
-	$status = $_POST['status_c'];
+	$nama_upd 	= $_POST['nama_cabang_upd'];
+	$email_upd 	= $_POST['email_cabang_upd'];
+	$status 	= $_POST['status_c'];
 	
-	$id = $_GET['no'];
+	$id 		= $_GET['no'];
 	
+	//Proses Simpan
 	if(isset($_POST['tambahkan'])){
 		$q = "INSERT INTO `m_sub_office` Values('','$nama','$email','1')";	
 		$exQ = @mysql_query($q) or die('Query Salah - >'.mysql_error());
@@ -127,6 +127,7 @@ $dataUbah = @mysql_fetch_array(mysql_query($sqlUbah)) or die('Query Salah - >'.m
 		}
 	}
 	
+	//Proses Ubah
 	if(isset($_POST['ubah'])){
 		$q = "UPDATE `m_sub_office` SET `name_sub_office` = '$nama_upd', `email_sub_office` = '$email_upd', `status` = '$status'  Where `id_sub_office` = '$id'";
 		$exQ = @mysql_query($q) or die('Query Salah - >'.mysql_error());
@@ -138,6 +139,7 @@ $dataUbah = @mysql_fetch_array(mysql_query($sqlUbah)) or die('Query Salah - >'.m
 		}
 	}
 	
+	//Proses Hapus
 	if(isset($_GET['hapus'])){
 		$q = "DELETE FROM `m_sub_office`  Where `id_sub_office` = '$id'";
 		$exQ = @mysql_query($q) or die('Query Salah - >'.mysql_error());
