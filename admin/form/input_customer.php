@@ -293,7 +293,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 			</td>
 		</tr>
 		<?php
-	$batas = 1;
+	$batas = 10;
 	$halaman = isset($_GET['halaman'])?$_GET['halaman']:"";
     
     /********************* Menentukan Offset ******************************/
@@ -326,7 +326,6 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 			$sql = "SELECT * FROM `m_customer` LIMIT $offset,$batas";
 		}
 			$exeSQL = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
-			  $i=0;
 			  $num = mysql_num_rows($exeSQL);
 			  if($num == 0){
 			  echo "<font color='#FF0000'>Data Tidak Ditemukan</font>";
@@ -389,7 +388,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 
 <?php
 //Paging
-    $batas = 1;
+    $batas = 10;
 	
 	/************ Fixed Paging ****************/
 	$cari1 = (isset($_POST['cariPro']))?$_POST['cariPro']:"";
