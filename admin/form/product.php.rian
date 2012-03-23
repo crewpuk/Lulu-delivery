@@ -313,12 +313,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <th style="padding: 5px;">Grup Produk</th>
         <th style="padding: 5px;">Nama Produk</th>
         <th style="padding: 5px;">Ukuran Produk</th>
-        <?php
-        $q_soffice = @mysql_query("SELECT * FROM m_sub_office ORDER BY id_sub_office");
-        while($a_soffice = @mysql_fetch_array($q_soffice)){
-          echo('<th align="center" style="padding: 5px;">Stok '.$a_soffice['name_sub_office'].'</th>');
-        }
-        ?>
+        <th style="padding: 5px;">Stok</th>
         <th style="padding: 5px;">Harga Barang</th>
         <th style="padding: 5px;" colspan="2">Tindakan</th>
       </tr>
@@ -336,14 +331,17 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
         <td style="padding: 5px;"><?php echo $data['group_product']; ?></td>
         <td style="padding: 5px;"><?php echo $data['name_product']; ?></td>
         <td style="padding: 5px;" align="center"><?php echo $data['size_product']; ?></td>
+        <td align="center" style="padding: 5px;">
         <?php
-        $q_soffice = @mysql_query("SELECT * FROM m_sub_office ORDER BY id_sub_office");
+        $q_soffice = @mysql_query("SELECT * FROM m_sub_office");
         while($a_soffice = @mysql_fetch_array($q_soffice)){
             $q_stock = @mysql_query("SELECT * FROM m_stock WHERE code_product = '".$data['code_product']."' AND id_sub_office = '".$a_soffice['id_sub_office']."'");
-            $a_stock = @mysql_fetch_array($q_stock);
-            echo('<td align="center" style="padding: 5px;">'.$a_stock['stock'].'</td>');
+            while($a_stock = @mysql_fetch_array($q_stock)){
+                echo($a_soffice['name_sub_office'].' : '.$a_stock['stock'].'<br />');
+            }
         }
         ?>
+        </td>
         <td style="padding: 5px;">Rp. <?php echo number_format($data['price_product'],0,',','.'); ?></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&ubah&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&hapus&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
@@ -427,34 +425,23 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     				}
     			}
                 }
-    echo "<br />";    
-    $sumAll=0;
+    echo "<br />";           
     if($cari3 == 'grup'){
-    $q_dataProduct = mysql_query("SELECT code_product FROM m_product Where (`group_product`) LIKE '%$key3%'");
-    while($dataProduct = mysql_fetch_array($q_dataProduct)){
-      $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock` Where (`code_product`) = '".$dataProduct['code_product']."'"));        
-      $sumAll += $sumStok[0];
-    }
-    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));  
+    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));
 	}elseif($cari3 == 'nama'){
-    $q_dataProduct = mysql_query("SELECT code_product FROM m_product Where (`name_product`) LIKE '%$key3%'");
-    while($dataProduct = mysql_fetch_array($q_dataProduct)){
-      $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock` Where (`code_product`) = '".$dataProduct['code_product']."'"));        
-      $sumAll += $sumStok[0];
-    }
-	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
+	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
 	}else{
-	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
+	$sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
     $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock`"));
-    $sumAll = $sumStok[0];
 	}
-
 		
-	  echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
+	echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
      
     echo "<br />";
     
-    echo "Stok Keseluruhan : <strong>$sumAll</strong>";
+    echo "Stok Keseluruhan : <strong>$sumStok[0]</strong>";
     
     echo "</div>";
 
@@ -478,11 +465,10 @@ $kode = (isset($_POST['kode2']))?$_POST['kode2']:"";
 $grup = (isset($_POST['grup']))?$_POST['grup']:"";
 $nama = (isset($_POST['nama']))?$_POST['nama']:"";
 $ukur = (isset($_POST['ukuran']))?$_POST['ukuran']:"";
-$stok = (isset($_POST['stok']))?$_POST['stok']:array(); // Using Array for SubOffice
+$stok = (isset($_POST['stok']))?$_POST['stok']:"";
 $hrga = (isset($_POST['harga']))?$_POST['harga']:"";
 $sqlDB = mysql_fetch_array(mysql_query("SELECT * FROM `m_product`"));
 $kodeDB = $sqlDB['code_product'];
-$sqlSO = mysql_query("SELECT * FROM m_sub_office"); // Resource for SubOffice
 $id = (isset($_GET['no']))?$_GET['no']:"";
 //Proses Tambah Produk
 if(isset($_POST['tambahkan'])){
@@ -497,16 +483,13 @@ if(isset($_POST['tambahkan'])){
 		"'$grup'",
 		"'$nama'",
 		"'$ukur'",
+		"'$stok'",
 		"'$hrga'",
 		"'1'",
 		);
-    while($aSO = mysql_fetch_array($sqlSO)){ // Looping SubOffice
-      mysql_query("INSERT INTO m_stock VALUES('','".$kode."','".$aSO['id_sub_office']."','".$stok[$aSO['id_sub_office']]."')");
-    } // Insert for stok SubOffice
 		$sql = "INSERT INTO `m_product` Values(".implode(',',$value).")";
-    //echo($sql);
 		$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
-     if($ex){
+		 if($ex){
 			alert('Data Berhasil Disimpan');
 			location('index.php?page=dashboard&sub=product');
 		 }else{
@@ -528,7 +511,7 @@ $ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 }
 //Proses Ubah
 if(isset($_POST['ubah'])){
-	if(isset($_POST['kode'])&&$_POST['kode']==$kodeDB){
+	if($_POST['kode']==$kodeDB){
 		location('index.php?page=dashboard&sub=product&e=2');
 	}else{
 		$sql = "UPDATE `m_product` SET
@@ -536,13 +519,10 @@ if(isset($_POST['ubah'])){
 		`group_product` = '$grup',
 		`name_product` = '$nama',
 		`size_product` = '$ukur',
+		`stock_product` = '$stok',
 		`price_product` = '$hrga'
 		Where `code_product` = '$id'
 		";
-    while($aSO = mysql_fetch_array($sqlSO)){ // Looping SubOffice
-      mysql_query("UPDATE m_stock SET stock = '".$stok[$aSO['id_sub_office']]."' WHERE code_product = '".$kode."' AND id_sub_office = '".$aSO['id_sub_office']."'");
-    } // Insert for stok SubOffice
-    // echo($sql);
 		$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 			if($ex){
 			location('index.php?page=dashboard&sub=product');	

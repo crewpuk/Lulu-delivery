@@ -1,5 +1,5 @@
 	<div align="center">
-		<div align="center"><img src="images/Lulu@delivery.jpg" width="700px" /></div><br />
+		<div align="center"><img src="images/Lulu@delivery.jpg" style="max-width:550px;" /></div><br />
 		<div id="testPane1" data-dojo-id="pane1" data-dojo-type="dijit.TitlePane" data-dojo-props='title:"Silahkan Login Terlebih Dahulu !",
 				style:"width: 50%;" '>
 			
