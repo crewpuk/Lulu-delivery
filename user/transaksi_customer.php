@@ -24,16 +24,22 @@
 		<div class="contentTransaksi" >
 			<div id="dataPerusahaan" 
 				data-dojo-type="dijit.TitlePane" 
-				data-dojo-props='title:"Data LuluKID" '
+				data-dojo-props='title:"Data Lulu@delivery" '
 				>
+					<?php
+					$q_data = mysql_query("SELECT * FROM m_data");
+					$data_lulu = array();
+					while($d = mysql_fetch_array($q_data)){
+						$index = $d['name'];
+						$data_lulu[$index] = $d['value'];
+					}
+					?>
 					<div class="alignTable">
-						LuluKids <br />
-						Jl. Pekapuran Raya No.xx <br />
-						16417 <br />
-						021-946424687 <br />
-						0875-65421687 <br />
-						<a href="#" >lulukid.net</a> <br />
-						lulu.kids@lulu-groups.com <br /><br /><br /><br /><br />
+						<?php echo $data_lulu['company_name']; ?> <br />
+						<?php echo nl2br($data_lulu['company_address']); ?> <br />
+						<?php echo nl2br($data_lulu['company_phone']); ?> <br />
+						<a href="#" ><?php echo $data_lulu['company_url']; ?></a> <br />
+						<?php echo $data_lulu['company_email']; ?> <br /><br /><br /><br /><br />
 					</div>
 			</div>
 		</div>

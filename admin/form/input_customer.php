@@ -33,7 +33,7 @@ if(!isset($_POST['tambah'])){?>
 
 	?>
     <tr>
-      <td style="padding: 5px;" width="109">Kode Customer</td>
+      <td style="padding: 5px;" width="109">No. Pelanggan</td>
       <td style="padding: 5px;" width="5">:</td>
       <td style="padding: 5px;" width="296">
 		<input dojoType="dijit.form.ValidationTextBox" 
@@ -133,7 +133,7 @@ if(!isset($_POST['tambah'])){?>
 		  <th style="padding: 5px;" colspan="3">Ubah Customer</th>
 		</tr>
 		<tr>
-		  <td style="padding: 5px;" width="109">Kode Customer</td>
+		  <td style="padding: 5px;" width="109">No. Pelanggan</td>
 		  <td style="padding: 5px;" width="5">:</td>
 		  <td style="padding: 5px;" width="296">
 		  <input 
@@ -296,7 +296,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 		?>
 		<tr>
         <th style="padding: 5px;">No</th>
-        <th style="padding: 5px;">Kode</th>
+        <th style="padding: 5px;">No. Pelanggan</th>
         <th style="padding: 5px;">Nama</th>
         <th style="padding: 5px;">No. Pengenal</th>
         <th style="padding: 5px;">Alamat</th>

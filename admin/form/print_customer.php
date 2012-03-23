@@ -23,7 +23,7 @@
 			<tr>
 				<td width="30%"></td>
 				<td width="20%"></td>
-				<td width="30%" align="right">Kode Customer</td>
+				<td width="30%" align="right">No. Pelanggan</td>
 				<td width="25%">: <?php echo $arr['code_customer'];?></td>
 			</tr>
 			<tr>

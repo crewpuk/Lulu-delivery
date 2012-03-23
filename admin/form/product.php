@@ -147,7 +147,7 @@ if($objReaderState==true){
     for($i=0;$i<count($row_for_query);$i++) {
         $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
         if($check_CP>0){
-          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', stock_product = (m_product.stock_product+".$row_for_query[$i][4]."), price_product = '".$row_for_query[$i][5]."' WHERE code_product = '".$row_for_query[$i][0]."';\n";
+          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', stock_product = '".$row_for_query[$i][4]."', price_product = '".$row_for_query[$i][5]."' WHERE code_product = '".$row_for_query[$i][0]."';\n";
           $action="update";
         }
         else{
