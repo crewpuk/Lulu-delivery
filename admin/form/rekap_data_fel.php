@@ -9,6 +9,8 @@ if(isset($_POST['btnFilter'])){
 	$hari = date('Y-m-d');
 	//echo $hari;
 	$addSql = "AND DATE(m_detail_transaction.created_date) = '$hari'";
+	$first = "";
+	$last = "";
 }
 ?>
 <form action="" method="post">
@@ -64,11 +66,11 @@ if(isset($_POST['btnFilter'])){
 			if($i%2==0){ $bg='#ececec'; }else{ $bg='#f5f5f5'; }
 		?>
 		<tr  bgcolor="<?php echo $bg; ?>" class="linkBorder">
-			<td style="padding: 5px;"><?php echo $i;?></td>
-			<td style="padding: 5px;"><?php echo $arrSql['code_transaction'];?></td>
+			<td style="padding: 5px;" align="center"><?php echo $i;?></td>
+			<td style="padding: 5px;" align="center"><?php echo $arrSql['code_transaction'];?></td>
 			<td style="padding: 5px;"><?php echo $arrSql['name_product'];?></td>
-			<td style="padding: 5px;"><?php echo $arrSql['quantity_detail_transaction'];?></td>
-			<td style="padding: 5px;"><?php echo $arrSql['totalHarga'];?></td>
+			<td style="padding: 5px;" align="center"><?php echo $arrSql['quantity_detail_transaction'];?></td>
+			<td style="padding: 5px;" align="center"><?php echo "Rp. ".number_format($arrSql['totalHarga'],0,",",".");?></td>
 		</tr>
 		<?php } ?>
 	</table>
