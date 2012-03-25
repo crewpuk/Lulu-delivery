@@ -24,6 +24,13 @@ dojo.ready(function(){
 	var storeFil = dojo.data.ItemFileReadStore({
 				url: 'system/generate_produk.php'
 			});
+			//~ 
+	//~ var storeCabang = dojo.data.ItemFileReadStore({
+				//~ url: 'admin/system/generate_data_cabang.php'
+			//~ });
+			
+	//dijit.byId('filPelanggan').store = storePel;		
+	//dijit.byId('filter_cabang').store = storeCabang;		
 	var radio = dijit.byId('rdKode');
 	dojo.connect(radio, "onClick", function(){
 			var txt = dijit.byId('kode_cust1');

@@ -18,9 +18,7 @@
 */
 
 $json = array("identifier"=>"id");
-
 $data_all = array();
-
 include "../configuration/config.php";
 
 $str4query = "";

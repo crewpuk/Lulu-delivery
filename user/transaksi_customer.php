@@ -69,7 +69,7 @@
 								  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
 								  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected";}?>>Nama</option>
 								  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected";}?>>No. HP</option>
-								</select>
+								</select> 
 							</td>
 							<td>:</td>
 							<td>
@@ -224,7 +224,15 @@
 									placeHolder="Quantity"
 									dojoType="dijit.form.NumberTextBox"
 									required="true" /></td>
-						<td></td>
+						<td>
+							<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_data_cabang.php' jsid="storeCabangFil"></span>
+							<input class="myTextField" id="filter_cabang_cmb" placeHolder="Pilih Cabang"
+								style="width: 10em;"
+								dojoType="dijit.form.FilteringSelect"
+								store="storeCabangFil"
+								searchAttr="name_sub_office"
+								name="cabangfilter"  />
+						</td>
 						<td bgcolor="#CEE2F4" colspan="2" align="center"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >Save</button></td>
 					  </tr>
 						
