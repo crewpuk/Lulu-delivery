@@ -1,4 +1,8 @@
 <?php
+
+$LINK = ($_SESSION['level']=='admin')?rawurlencode('[admin]'):'';
+$LINK_INC = ($_SESSION['level']=='admin')?'admin/':'';
+
 if(!isset($_POST['tambah'])){?>
 <form id="inCust1" name="inCust1" method="post" action="">
 	<button dojotype="dijit.form.Button" type="submit" name="tambah" id="tambahCust">
@@ -199,6 +203,10 @@ if(!isset($_POST['tambah'])){?>
 		  <td style="padding: 5px;">:</td>
 		  <td style="padding: 5px;"><input name="contact_cust" id="contact_cust1" value="<?php echo $dataSQL['contact_customer'];?>" dojoType="dijit.form.ValidationTextBox" /></td>
 		</tr>
+		<?php
+        // for su_admin
+        if($_SESSION['level']=='su_admin'){
+        ?>
 		<tr>
 		  <td style="padding: 5px;">Status</td>
 		  <td style="padding: 5px;">:</td>
@@ -207,6 +215,12 @@ if(!isset($_POST['tambah'])){?>
 			<option value="0" <?php if($dataSQL['status_customer'] == '0'){echo "selected";}?>>Tidak Aktif</option>
 		  </select></td>
 		</tr>
+		<?
+		}
+		else{
+			echo('<input name="status_cust" id="status_cust1" value="1" />');
+		}
+		?>
 		<tr>
 		  <td style="padding: 5px;">&nbsp;</td>
 		  <td style="padding: 5px;">&nbsp;</td>
@@ -267,7 +281,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 				</select>
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
 				<button type="submit" dojoType="dijit.form.Button" name="btnCariCust">Cari</button>
-				<a href="index.php?page=dashboard&sub=input_customer" ><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a>
+				<a href="index.php?page=dashboard&sub=input_customer<?php echo $LINK;?>" ><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a>
 			</td>
 			<td colspan="6">&emsp;
 				 Filter : <input dojoType="dijit.form.DateTextBox" 
@@ -276,8 +290,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 					style="width: 8em;"
 					name="first"
 					value="<?php echo $first3;?>"
-					promptMessage="mm/dd/yy" 
-					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					promptMessage="yyyy-mm-dd" 
+					invalidMessage="Invalid date. Please use yyyy-mm-dd format."
 					class="myTextField" /> 
 				S/D
 				<input dojoType="dijit.form.DateTextBox" 
@@ -286,8 +300,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 					style="width: 8em;"
 					name="last"
 					value="<?php echo $last3;?>"
-					promptMessage="mm/dd/yy" 
-					invalidMessage="Invalid date. Please use mm/dd/yy format."
+					promptMessage="yyyy-mm-dd" 
+					invalidMessage="Invalid date. Please use yyyy-mm-dd format."
 					class="myTextField" />
 				<button dojoType="dijit.form.Button" type="submit" name="btnFilter">Filter</button>
 			</td>
@@ -341,8 +355,15 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
         <th style="padding: 5px;">No. Telepon Rumah</th>
         <th style="padding: 5px;">Contact Online</th>
         <th style="padding: 5px;">Email</th>
-        <th style="padding: 5px;">Status Aktif</th>
-        <th style="padding: 5px;" colspan="3">Tindakan</th>
+        <?php
+        // for su_admin
+        if($_SESSION['level']=='su_admin'){
+        ?>
+        	<th style="padding: 5px;">Status Aktif</th>
+        <?php
+    	}
+        ?>
+        <th style="padding: 5px;" colspan="<?php echo($_SESSION['level']=='su_admin')?'3':'2';// for su_admin?>">Tindakan</th>
       </tr>
       <?php
 		while($data = mysql_fetch_array($exeSQL)){
@@ -361,22 +382,35 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 		<td align="center" style="padding: 5px;"><?php echo $data['home_phone_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['contact_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['email_customer'];?></td>
-		<td align="center" style="padding: 5px;">
-		<?php 
-		$status = $data['status_customer'];
-		if($status == 0){ echo "<span style='color: #9e3f3f;'>Tidak Aktif</span>"; }
-		elseif($status == 1){ echo "<span style='color: #3f679e;'>Aktif</span>"; }		
-		?>
-        
-        </td>
-		<td align="center" style="padding: 5px;"><a href="index.php?page=dashboard&sub=input_customer&vwUbah&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="vwUbah" title="Ubah"></a></td>
+		<?php
+        // for su_admin
+        if($_SESSION['level']=='su_admin'){
+        ?>
+			<td align="center" style="padding: 5px;">
+			<?php 
+			$status = $data['status_customer'];
+			if($status == 0){ echo "<span style='color: #9e3f3f;'>Tidak Aktif</span>"; }
+			elseif($status == 1){ echo "<span style='color: #3f679e;'>Aktif</span>"; }		
+			?>
+	        </td>
+        <?php
+    	}
+        ?>
+		<td align="center" style="padding: 5px;"><a href="index.php?page=dashboard&sub=input_customer<?php echo $LINK;?>&vwUbah&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="vwUbah" title="Ubah"></a></td>
+        <?php
+        // for su_admin
+        if($_SESSION['level']=='su_admin'){
+        ?>
         <td align="center" style="padding: 5px;">
         	<?php if($data["status_customer"]==1){?>
-        		<a href="index.php?page=dashboard&sub=input_customer&hapus&no=<?php echo $data['code_customer']; ?>" onclick="return confirm('Menghapus ini hanya akan membuatnya TIDAK AKTIF?')"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus?"></a>
+        		<a href="index.php?page=dashboard&sub=input_customer<?php echo $LINK;?>&hapus&no=<?php echo $data['code_customer']; ?>" onclick="return confirm('Menghapus ini hanya akan membuatnya TIDAK AKTIF?')"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus?"></a>
         	<?php }else{?>
-        		<a href="index.php?page=dashboard&sub=input_customer&aktifasi&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/yes.png" width="16" height="16" alt="hapus" title="Aktifkan?"></a>
+        		<a href="index.php?page=dashboard&sub=input_customer<?php echo $LINK;?>&aktifasi&no=<?php echo $data['code_customer']; ?>"><img src="<?php echo BASE; ?>images/16x16/yes.png" width="16" height="16" alt="hapus" title="Aktifkan?"></a>
         	<?php }?>
         </td>
+        <?php
+    	}
+        ?>
         <td align="center" style="padding: 5px;">
 			<a href="#" onclick="window.open('form/print_customer.php?id=<?php echo $data['code_customer']; ?>','Cetak','width=800,height=700,scrollbars=yes');"><img src="<?php echo BASE; ?>images/32x32/printer.png" width="16" height="16" alt="cetak" title="Cetak" /></a>
         </td>
@@ -433,7 +467,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
                 if($key3 != null){
                     if($jumData > $batas){
     				if($noPage > 1){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage-1)."&key=".$key3."&cariGet=".$cari3."'>&lt; &lt; Sebelumnya</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage-1)."&key=".$key3."&cariGet=".$cari3."'>&lt; &lt; Sebelumnya</a>";
     				}
     				//Nomor noPage dan Linknya
     				for($page = 1; $page <= $jumHal; $page++){
@@ -442,20 +476,20 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
     						if(($showPage != ($jumHal-1)) && ($page==$jumHal)) { echo " ... "; }
     						if($page==$noPage){ echo "<b> $page </b>"; }
     						else{ 
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=$page&key=".$key3."&cariGet=".$cari3."'> $page </a>"; 
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=$page&key=".$key3."&cariGet=".$cari3."'> $page </a>"; 
     						$showPage=$page; }
     					}
     				}
     				//Next
     				if($noPage < $jumHal){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage+1)."&key=".$key3."&cariGet=".$cari3."'>Selanjutnya &gt; &gt;</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage+1)."&key=".$key3."&cariGet=".$cari3."'>Selanjutnya &gt; &gt;</a>";
     				}
     			}
                 }
                 elseif($first3 != null || $last3 != null){
 					if($jumData > $batas){
     				if($noPage > 1){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage-1)."&firstget=".$first3."&lastget=".$last3."'>&lt; &lt; Sebelumnya</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage-1)."&firstget=".$first3."&lastget=".$last3."'>&lt; &lt; Sebelumnya</a>";
     				}
     				//Nomor noPage dan Linknya
     				for($page = 1; $page <= $jumHal; $page++){
@@ -464,13 +498,13 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
     						if(($showPage != ($jumHal-1)) && ($page==$jumHal)) { echo " ... "; }
     						if($page==$noPage){ echo "<b> $page </b>"; }
     						else{ 
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=$page&firstget=".$first3."&lastget=".$last3."'> $page </a>"; 
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=$page&firstget=".$first3."&lastget=".$last3."'> $page </a>"; 
     						$showPage=$page; }
     					}
     				}
     				//Next
     				if($noPage < $jumHal){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage+1)."&firstget=".$first3."&lastget=".$last3."'>Selanjutnya &gt; &gt;</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage+1)."&firstget=".$first3."&lastget=".$last3."'>Selanjutnya &gt; &gt;</a>";
     				}
 				}
 				}
@@ -479,7 +513,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
                 /************** Jika tak ada pencarian ********************/
     			if($jumData > $batas){
     				if($noPage > 1){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage-1)."'>&lt; &lt; Sebelumnya</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage-1)."'>&lt; &lt; Sebelumnya</a>";
     				}
     				//Nomor noPage dan Linknya
     				for($page = 1; $page <= $jumHal; $page++){
@@ -488,13 +522,13 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
     						if(($showPage != ($jumHal-1)) && ($page==$jumHal)) { echo " ... "; }
     						if($page==$noPage){ echo "<b> $page </b>"; }
     						else{ 
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=$page'> $page </a>"; 
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=$page'> $page </a>"; 
     						$showPage=$page; }
     					}
     				}
     				//Next
     				if($noPage < $jumHal){
-    						echo "<a class='paging' href='?page=dashboard&sub=input_customer&halaman=".($noPage+1)."'>Selanjutnya &gt; &gt;</a>";
+    						echo "<a class='paging' href='?page=dashboard&sub=input_customer$LINK&halaman=".($noPage+1)."'>Selanjutnya &gt; &gt;</a>";
     				}
     			}
                 }
@@ -539,38 +573,38 @@ $kodeDB = $sqlDB['code_customer'];
 // Proses Simpan Customer
 if(isset($_POST['simpan_customer'])){
 		if($kode == null || $nama == null || $pengenal == null || $kota == null || $hp == null){
-		location('index.php?page=dashboard&sub=input_customer&e=1');
+		location('index.php?page=dashboard&sub=input_customer'.$LINK.'&e=1');
 	}elseif($kode==$kodeDB){
-		location('index.php?page=dashboard&sub=input_customer&e=2');
+		location('index.php?page=dashboard&sub=input_customer'.$LINK.'&e=2');
 	}else{
 		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email',CURRENT_TIMESTAMP,'1')") or die("Salah Query Simpan".mysql_error());
 
 		 if($x){
 			alert('Data Berhasil Disimpan');
-			location('index.php?page=dashboard&sub=input_customer');
+			location('index.php?page=dashboard&sub=input_customer'.$LINK);
 		 }else{
 			alert('Terjadi Kesalahan Pada Server');
-			location('index.php?page=dashboard&sub=input_customer');	 
+			location('index.php?page=dashboard&sub=input_customer'.$LINK);	 
 		 }}
 }elseif(isset($_GET['hapus'])){
 	$id = $_GET['no'];
 	$sql = "UPDATE `m_customer` SET `status_customer` = '0' Where `code_customer` = '$id'";
 	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 	if($ex){
-	location('index.php?page=dashboard&sub=input_customer');	
+	location('index.php?page=dashboard&sub=input_customer'.$LINK);	
 	}else{
 	alert('Terjadi Kesalahan Pada Server');
-	location('index.php?page=dashboard&sub=input_customer');
+	location('index.php?page=dashboard&sub=input_customer'.$LINK);
 	}
 }elseif(isset($_GET['aktifasi'])){
 	$id = $_GET['no'];
 	$sql = "UPDATE `m_customer` SET `status_customer` = '1' Where `code_customer` = '$id'";
 	$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 	if($ex){
-	location('index.php?page=dashboard&sub=input_customer');	
+	location('index.php?page=dashboard&sub=input_customer'.$LINK);	
 	}else{
 	alert('Terjadi Kesalahan Pada Server');
-	location('index.php?page=dashboard&sub=input_customer');
+	location('index.php?page=dashboard&sub=input_customer'.$LINK);
 	}
 }elseif(isset($_POST['edit_customer'])){
 	if($_POST['rdKode'] == 'ubah'){
@@ -580,7 +614,7 @@ if(isset($_POST['simpan_customer'])){
 		}
 		
 	if($_POST['kode_cust'] == $kodeDB){
-		location('index.php?page=dashboard&sub=input_customer&e=2');
+		location('index.php?page=dashboard&sub=input_customer'.$LINK.'&e=2');
 	}else{
 		$sql = "UPDATE `m_customer` SET
 		`code_customer` 	= '$kode',
@@ -599,10 +633,10 @@ if(isset($_POST['simpan_customer'])){
 		";
 		$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 			if($ex){
-			location('index.php?page=dashboard&sub=input_customer');	
+			location('index.php?page=dashboard&sub=input_customer'.$LINK);	
 			}else{
 			alert('Terjadi Kesalahan Pada Server');
-			location('index.php?page=dashboard&sub=input_customer');
+			location('index.php?page=dashboard&sub=input_customer'.$LINK);
 			}
 	}
 } 

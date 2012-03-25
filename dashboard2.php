@@ -46,14 +46,27 @@ jam();
 <div id="ribbon"><?php include "ribbon.php"; ?></div>
 <div id="container">
 	<div id="content">
-    <?php 
-	$page = (isset($_GET['page']))?$_GET['page']:"";
-    $sub = (isset($_GET['sub']))?$_GET['sub']:"";
-	@include "user/$sub.php";
-    if($page == 'dashboard' and $sub == 'keluar'){
-                    location('logout.php');                    
-    }
-	?>
+		<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
+			<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">	
+			    <?php 
+				$page = (isset($_GET['page']))?$_GET['page']:"";
+			    $sub = (isset($_GET['sub']))?$_GET['sub']:"";
+
+				if(!preg_match("#\[admin\]#", rawurldecode($sub))){
+					@include "user/$sub.php";
+				}
+				else{
+					//print_r($_SESSION);
+					//echo("admin/form/".str_replace("[admin]", "", rawurldecode($sub)).".php");
+					@include("admin/form/".str_replace("[admin]", "", rawurldecode($sub)).".php");
+				}
+
+			    if($page == 'dashboard' and $sub == 'keluar'){
+			                    location('logout.php');                    
+			    }
+				?>
+			</div>
+		</div>
     </div>
 </div>
 <div id="footer">Copyright &copy; 2012 Lulu Delivery App <br />

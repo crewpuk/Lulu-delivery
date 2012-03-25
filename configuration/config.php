@@ -30,7 +30,7 @@ echo "<td>";
 					<img src='".BASE."images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
 					}elseif($sub!='keluar'){
 					echo "
-					<a href='?page=dashboard&sub=$link[$i]' title='$title[$i]'>
+					<a href='?page=dashboard&sub=".rawurlencode($link[$i])."' title='$title[$i]'>
 					<img src='".BASE."images/64x64/$image[$i]' title='$title[$i]' alt='$image' /><br />$title[$i]</a>";
 					}
 				echo "</td>";
