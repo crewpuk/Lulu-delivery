@@ -1,9 +1,18 @@
 <?php
 include("../../configuration/config.php");
+	$first 	= $_POST['btnFirst'];
+	$last 	= $_POST['btnLast'];
+if(isset($_POST['btnFilter'])){
+	//echo $first."/".$last;
+	$addSql = "AND DATE(m_detail_transaction.created_date) BETWEEN '$first' AND '$last' ";
+}elseif(isset($_POST['btnHari'])){
+	$hari = date('Y-m-d');
+	//echo $hari;
+	$addSql = "AND DATE(m_detail_transaction.created_date) = '$hari'";
+}
 ?>
 <form action="" method="post">
-	<button dojoType="dijit.form.Button">Per Hari</button>
-	<button dojoType="dijit.form.Button">Per bulan</button>
+	<button dojoType="dijit.form.Button" type="submit" name="btnHari">Per Hari</button>
 	&emsp;&emsp;
 	<div style="float: right; width: 50%" align="right">
 	Filter:
@@ -11,8 +20,9 @@ include("../../configuration/config.php");
 					constraints={datePattern:'yy-MM-dd'} 
 					lang="en"
 					style="width: 8em;"
-					name="first"
 					placeHolder="Tanggal"
+					name="btnFirst"
+					value="<?php echo $first;?>"
 					promptMessage="yy-MM-dd" 
 					invalidMessage="Invalid date. Please use mm/dd/yy format."
 					class="myTextField" />
@@ -21,11 +31,13 @@ include("../../configuration/config.php");
 					constraints={datePattern:'yy-MM-dd'} 
 					lang="en"
 					style="width: 8em;"
-					name="last"
 					placeHolder="Tanggal"
+					name="btnLast"
+					value="<?php echo $last;?>"
 					promptMessage="yy-MM-dd" 
 					invalidMessage="Invalid date. Please use mm/dd/yy format."
-					class="myTextField" /><button dojoType="dijit.form.Button" >Filter</button></div>
+					class="myTextField" />
+					<button dojoType="dijit.form.Button" name="btnFilter" type="submit" >Filter</button></div>
 					<br /><br />
 	<table border="1" cellspacing="0" cellpadding="0" width="100%">  
 		<tr>
@@ -35,14 +47,17 @@ include("../../configuration/config.php");
 			<th>Kwantity</th>
 			<th>Total</th>		
 		</tr>
-		<?php $cek = mysql_query("SELECT m_detail_transaction.*,
+		<?php
+		$sql = "SELECT m_detail_transaction.*,
 					m_product.name_product,
 					m_product.size_product,
 					m_product.price_product AS harga,
 					(m_detail_transaction.quantity_detail_transaction * m_product.price_product) AS totalHarga 
 					FROM m_detail_transaction,m_product
-					where m_product.code_product = m_detail_transaction.code_product order by
-					m_detail_transaction.code_transaction ASC") or die("salah");  
+					where m_product.code_product = m_detail_transaction.code_product $addSql order by
+					m_detail_transaction.code_transaction ASC";
+		$cek = mysql_query($sql) or die("salah".mysql_error().$sql);
+		//echo $sql;
 			$i=0;
 			while($arrSql=mysql_fetch_array($cek)){
 			$i++;

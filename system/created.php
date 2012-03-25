@@ -14,7 +14,7 @@
 		if($qty > $stokDB){
 			alert('Stok Tidak Cukup');	
 		}else{
-		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$cabang','$qty','ok','1')");
+		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$cabang','$qty','ok',CURRENT_TIMESTAMP,'1')");
 		$x = $qty * $harga;
 		}
 	}
