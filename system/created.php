@@ -1,5 +1,5 @@
 <?php
-	print_r($_POST);
+
 	$save_product 		= $_POST['save_product'];
 	$kode_transaction	= $_POST['kode'];
 	$codeCust			= $_POST['kodeCust'];
