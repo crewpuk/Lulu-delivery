@@ -289,6 +289,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 					lang="en"
 					style="width: 8em;"
 					name="first"
+					id="first"
+					data-dojo-props='onChange: function(){ dijit.byId("last").constraints.min = this.get("value"); }'
 					value="<?php echo $first3;?>"
 					promptMessage="yyyy-mm-dd" 
 					invalidMessage="Invalid date. Please use yyyy-mm-dd format."
@@ -299,6 +301,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 					lang="en"
 					style="width: 8em;"
 					name="last"
+					id="last"
+					data-dojo-props='onChange: function(){ dijit.byId("first").constraints.max = this.get("value"); }'
 					value="<?php echo $last3;?>"
 					promptMessage="yyyy-mm-dd" 
 					invalidMessage="Invalid date. Please use yyyy-mm-dd format."
