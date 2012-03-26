@@ -1,0 +1,9 @@
+1. print preview di transaksi 
+2. hilangkan publikasi di bawah tbl transaksi
+3. print rekap data
+4. tampilan table di user/data_customer disesuaikan
+5. logo kegedean
+6. logo di ribbon admin rubah dengan yg baru
+
+
+cc: BERHENTI MENGHARAPKAN ALENA SIREGAR. wkwkwwk ^^
