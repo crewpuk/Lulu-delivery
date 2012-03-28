@@ -2,6 +2,7 @@
 include("../../configuration/config.php");
 	$first 	= $_POST['btnFirst'];
 	$last 	= $_POST['btnLast'];
+	
 if(isset($_POST['btnFilter'])){
 	//echo $first."/".$last;
 	$addSql = "AND DATE(m_detail_transaction.created_date) BETWEEN '$first' AND '$last' ";
@@ -11,6 +12,8 @@ if(isset($_POST['btnFilter'])){
 	$addSql = "AND DATE(m_detail_transaction.created_date) = '$hari'";
 	$first = "";
 	$last = "";
+	$btnHari = true;
+	
 }
 ?>
 <form action="" method="post">
@@ -74,4 +77,5 @@ if(isset($_POST['btnFilter'])){
 		</tr>
 		<?php } ?>
 	</table>
+	<div align="center"><a href="#" onClick="window.open('form/print_rekap_data.php?sql=<?php echo rawurlencode($sql);?>&tglF=<?php echo $first; ?>&tglL=<?php echo $last; ?>&btnHari=<?php echo $btnHari; ?>','Print','width=700px, height=800px, scrollbars=yes');"><img title="Print" src="<?php echo BASE; ?>images/64x64/printer.png" width="64" height="64" alt="print" /></a></div>
 </form>
