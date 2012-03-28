@@ -1,4 +1,3 @@
-
 <?php 
 	include ("system/created.php");
 	include ("system/simpan.php");
@@ -49,7 +48,6 @@
 				data-dojo-type="dijit.TitlePane" 
 				data-dojo-props='title:"Data Pelanggan" '>
 				 <?php
-					
 					if($code != null and $were != null){
 						$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND ".$were." = '".$code."' ";
 					} else {
@@ -59,7 +57,6 @@
 					$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
 					$num = mysql_num_rows($x);
 					$ax = mysql_fetch_array($x);
-					
 				?>
 				<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
 				  <table cellspacing="3" cellpadding="3">
@@ -237,55 +234,85 @@
 					  </tr>
 						
 			  </table></form>
-			<div>TOTAL &emsp;&emsp; : <strong><?php echo "Rp. ".number_format($total, 0,",","."); ?></strong></div>
-			<?php
-				if($total >= 200000 ){ $sale = 0;}else{ $sale = 5000;}
-			?>
-			<div>Biaya antar  : <strong><?php echo "Rp. ".number_format($sale,0,",",".");?></strong></div>
-			<div>GRAND TOTAL  : <strong><?php echo  "Rp. ".number_format($total + $sale, 0,",","."); ?></strong></div>
+			  <br />
+				<script type="text/javascript">
+				// Fungsi untuk simpan transaksi dan pengontrol kirim email atau tidak
+				function save_transaction(){
+					if(confirm("Anda yakin?")){
+						if(confirm("Kirim email?")){
+							document.getElementById("send_email").value = "1";
+						}
+						else{
+							document.getElementById("send_email").value = "0";
+						}
+						document.forms["form_transaction"].submit();
+					}
+					else return false;
+				}
+				function print_preview(){
+					var var_kc = document.getElementById("txt_search").value;
+					var var_kt = document.getElementById("id_genso").value;
+					var var_pembayaran = document.getElementById("model_pembayaran").value;
+					var var_delivery = document.getElementById("delivery_man").value;
+					window.open("user/cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
+				}
+				</script>
+			<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">
+			  <table width="90%" border="0" cellpadding="7" cellspacing="7">
+			  	<tr>
+			  		<td width="52%" align="right">Total</td>
+			  		<td width="1">:</td>
+			  		<td><strong><?php echo "Rp. ".number_format($total, 0,",","."); ?></strong></td>
+			  	</tr>
+			  	<tr>
+			  		<td align="right">Biaya Antar</td>
+			  		<td>:</td>
+			  		<td><strong><?php echo "Rp. ".number_format($sale,0,",","."); ?></strong></td>
+			  	</tr>
+			  	<tr>
+			  		<td align="right">GRAND TOTAL</td>
+			  		<td>:</td>
+			  		<td><strong><?php echo "Rp. ".number_format($total + $sale, 0,",","."); ?></strong></td>
+			  	</tr>
+			  	<tr>
+			  		<td align="right">Delivery-Man</td>
+			  		<td>:</td>
+			  		<td><select name="delivery_man" id="delivery_man">
+															<?php
+															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery");
+															while($data_dm = mysql_fetch_array($q_dm)){
+																echo("<option value='".$data_dm['id_delivery']."'>".$data_dm['name_delivery']."</option>");
+															}
+															?>
+															</select></td>
+			  	</tr>
+			  	<tr>
+			  		<td align="right">Model Pembayaran</td>
+			  		<td>:</td>
+			  		<td><select name="model_pembayaran" id="model_pembayaran">
+																	<option value="Transfer" selected="selected">Transfer</option>
+																	<option value="COD">COD</option>
+																	<option value="CashToko">Cash Toko</option>
+																</select></td>
+			  	</tr>
+			  	<tr>
+			  		<td align="right">
+			  			&emsp;<a href="javascript:print_preview();" target="_blank"><img src="images/32x32/searchdoc.png" style="vertical-align: middle;">Print Preview</a>
+			  		</td>
+			  		<td> </td>
+			  		<td>
+			  			<button dojoType="dijit.form.Button" type="button" name="simpan_transaction" onclick="save_transaction()">&emsp;&emsp;Save&emsp;&emsp;</button>
+			  		</td>
+			  	</tr>
+			  </table>
+			<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
+			<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />
+			<input type="hidden" name="simpan_transaction" value="1" />
+			<input type="hidden" name="send_email" id="send_email" value="0" />
+			</form>
 		</div>
 	</div>
-</div><br />
-
-
-<script type="text/javascript">
-// Fungsi untuk simpan transaksi dan pengontrol kirim email atau tidak
-function save_transaction(){
-	if(confirm("Anda yakin?")){
-		if(confirm("Kirim email?")){
-			document.getElementById("send_email").value = "1";
-		}
-		else{
-			document.getElementById("send_email").value = "0";
-		}
-		document.forms["form_transaction"].submit();
-	}
-	else return false;
-}
-</script>
-
-
-<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">
-<div style="margin-left: 470px;">Publikasi Ke &emsp;&emsp;&emsp;: <select name="publikasi">
-														<?php
-														$sub_office_q = mysql_query("SELECT * FROM m_sub_office");
-														while($data_sub_office = mysql_fetch_array($sub_office_q)){
-															echo "<option value='".$data_sub_office['id_sub_office']."'>".$data_sub_office['name_sub_office']."</option>\n";
-														}
-														?>
-													</select>
-													<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
-													<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />
-													<input type="hidden" name="simpan_transaction" value="1" />
-													<input type="hidden" name="send_email" id="send_email" value="0" />
-													</div><br />
-<div style="margin-left: 470px;">Model Pembayaran : <select name="model_pembayaran">
-														<option value="Transfer" selected="selected">Transfer</option>
-														<option value="COD">COD</option>
-														<option value="CashToko">Cash Toko</option>
-													</select></div><br />
-<div style="margin-left: 550px;"><button dojoType="dijit.form.Button" type="button" name="simpan_transaction" onclick="save_transaction()"> Save </button></div>
-</form>
+</div>
 </div>
 <?php } ?>
 </div>

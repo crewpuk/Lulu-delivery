@@ -25,7 +25,7 @@
 	<script type="text/javascript" src="lib/dojo/dojo/dojo.js"></script>
 			<script type="text/javascript" src="js/main.js"></script>
 			<script type="text/javascript" src="js/require.js"></script>
-	<link href="images/32x32/logo.png" rel="shortcut icon" />
+	<link href="images/16x16/logo.png" rel="shortcut icon" />
     </head>
 	<body class="claro">
 	<?php 

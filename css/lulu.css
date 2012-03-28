@@ -4276,7 +4276,7 @@ html, body, #main{
 table.demoTable {
     border-collapse: collapse;	
 }
-th {
+/*th {
     background-color: #4f8ce5; 
     color: #666; 
     font-weight:: bold !important;
@@ -4284,7 +4284,8 @@ th {
     padding:3px; 
     background-image:url('../../dijit/themes/soria/images/titleBar.png');
     background-position:0px -1px; 
-}
+}*/
+th{ text-align:center; color:#FFF; font-weight:bold; background: #00baff; padding: 0; }
 .dijitRtl caption,
 .dijitRtl th {
     text-align:right;

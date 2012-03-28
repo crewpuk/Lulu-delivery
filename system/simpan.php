@@ -5,8 +5,8 @@
 	
 		$code_transaction 	= $_POST['code_transaction'];
 		$code_customer		= $_POST['code_customer'];
-		$publikasi 			= $_POST['publikasi'];
 		$model_pembayaran 	= $_POST['model_pembayaran'];
+		$delivery_man 		= $_POST['delivery_man'];
 		$send_email		 	= $_POST['send_email'];
 		$id_account			= $_SESSION['id'];
 
@@ -17,10 +17,10 @@
 									m_transaction values('',
 									'$code_transaction',
 									'$id_account',
-									'$code_customer',CURRENT_TIMESTAMP(),'$publikasi','$model_pembayaran','1')") or die("query salah".mysql_error());
+									'$code_customer',CURRENT_TIMESTAMP(),'$delivery_man','$model_pembayaran','1')") or die("query salah".mysql_error());
 			
-			$url = "user/cetak.php?kT=$code_transaction&kC=$code_customer&email=".$send_email;
-			$title = "Cetak";
+			$url = "user/cetak.php?kT=$code_transaction&kC=$code_customer&email=".$send_email."&delivery=".$delivery_man;
+			$title = "_blank";
 			$option = "width=800,height=700,scrollbars=yes";
 
 			echo("<script type='text/javascript'>window.open('$url','$title','$option');</script>");

@@ -16,42 +16,49 @@ $html='<html>
 $q_data_perusahaan=mysql_query("SELECT * FROM m_data");
 $data_lulu=array();
 while($data = mysql_fetch_array($q_data_perusahaan)){
-  $index=$data['name'];
-  $data_lulu[$index]=$data['value'];
+  $index = $data['name'];
+  $data_lulu[$index] = $data['value'];
 }
 
 
 
-$kode_transaction   = urldecode($_GET['kT']);
-$kode_customer    = urldecode($_GET['kC']);
+$kode_transaction = urldecode($_GET['kT']);
+$kode_customer = urldecode($_GET['kC']);
 $sql = "SELECT * FROM `m_customer` Where `code_customer` = '$kode_customer'";
 $x = mysql_query($sql) or die("Query Salah -> ".mysql_error());
 $ax = mysql_fetch_array($x);
 
 
 
-$sqlA = "SELECT `m_transaction`.*,`m_sub_office`.`name_sub_office`,`m_sub_office`.`email_sub_office` FROM `m_transaction`,`m_sub_office` Where `m_transaction`.`code_customer` = '$kode_customer' AND `m_sub_office`.`id_sub_office` = `m_transaction`.`sub_office_transaction`";
+$sqlA = "SELECT * FROM `m_transaction` Where `m_transaction`.`code_transaction` = '$kode_transaction'";
 $xa = mysql_query($sqlA) or die("Query Salah -> ".mysql_error()); 
 $axa = mysql_fetch_array($xa);
 
-
-$id = $axa['id_account'];
+session_start();
+$id = $_SESSION['id'];
 $q_user = mysql_query("SELECT fullname_account FROM user_account WHERE id_account = '$id' LIMIT 1");
 $data_user = mysql_fetch_array($q_user);
 $employee_fullname = $data_user['fullname_account'];
 
+if(isset($_GET['delivery'])){
+  $id_delivery = $_GET['delivery'];
+}
+$q_delivery = mysql_query("SELECT * FROM m_delivery WHERE id_delivery = '$id_delivery'");
+$data_delivery = mysql_fetch_array($q_delivery);
+$delivery_man = $data_delivery['name_delivery'];
 
 
+$pembayaran=(isset($_GET['pembayaran']))?$_GET['pembayaran']:$axa['cost_type_transaction'];
 $html.='
 <table width="600" border="0" align="center" cellpadding="5" cellspacing="0" style="border:1px solid #333333;">
   <tr>
-    <td width="102" valign="top"><span class="style5"><img src="../images/64x64/logo.png" width="64" height="43" alt="Lulu-delivery"></span></td>
+    <td width="102" valign="top"><span class="style5"><img src="../images/64x64/logo.png" alt="Lulu-delivery"></span></td>
     <td width="209" height="54" valign="top"><span class="style5">'.$data_lulu['company_name'].'<br />
 	'.nl2br($data_lulu['company_address']).' <br />
 	'.nl2br($data_lulu['company_phone']).' <br />
 	<a href="#">'.$data_lulu['company_url'].'</a></span></td>
 	<td align="right" valign="top" class="style5">SO. No. : <label id="lblSO">'.$kode_transaction.'</label><br>
-    Tgl Transaksi :'.date('d - m - Y').' </td>
+    Tgl Transaksi : '.date('d - m - Y').' </td>
   </tr>
   <tr>
     <td height="32" colspan="3" align="center" valign="middle" bgcolor="#CCCCCC"><span class="style1">Nota Pesanan</span></td>
@@ -64,7 +71,7 @@ $html.='
     <td valign="top">: '.$ax['name_customer'].'<br>
       : '.$ax['address_customer'].'<br>
       : '.$ax['phone_customer'].'<br>
-      : '.$axa['cost_type_transaction'].'</td>
+      : '.$pembayaran.'</td>
     <td valign="top"><br>
     <br>
     <br></td>
@@ -169,14 +176,21 @@ $html.='
   <tr>
     <td colspan="3" align="center" valign="top"><hr noshade="noshade"/></td>
   </tr>
+</table>
+<table width="600" border="0" align="center" cellpadding="5" cellspacing="0" style="border:1px solid #333333;">
   <tr>
-    <td height="74" colspan="2" valign="top">
-		Penerima<br>
+    <td width="33%" height="74" valign="top">
+    Penerima<br>
         <br>
         <br>
-   	<br>	</td>
-    <td width="269" align="right" valign="top" class="header">
-	Depok , '.date('d - m - Y').'<br><br><br><br>
+    <br></td>
+    <td width="33%" align="center" valign="top">
+    Pengirim<br>
+        <br>
+        <br>
+        <br>'.$delivery_man.'</td>
+    <td width="33%" align="right" valign="top" class="header">
+  Depok , '.date('d - m - Y').'<br><br><br><br>
     <br>
     '.$employee_fullname.'
     </td>
@@ -185,14 +199,14 @@ $html.='
 </body>
 </html>';
 
-// if(isset($_GET['email'])&&$_GET['email']=='1'){
-//   $mail = new eMail;
-//   $mail->to = array($axa['email_sub_office']);
-//   $mail->from = $data_lulu['company_email'];
-//   $mail->body = $html;
-//   $mail->subject = "Bukti Cetak Lulu@Delivery";
-//   $mail->send();
-// }
+if(isset($_GET['email'])&&$_GET['email']=='1'){
+  $mail = new eMail;
+  $mail->to = array();
+  $mail->from = $data_lulu['company_email'];
+  $mail->body = $html;
+  $mail->subject = "Bukti Cetak Lulu@Delivery";
+  $mail->send();
+}
 
 echo($html);
 ?>

@@ -9,15 +9,20 @@ if(!isset($_POST['tambah'])) { ?>
 <br />
 <?php }
 
-
 /**
 * Import Excel
 */
 ?>
-
+<script type="text/javascript">
+function update_info_product(val){
+  if(val!="product"){document.getElementById('info_update_product').innerHTML = "stock cabang";}
+  else{document.getElementById('info_update_product').innerHTML = "data";}
+}
+</script>
 <form name="form1" method="post" enctype="multipart/form-data" action="">
   Pilih File : <input type="file" name="excel_file" id="excel_file" /><br />
-  Update dari : <select name="id_sub_office">
+  Update <span id="info_update_product">data</span> : <select name="id_sub_office" onchange="update_info_product(this.value)">
+  <option value='product'>Product</option>
   <?php
   $sub_office_q = mysql_query("SELECT * FROM m_sub_office");
   while($data_sub_office = mysql_fetch_array($sub_office_q)){
@@ -31,214 +36,12 @@ if(!isset($_POST['tambah'])) { ?>
 
 <?php if(isset($_POST['tambah_excel'])&&!empty($_FILES['excel_file'])){
 
-$tmp_path = ".tmp/";
-if(!file_exists($tmp_path))mkdir($tmp_path);
-
-$file_excel_name = image_name($tmp_path,$_FILES['excel_file']['name'],TRUE);
-
-$file_path = $tmp_path.$file_excel_name['fullname'];
+require("system/import_product.php");
 
 
-if(strtolower($file_excel_name['ext'])=="dbf"){
-
-
-
-  function dbf2json($dbfname) {
-    $r = "";
-      $fdbf = fopen($dbfname,'r');
-      $fields = array();
-      $buf = fread($fdbf,32);
-      $header=unpack( "VRecordCount/vFirstRecord/vRecordLength", substr($buf,4,8));
-      //echo 'Header: '.json_encode($header).'<br/>';
-      $goon = true;
-  /**/$unpackString='A1DeletionFlag/';
-      while ($goon && !feof($fdbf)) { // read fields:
-          $buf = fread($fdbf,32);
-          if (substr($buf,0,1)==chr(13)) {$goon=false;} // end of field list
-          else {
-              $field=unpack( "a11fieldname/A1fieldtype/Voffset/Cfieldlen/Cfielddec", substr($buf,0,18));
-              //echo 'Field: '.json_encode($field).'<br/>';
-              $unpackString.="A$field[fieldlen]$field[fieldname]/";
-              array_push($fields, $field);}}
-  /**/fseek($fdbf, $header['FirstRecord']); // move back to the start of the first record (after the field definitions)
-          $r.=('[');
-      for ($i=1; $i<=$header['RecordCount']; $i++) {
-          $buf = fread($fdbf,$header['RecordLength']);
-          $record=unpack($unpackString,$buf);
-  /**/    if ($record['DeletionFlag'] == '*') continue;
-          if($i>1)$r.=(',');
-          $record=str_replace(" ", "", $record);
-          $r.= json_encode($record);
-          //echo /*$i.$buf.*/'<br/>';
-          } //raw record
-          $r.=(']');
-      fclose($fdbf);
-      return $r;
-  }
-
-  move_uploaded_file($_FILES['excel_file']['tmp_name'], $file_path);
-
-  $file = $file_path;
-  $aray = dbf2json($file);
-
-  $e=(json_decode($aray));
-
-  $num_update=0;
-  $num_insert=0;
-  $num_error=0;
-  for($i=0;$i<count($e);$i++){
-      $data = $e[$i];
-      // B_DATE
-      // B_TIME
-      // B_SKU
-      // B_PCS
-      // B_HRG
-
-      // [B_DATE] => 20120321
-      // [B_TIME] => 13:38:12
-      // [B_SKU] => 0000542
-      // [B_PCS] => 0
-      // [B_HRG] => 14500.00
-
-      $time = substr($data->B_DATE, 0, 4).'-'.substr($data->B_DATE, 4, 2).'-'.substr($data->B_DATE, 6, 2).' '.$data->B_TIME;
-      $code_product = $data->B_SKU;
-      $stock_product = $data->B_PCS;
-      $price_product = $data->B_HRG;
-      $id_sub_office = $_POST['id_sub_office'];
-
-
-      $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$code_product."'"));
-      if($check_CP>0){
-        $success1 = mysql_query("UPDATE m_product SET price_product = '".$price_product."' WHERE code_product = '".$code_product."';\n");
-        $success2 = mysql_query("UPDATE m_stock SET stock = '$stock_product', last_edit = '$time' WHERE code_product = '$code_product' AND id_sub_office = '$id_sub_office';\n");
-        $action="update";
-        if($success1&&$success2){
-          if($action=="update")$num_update++;
-          else $num_insert++;
-        }
-        else $num_error++;
-      }
-      else{
-        $success1 = mysql_query("INSERT INTO m_product(price_product,code_product) VALUES('$price_product','$code_product');\n");
-        $success2 = mysql_query("INSERT INTO m_stock VALUES('','$code_product','$id_sub_office','$stock_product','$time');\n");
-        $action="insert";
-        if($success1&&$success2){
-          if($action=="update")$num_update++;
-          else $num_insert++;
-        }
-        else $num_error++;
-      }
-        
-
-      //echo($time."\t".$code_product."\t".$stock_product."\t".$price_product."\n");
-  }
-
-  @unlink($file_path);
-
-  echo("Import Excel telah selesai.<br>\nSebanyak $num_insert telah berhasil diimport.<br>\nSebanyak $num_update telah berhasil diperbarui.<br>\nSebanyak $num_error gagal.<br><br>");
-
-
-
-}
-else{
-
-
-// require_once("../lib/phpexcel/PHPExcel.php");
-// require_once("../lib/phpexcel/PHPExcel/IOFactory.php");
-
-// $objReaderState = true;
-// if($file_excel_name["ext"]=='xls') {
-//   $objReader = PHPExcel_IOFactory::createReader('Excel5'); 
-// }elseif($file_excel_name["ext"]=='xlsx') {
-//   $objReader = PHPExcel_IOFactory::createReader('Excel2007'); 
-// }elseif($file_excel_name["ext"]=='csv') {
-//   $objReader = new PHPExcel_Reader_CSV();
-// }else{
-//   $objReaderState = false;
-// }
-// // $objReader = PHPExcel_IOFactory::createReader('Excel2007'); // 2007
-// // $objReader = new PHPExcel_Reader_CSV(); // csv
-// // $objReader = PHPExcel_IOFactory::createReader('Excel5'); // 2003
-
-// if($objReaderState==true){
-
-//     move_uploaded_file($_FILES['excel_file']['tmp_name'], $file_path);
-
-//     $check_field = mysql_query("SHOW FIELDS FROM m_product");
-//     $check_field_num_fld = 0;
-//     while($check_field_row = mysql_fetch_array($check_field)){
-//       if(!empty($check_field_row))$check_field_num_fld++;
-//     }
-
-//     $objPHPExcel = $objReader->load($file_path);
-
-//     $objWorksheet = $objPHPExcel->getActiveSheet();
-
-//     $error_row=array();
-//     $row_for_query=array();
-//     $row_number=0;
-//     foreach ($objWorksheet->getRowIterator() as $row) {
-//       $row_number++;
-        
-//       $cellIterator = $row->getCellIterator();
-//       $cellIterator->setIterateOnlyExistingCells(false); // This loops all cells,
-//                                                          // even if it is not set.
-//                                                          // By default, only cells
-//                                                          // that are set will be
-//                                                          // iterated.
-//       $col_for_row=array();
-//       foreach($cellIterator as $cell){
-//         if($cell->getValue()!=NULL&&$cell->getValue()!="") $col_for_row[] = $cell->getValue();
-//       }
-//       $col_for_row[] = "1"; // status
-      
-//       if(count($col_for_row)==$check_field_num_fld&&
-//         (!preg_match("#[^0-9]+#", $col_for_row[4]))&&
-//         (!preg_match("#[^0-9]+#", $col_for_row[5]))){
-//         $row_for_query[]=$col_for_row;
-//       }
-//       else $error_row[]=$row_number;
-//     }
-//     $num_update=0;
-//     $num_insert=0;
-//     $num_error=0;
-//     for($i=0;$i<count($row_for_query);$i++) {
-//       //code_product  group_product name_product  size_product  price_product status_product
-//         $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
-//         if($check_CP>0){
-//           $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', stock_product = '".$row_for_query[$i][4]."', price_product = '".$row_for_query[$i][5]."' WHERE code_product = '".$row_for_query[$i][0]."';\n";
-//           $action="update";
-//         }
-//         else{
-//           $query_import = "INSERT INTO m_product VALUES('".$row_for_query[$i][0]."','".$row_for_query[$i][1]."','".$row_for_query[$i][2]."','".$row_for_query[$i][3]."','".$row_for_query[$i][4]."','".$row_for_query[$i][5]."','".$row_for_query[$i][6]."');\n";
-//           $action="insert";
-//         }
-//         $success=@mysql_query($query_import);
-//         if($success){
-//           if($action=="update")$num_update++;
-//           else $num_insert++;
-//         }
-//         else $num_error++;
-//     }
-
-//     @unlink($file_path);
-
-//     $num_row_error = count($error_row);
-//     echo("Import Excel telah selesai.<br>\nSebanyak $num_insert telah berhasil diimport.<br>\nSebanyak $num_update telah berhasil diperbarui.<br>\nSebanyak $num_error gagal.<br>\nDan sebanyak $num_row_error baris gagal diimport dari $row_number baris pada excel.<br><br>");
-
-// }
-// else{
-  echo("Format file tidak dikenal!<br><br>");
-}
-
-
-
-//}
 /**
 * End of Import Excel
 */
-
-
 
 } if(isset($_POST['tambah'])) { ?>
 <form name="form2" method="post" action="">
@@ -278,6 +81,10 @@ else{
       </td>
     </tr>
     <tr>
+      <td style="padding: 5px;">Jumlah Satuan</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Jumlah Satuan" name="sum_pcs" id="sum_pcs"></td>
+    </tr>
+    <tr>
       <td style="padding: 5px;">Harga Barang</td>
       <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga"></td>
     </tr>
@@ -298,7 +105,7 @@ else{
 <form name="form3" method="post" action="">
 <?php
 $id = $_GET['no'];
-$sql = "SELECT * FROM `m_product` Where `code_product` = '$id'";
+$sql = "SELECT * FROM `m_product` WHERE `code_product` = '$id'";
 $exeSQL = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 $dataSQL = mysql_fetch_array($exeSQL);
 ?>
@@ -345,8 +152,22 @@ $dataSQL = mysql_fetch_array($exeSQL);
       </td>
     </tr>
     <tr>
+      <td style="padding: 5px;">Jumlah Satuan</td>
+      <td style="padding: 5px;"><input dojoType="dijit.form.ValidationTextBox" require="true" placeHolder="Jumlah Satuan" name="sum_pcs" id="sum_pcs" value="<?php echo $dataSQL['sum-pcs_product']; ?>"></td>
+    </tr>
+    <tr>
       <td style="padding: 5px;">Harga Barang</td>
       <td style="padding: 5px;"><input dojoType="dijit.form.NumberTextBox" require="true" placeHolder="Harga Barang" name="harga" id="harga" value="<?php echo $dataSQL['price_product']; ?>"></td>
+    </tr>
+    <tr>
+      <td style="padding:5px;">Status</td>
+      <td style="padding:5px;"><label>
+      <input type="radio" name="radYa" id="radio" value="1"<?php if($dataSQL['status_product']=='1'){echo " checked='checked'";}?> />
+      Aktif</label>
+      <label>
+      <input type="radio" name="radYa" id="radio2" value="0"<?php if($dataSQL['status_product']=='0'){echo " checked='checked'";}?> />      
+      Tidak Aktif
+      </label></td>
     </tr>
     <tr>
       <td colspan="2" align="center" style="padding: 5px;">
@@ -411,9 +232,9 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 	}else if($halaman > 1){ $i = ($offset + $i); }
   
   if($cari3 == 'grup'){
-  $sql = "SELECT * FROM `m_product` Where `group_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
+  $sql = "SELECT * FROM `m_product` WHERE `group_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
   }elseif($cari3 == 'nama'){
-  $sql = "SELECT * FROM `m_product` Where `name_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
+  $sql = "SELECT * FROM `m_product` WHERE `name_product` LIKE '%$key3%' LIMIT $offset,$batas";	  
   }else{
   $sql = "SELECT * FROM `m_product` LIMIT $offset,$batas";
   }
@@ -437,7 +258,9 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
           echo('<th align="center" style="padding: 5px;">Stok '.$a_soffice['name_sub_office'].'</th>');
         }
         ?>
+        <th style="padding: 5px;">Jumlah Satuan</th>
         <th style="padding: 5px;">Harga Barang</th>
+        <th style="padding:5px;" width="77">Status Aktif</th>
         <th style="padding: 5px;" colspan="2">Tindakan</th>
       </tr>
       <?php
@@ -462,7 +285,9 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
             echo('<td align="center" style="padding: 5px;">'.$a_stock['stock'].'</td>');
         }
         ?>
+        <td style="padding: 5px;"><?php echo($data['sum-pcs_product']);?></td>
         <td style="padding: 5px;">Rp. <?php echo number_format($data['price_product'],0,',','.'); ?></td>
+        <td style="padding:5px;" align="center"><?php if($data['status_product']=='1'){echo"<span style='color: #3f679e;'>Aktif</span>";}else{echo"<span style='color: #9e3f3f;'>Tidak Aktif</span>";}?>&nbsp;
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&ubah&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
         <td style="padding: 5px;" align="center"><a href="index.php?page=dashboard&sub=product&hapus&no=<?php echo $data['code_product']; ?>"><img src="<?php echo BASE; ?>images/16x16/delete.png" width="16" height="16" alt="hapus" title="Hapus"></a></td>
       </tr>
@@ -471,7 +296,7 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 </form>
 <?php
 //Paging
-    $batas = 10;
+  $batas = 10;
 	
 	/************ Fixed Paging ****************/
 	$cari1 = (isset($_POST['cariPro']))?$_POST['cariPro']:"";
@@ -488,9 +313,9 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     echo "<br />";
     echo "<div align='center'>";
                 if($cari3 == 'grup'){
-                $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` Where (`group_product`) LIKE '%$key3%'"));    
+                $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` WHERE (`group_product`) LIKE '%$key3%'"));    
                 }elseif($cari3 == 'nama'){
-				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` Where (`name_product`) LIKE '%$key3%'"));  
+				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product` WHERE (`name_product`) LIKE '%$key3%'"));  
 				}else{
     			$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_product`"));
     			}
@@ -548,31 +373,30 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
     echo "<br />";    
     $sumAll=0;
     if($cari3 == 'grup'){
-    $q_dataProduct = mysql_query("SELECT code_product FROM m_product Where (`group_product`) LIKE '%$key3%'");
+    $q_dataProduct = mysql_query("SELECT code_product FROM m_product WHERE `status_product` = '1' AND (`group_product`) LIKE '%$key3%'");
     while($dataProduct = mysql_fetch_array($q_dataProduct)){
-      $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock` Where (`code_product`) = '".$dataProduct['code_product']."'"));        
+      $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock` WHERE (`code_product`) = '".$dataProduct['code_product']."'"));        
       $sumAll += $sumStok[0];
     }
-    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`group_product`) LIKE '%$key3%'"));  
+    $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` WHERE `status_product` = '1' AND (`group_product`) LIKE '%$key3%'"));  
 	}elseif($cari3 == 'nama'){
-    $q_dataProduct = mysql_query("SELECT code_product FROM m_product Where (`name_product`) LIKE '%$key3%'");
+    $q_dataProduct = mysql_query("SELECT code_product FROM m_product WHERE `status_product` = '1' AND (`name_product`) LIKE '%$key3%'");
     while($dataProduct = mysql_fetch_array($q_dataProduct)){
       $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock` Where (`code_product`) = '".$dataProduct['code_product']."'"));        
       $sumAll += $sumStok[0];
     }
-	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` Where (`name_product`) LIKE '%$key3%'"));	
+	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` WHERE `status_product` = '1' AND (`name_product`) LIKE '%$key3%'"));	
 	}else{
-	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product`"));
-    $sumStok = mysql_fetch_array(mysql_query("SELECT sum(`stock`) FROM `m_stock`"));
+	  $sumBarang = mysql_fetch_array(mysql_query("SELECT count(`code_product`) FROM `m_product` WHERE `status_product` = '1'"));
+    $sumStok = mysql_fetch_array(mysql_query("SELECT SUM(stock) FROM m_stock RIGHT JOIN m_product ON m_stock.code_product = m_product.code_product AND m_product.status_product = '1'"));
     $sumAll = $sumStok[0];
 	}
-
 		
 	  echo "Jumlah Jenis Barang : <strong>$sumBarang[0]</strong>";
      
     echo "<br />";
     
-    echo "Stok Keseluruhan : <strong>$sumAll</strong>";
+    echo "Stok Keseluruhan Product Aktif : <strong>$sumAll</strong>";
     
     echo "</div>";
 
@@ -598,6 +422,8 @@ $nama = (isset($_POST['nama']))?$_POST['nama']:"";
 $ukur = (isset($_POST['ukuran']))?$_POST['ukuran']:"";
 $stok = (isset($_POST['stok']))?$_POST['stok']:array(); // Using Array for SubOffice
 $hrga = (isset($_POST['harga']))?$_POST['harga']:"";
+$radYa = (isset($_POST['radYa']))?$_POST['radYa']:"";
+$sum_pcs = (isset($_POST['sum_pcs']))?$_POST['sum_pcs']:"";
 $sqlDB = mysql_fetch_array(mysql_query("SELECT * FROM `m_product`"));
 $kodeDB = $sqlDB['code_product'];
 $sqlSO = mysql_query("SELECT * FROM m_sub_office"); // Resource for SubOffice
@@ -615,13 +441,14 @@ if(isset($_POST['tambahkan'])){
 		"'$grup'",
 		"'$nama'",
 		"'$ukur'",
-		"'$hrga'",
-		"'1'",
+    "'$sum_pcs'",
+    "'$hrga'",
+    "'1'",
 		);
-    while($aSO = mysql_fetch_array($sqlSO)){ // Looping SubOffice
-      mysql_query("INSERT INTO m_stock VALUES('','".$kode."','".$aSO['id_sub_office']."','".$stok[$aSO['id_sub_office']]."')");
-    } // Insert for stok SubOffice
 		$sql = "INSERT INTO `m_product` Values(".implode(',',$value).")";
+    while($aSO = mysql_fetch_array($sqlSO)){ // Looping SubOffice
+      mysql_query("INSERT INTO m_stock VALUES('','".$kode."','".$aSO['id_sub_office']."','".$stok[$aSO['id_sub_office']]."',CURRENT_TIMESTAMP)");
+    } // Insert for stok SubOffice
     //echo($sql);
 		$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
      if($ex){
@@ -654,14 +481,16 @@ if(isset($_POST['ubah'])){
 		`group_product` = '$grup',
 		`name_product` = '$nama',
 		`size_product` = '$ukur',
-		`price_product` = '$hrga'
+    `price_product` = '$hrga',
+    `sum-pcs_product` = '$sum_pcs',
+    `status_product` = '$radYa'
 		Where `code_product` = '$id'
 		";
+    // echo($sql);
+    $ex = @mysql_query($sql) or die('Query Salah -> '.mysql_error());
     while($aSO = mysql_fetch_array($sqlSO)){ // Looping SubOffice
       mysql_query("UPDATE m_stock SET stock = '".$stok[$aSO['id_sub_office']]."' WHERE code_product = '".$kode."' AND id_sub_office = '".$aSO['id_sub_office']."'");
     } // Insert for stok SubOffice
-    // echo($sql);
-		$ex = @mysql_query($sql) or die('Query Salah - >'.mysql_error());
 			if($ex){
 			location('index.php?page=dashboard&sub=product');	
 			}else{
