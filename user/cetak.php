@@ -184,8 +184,9 @@ $html.='
         <br>
         <br>
     <br></td>
-    <td width="33%" align="center" valign="top">
+    <td width="33%" align="center" valign="top" class="header">
     Pengirim<br>
+        <br>
         <br>
         <br>
         <br>'.$delivery_man.'</td>
@@ -199,9 +200,12 @@ $html.='
 </body>
 </html>';
 
+$to = mysql_fetch_array(mysql_query("SELECT value FROM m_data WHERE name = 'main_office_email'"));
+$to = explode(";", str_replace(" ", "", $to['value']));
+
 if(isset($_GET['email'])&&$_GET['email']=='1'){
   $mail = new eMail;
-  $mail->to = array();
+  $mail->to = $to;
   $mail->from = $data_lulu['company_email'];
   $mail->body = $html;
   $mail->subject = "Bukti Cetak Lulu@Delivery";

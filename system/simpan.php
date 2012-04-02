@@ -25,11 +25,11 @@
 
 			echo("<script type='text/javascript'>window.open('$url','$title','$option');</script>");
 
-			if($simpan_trans){
-				alert('Terima Kasih ! \n Silahkan Datang Kembali ^^');
-			}else{
-				alert('Terjadi Kesalahan Server! \n Silahkan Ulangi Lagi! ');
-			}
+			// if($simpan_trans){
+			// 	alert('Terima Kasih ! \n Silahkan Datang Kembali ^^');
+			// }else{
+			// 	alert('Terjadi Kesalahan Server! \n Silahkan Ulangi Lagi! ');
+			// }
 		}
 		
 	

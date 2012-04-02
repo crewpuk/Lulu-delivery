@@ -146,6 +146,8 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
 
     $objWorksheet = $objPHPExcel->getActiveSheet();
 
+    // Update all product into non-active
+    mysql_query("UPDATE m_product SET status_product = '0'");
     $error_row=array();
     $row_for_query=array();
     $row_number=0;
@@ -187,7 +189,7 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
       //code_product  group_product name_product  size_product  price_product status_product
         $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
         if($check_CP>0){
-          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', stock_product = '".$row_for_query[$i][4]."', price_product = '".$row_for_query[$i][5]."' WHERE code_product = '".$row_for_query[$i][0]."';\n";
+          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', `sum-pcs_product` = '".$row_for_query[$i][4]."', price_product = '".$row_for_query[$i][5]."', status_product = '1' WHERE code_product = '".$row_for_query[$i][0]."';\n";
           $action="update";
         }
         else{
@@ -198,6 +200,7 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
           }
           $action="insert";
         }
+        //echo($query_import.'<br>');
         $success=@mysql_query($query_import);
         if($success){
           if($action=="update")$num_update++;

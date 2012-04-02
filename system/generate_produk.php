@@ -16,6 +16,7 @@
 	}]
 }
 */
+// $start_time = microtime(true);
 
 $json = array("identifier"=>"id");
 $data_all = array();
@@ -41,4 +42,12 @@ while($data = mysql_fetch_assoc($q)){
 $json['items'] = $data_all;
 
 echo json_encode($json);
+
+
+
+// $echo = '<br><br>Elapsed Time : ';
+// $end_time = microtime(true);
+// $echo .= number_format(((float) $end_time)-((float) $start_time), 5);
+// $echo .= ' second';
+// echo $echo;
 ?>
