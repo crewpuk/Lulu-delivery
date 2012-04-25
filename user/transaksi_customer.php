@@ -87,12 +87,12 @@
 						<tr>
 							<td>Nama</td>
 							<td>:</td>
-							<td><?php echo $ax['name_customer'];?></td>
+							<td><label id="nmCustTransaksi"><?php echo $ax['name_customer'];?></label><input type="hidden" value="<?php echo $ax['code_customer'];?>" id="codeCustTransaksi" /></td>
 						</tr>
 						<tr>
 							<td>Alamat</td>
 							<td>:</td>
-							<td><?php echo $ax['address_customer'];?></td>
+							<td><label id="alamatCustTransaksi"><?php echo $ax['address_customer'];?></label></td>
 						</tr>
 						<tr>
 							<td>Kode Pos</td>
@@ -102,7 +102,7 @@
 						<tr>
 							<td>Telepon</td>
 							<td>:</td>
-							<td><?php echo $ax['phone_customer'];?></td>
+							<td><label id="tlpCustTransaksi"><?php echo $ax['phone_customer'];?></label></td>
 						</tr>
 						<tr>
 							<td>Telepon Rumah</td>
@@ -147,7 +147,7 @@
 				$date = date('d/m/y');
 				$kode_cust = $ax['code_customer'];
 				if($code != null){
-					$genSo = $nama."-".$id."-".$date;
+					$genSo = $date."/LLD/".$id;
 				}elseif($kode_transaction != null){
 					$genSo = $kode_transaction;
 				}
@@ -199,7 +199,9 @@
 				  <?php 
 						$total = $total + $arr["totalHarga"];
 					  
-						}} ?>
+						}} 
+						$sale = 5000;
+						?>
 						
 					  <tr>
 						<td>
@@ -207,6 +209,7 @@
 							<input class="myTextField" id="filter_product" placeHolder="Nama Produk"
 								style="width: 30em;"
 								dojoType="dijit.form.FilteringSelect"
+								pageSize="5"
 								store="storeFilterSelect"
 								searchAttr="nama"
 								name="produk"  />
@@ -250,11 +253,17 @@
 					else return false;
 				}
 				function print_preview(){
+					//set data di print preview
+					var codeTrx = document.getElementById("codeCustTransaksi").value;
+					var nmTrx = document.getElementById("nmCustTransaksi").innerHTML;
+					var alamatTrx = document.getElementById("alamatCustTransaksi").innerHTML;
+					var tlpTrx = document.getElementById("tlpCustTransaksi").innerHTML;
+
 					var var_kc = document.getElementById("txt_search").value;
 					var var_kt = document.getElementById("id_genso").value;
 					var var_pembayaran = document.getElementById("model_pembayaran").value;
 					var var_delivery = document.getElementById("delivery_man").value;
-					window.open("user/cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
+					window.open("user/cetak.php?codePrint="+codeTrx+"&nmPrint="+nmTrx+"&alamatPrint="+alamatTrx+"&tlpPrint="+tlpTrx+"&kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
 				}
 				</script>
 			<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">

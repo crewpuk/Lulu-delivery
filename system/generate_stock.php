@@ -10,6 +10,6 @@ while($data = mysql_fetch_array($query)){
 	elseif($i==3)$s=20;
 	elseif($i==4){$s=10;$i=-1;}
 	$i++;
-	mysql_query("INSERT INTO m_stock VALUES('','".$data['code_product']."','".$data['id_sub_office']."','$s')");
+	mysql_query("INSERT INTO m_stock VALUES('','".$data['code_product']."','".$data['id_sub_office']."','$s',CURRENT_TIMESTAMP)");
 }
 ?>

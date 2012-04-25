@@ -24,6 +24,10 @@ while($data = mysql_fetch_array($q_data_perusahaan)){
 
 $kode_transaction = urldecode($_GET['kT']);
 $kode_customer = urldecode($_GET['kC']);
+$codePrint = urldecode($_GET['codePrint']);
+$nmPrint = urldecode($_GET['nmPrint']);
+$alamatPrint = urldecode($_GET['alamatPrint']);
+$tlpPrint = urldecode($_GET['tlpPrint']);
 $sql = "SELECT * FROM `m_customer` Where `code_customer` = '$kode_customer'";
 $x = mysql_query($sql) or die("Query Salah -> ".mysql_error());
 $ax = mysql_fetch_array($x);
@@ -52,25 +56,27 @@ $pembayaran=(isset($_GET['pembayaran']))?$_GET['pembayaran']:$axa['cost_type_tra
 $html.='
 <table width="600" border="0" align="center" cellpadding="5" cellspacing="0" style="border:1px solid #333333;">
   <tr>
-    <td width="102" valign="top"><span class="style5"><img src="../images/64x64/logo.png" alt="Lulu-delivery"></span></td>
-    <td width="209" height="54" valign="top"><span class="style5">'.$data_lulu['company_name'].'<br />
+    <td width="50" valign="top"><span class="style5"><img src="../images/64x64/logo.png" alt="Lulu-delivery"></span></td>
+    <td width="259" height="54" valign="top"><div style="margin-left:-80px; font-size:10px;">'.$data_lulu['company_name'].'<br />
 	'.nl2br($data_lulu['company_address']).' <br />
 	'.nl2br($data_lulu['company_phone']).' <br />
-	<a href="#">'.$data_lulu['company_url'].'</a></span></td>
+	<a href="http://www.lulukids.net">'.$data_lulu['company_url'].'</a></div></td>
 	<td align="right" valign="top" class="style5">SO. No. : <label id="lblSO">'.$kode_transaction.'</label><br>
     Tgl Transaksi : '.date('d - m - Y').' </td>
   </tr>
   <tr>
-    <td height="32" colspan="3" align="center" valign="middle" bgcolor="#CCCCCC"><span class="style1">Nota Pesanan</span></td>
+    <td height="32" colspan="3" align="center" valign="middle" bgcolor="#CCCCCC"><span class="style1">Pemesanan</span></td>
   </tr>
   <tr>
-    <td valign="top">Pemesan Oleh  <br>
-      Alamat  <br>
-      No Telp <br>
-    Pembayaran	</td>
-    <td valign="top">: '.$ax['name_customer'].'<br>
-      : '.$ax['address_customer'].'<br>
-      : '.$ax['phone_customer'].'<br>
+    <td valign="top"><strong>Nama Pemesan</strong>  <br>
+      <strong>No. Pelanggan</strong> <br />
+      <strong>Alamat Pengiriman</strong>  <br>
+      <strong>No Telp</strong> <br>
+      <strong>Pembayaran</strong>	</td>
+    <td valign="top">: '.$ax['name_customer'].'<label id="nmCustPrint">'.$nmPrint.'</label><br>
+      : '.$ax['code_customer'].'<label id="kodeCustPrint">'.$codePrint.'</label><br>
+      : '.$ax['address_customer'].'<label id="alamatCustPrint">'.$alamatPrint.'</label><br>
+      : '.$ax['phone_customer'].'<label id="tlpCustPrint">'.$tlpPrint.'</label><br>
       : '.$pembayaran.'</td>
     <td valign="top"><br>
     <br>
@@ -129,7 +135,7 @@ $html.='
 		  and `m_detail_transaction`.`code_transaction`='$kode_transaction'"));
 
     $html.='
-        <tr bgcolor="#FFFF00">
+        <tr>
           <td class="align1234"><strong>TOTAL</strong></td>
           <td align="center" class="align1234">'.$sumQty[0].'</td>
           <td class="align1234">Rp. '.number_format($sumPrice[0],0,',','.').'</td>
@@ -148,9 +154,9 @@ $html.='
         </tr>
         <tr>
           <td class="align1234"><strong>GRAND TOTAL</strong></td>
-          <td class="align1234" bgcolor="#FF0000">'.$sumQty[0].'</td>
-          <td class="align1234" bgcolor="#FF0000">Rp. '.number_format($grandTotal, 0,",",".").'</td>
-          <td class="align1234" bgcolor="#FF0000">&nbsp;</td>
+          <td class="align1234" >'.$sumQty[0].'</td>
+          <td class="align1234" >Rp. '.number_format($grandTotal, 0,",",".").'</td>
+          <td class="align1234" >&nbsp;</td>
         </tr>
       </table></td>
   </tr>

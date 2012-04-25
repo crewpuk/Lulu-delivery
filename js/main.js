@@ -50,6 +50,18 @@ dojo.ready(function(){
 				kode_produk.set('disabled', true);
 			}
 	});
+
+	dojo.connect(dijit.byId('contactUs'), "onClick", function(){
+		var contentIsi = '<div align="center"><img src="images/Lulu@delivery_login.png" height="100px" width="100px" /></div>'+
+						'<br /><div align="center" style="padding-bottom: 150px;">Jika Ingin daftar Hubungi kontak Dibawah Ini! </div>';
+		var dialogDaftar = new dijit.Dialog({
+			content: contentIsi,
+			title: 'Daftar',
+			draggable: false,
+			style: 'width: 500px; height: 300px;'
+		})
+		dialogDaftar.show();
+	});
 	//dijit.byId('tagDelete').set('href','ee');
 			//dijit.byId('filter_product').store = storeFil;
 

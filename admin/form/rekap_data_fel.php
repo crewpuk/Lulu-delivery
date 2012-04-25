@@ -47,22 +47,27 @@ if(isset($_POST['btnFilter'])){
 	<table border="1" cellspacing="0" cellpadding="0" width="100%">  
 		<tr>
 			<th>No.</th>
-			<th>Kode Transaksi</th>
+			<th>No. Pelanggan</th>
+			<th>Nama Pelanggan</th>
+			<th>Alamat Pengiriman</th>
+			<th>No. Telepon</th>
 			<th>Nama Barang</th>
-			<th>Kwantity</th>
 			<th>Total</th>		
 		</tr>
 		<?php
-		$sql = "SELECT m_detail_transaction.*,
+		$sql = "SELECT m_detail_transaction.*,m_customer.*,m_transaction.*,
 					m_product.name_product,
 					m_product.size_product,
 					m_product.price_product AS harga,
 					(m_detail_transaction.quantity_detail_transaction * m_product.price_product) AS totalHarga 
-					FROM m_detail_transaction,m_product
-					where m_product.code_product = m_detail_transaction.code_product $addSql order by
+					FROM m_detail_transaction,m_product,m_customer,m_transaction
+					where m_product.code_product = m_detail_transaction.code_product 
+					AND m_detail_transaction.code_transaction = m_transaction.code_transaction
+					AND m_transaction.code_customer = m_customer.code_customer
+					$addSql order by
 					m_detail_transaction.code_transaction ASC";
 		$cek = mysql_query($sql) or die("salah".mysql_error().$sql);
-		//echo $sql;
+		echo $sql;
 			$i=0;
 			while($arrSql=mysql_fetch_array($cek)){
 			$i++;
@@ -71,8 +76,10 @@ if(isset($_POST['btnFilter'])){
 		<tr  bgcolor="<?php echo $bg; ?>" class="linkBorder">
 			<td style="padding: 5px;" align="center"><?php echo $i;?></td>
 			<td style="padding: 5px;" align="center"><?php echo $arrSql['code_transaction'];?></td>
-			<td style="padding: 5px;"><?php echo $arrSql['name_product'];?></td>
-			<td style="padding: 5px;" align="center"><?php echo $arrSql['quantity_detail_transaction'];?></td>
+			<td style="padding: 5px;"><?php echo $arrSql['name_customer'];?></td>
+			<td style="padding: 5px;"><?php echo nl2br($arrSql['address_customer']);?></td>
+			<td style="padding: 5px;"><?php echo $arrSql['phone_customer'];?></td>
+			<td style="padding: 5px;" align="center"><?php echo $arrSql['name_product'].' '.$arrSql['size_product'];?></td>
 			<td style="padding: 5px;" align="center"><?php echo "Rp. ".number_format($arrSql['totalHarga'],0,",",".");?></td>
 		</tr>
 		<?php } ?>
