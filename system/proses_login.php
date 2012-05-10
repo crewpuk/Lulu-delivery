@@ -32,7 +32,7 @@ $pass=$_REQUEST['kunci'];
 			{
 			$_SESSION['su_user']	= $username;
 			$_SESSION['su_pass']	= $password;
-			echo"<script>alert('SELAMAT DATANG ADMIN')
+			echo"<script>
 			location='../admin/index.php';
 				</script>";
 			}
@@ -40,7 +40,7 @@ $pass=$_REQUEST['kunci'];
 			{
 			$_SESSION['user']		= $username;
 			$_SESSION['pass']		= $password;
-			echo"<script>alert('SELAMAT DATANG USER')
+			echo"<script>
 			location='../index.php?page=dashboard';
 			</script>";
 			}

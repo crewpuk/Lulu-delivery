@@ -62,10 +62,10 @@
 				  <table cellspacing="3" cellpadding="3">
 						<tr>
 							<td>
-								<select class="myTextField" name="data_cust" id="data_cust">
-								  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
-								  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected";}?>>Nama</option>
-								  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected";}?>>No. HP</option>
+								<select style="width: 120px;" dojoType="dijit.form.Select" class="myTextField" name="data_cust" id="data_cust">
+								  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected=selected";}?>>No. Pelanggan</option>
+								  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected=selected";}?>>Nama</option>
+								  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected=selected";}?>>No. HP</option>
 								</select> 
 							</td>
 							<td>:</td>
@@ -286,7 +286,7 @@
 			  	<tr>
 			  		<td align="right">Delivery-Man</td>
 			  		<td>:</td>
-			  		<td><select name="delivery_man" id="delivery_man">
+			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="delivery_man" id="delivery_man">
 															<?php
 															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery");
 															while($data_dm = mysql_fetch_array($q_dm)){
@@ -298,7 +298,7 @@
 			  	<tr>
 			  		<td align="right">Model Pembayaran</td>
 			  		<td>:</td>
-			  		<td><select name="model_pembayaran" id="model_pembayaran">
+			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="model_pembayaran" id="model_pembayaran">
 																	<option value="Transfer" selected="selected">Transfer</option>
 																	<option value="COD">COD</option>
 																	<option value="CashToko">Cash Toko</option>

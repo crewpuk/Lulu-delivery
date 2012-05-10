@@ -1,5 +1,7 @@
 dojo.require('dijit.form.ValidationTextBox');
 dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.form.Select');
+dojo.require('dojox.widget.FisheyeLite');
 dojo.require('dijit.form.NumberTextBox');
 dojo.require('dijit.form.NumberSpinner');
 dojo.require('dijit.form.Form');

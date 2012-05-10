@@ -1,8 +1,8 @@
-<?php if(!isset($_POST['tambah'])) { ?>
+<?php if(!isset($_POST['tambah']) and !isset($_GET['ubah'])) { ?>
 <form name="form1" method="post" action="">
   <button dojoType="dijit.form.Button" type="submit" name="tambah" id="tambah">Tambah Deliveryman</button>
 </form>
-<?php } if(isset($_POST['tambah'])) { ?>
+<?php } if(isset($_POST['tambah']) and !isset($_GET['ubah'])) { ?>
 <form name="form2" method="post" action="">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" style="border:solid 1px;">
     <tr>
@@ -75,15 +75,17 @@ $dataUbah = @mysql_fetch_array(mysql_query($sqlUbah)) or die('Query Salah - >'.m
     </tr>
     <tr>
       <td style="padding: 5px;">Status</td>
-      <td style="padding: 5px;"><select name="status" id="status">
+      <td style="padding: 5px;"><select dojoType="dijit.form.Select" style="width: 110px;" name="status" id="status">
         <option value="1" <?php if($dataUbah['status_delivery'] == '1'){echo "selected";}?>>Aktif</option>
         <option value="0" <?php if($dataUbah['status_delivery'] == '0'){echo "selected";}?>>Tidak Aktif</option>
       </select></td>
     </tr>
     <tr>
       <td colspan="2" align="center" style="padding: 5px;">
-      <button dojoType="dijit.form.Button" type="submit" name="ubah" id="ubah">Save</button>
-        <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset2"> Reset </button></td>
+      <button dojoType="dijit.form.Button" type="submit" disabled="disabled" name="ubah" id="editDelivery">Update</button>
+      <button dojotype="dijit.form.Button" type="reset"  disabled="disabled" name="reset" id="resetDelivery"> Reset </button>
+      <input dojoType="dijit.form.CheckBox" id="enableEditDelivery"/> Ubah Data Ini ?
+    </td>
     </tr>
   </table>
 </form>

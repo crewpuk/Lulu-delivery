@@ -99,7 +99,7 @@ jam();
 <div id="container">
 
 	<div id="content">
-		<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
+		<div dojoType="dijit.layout.BorderContainer" border="none" splitter="true" style="width: 100%; height:500px; ">
 			<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">	
 				<?php 
 				$page = (isset($_GET['page']))?$_GET['page']:"";
@@ -113,7 +113,6 @@ jam();
 		</div>
     </div>
 </div>
-<div id="footer">Copyright &copy; 2012 Lulu Delivery App <br />
-All Rights Reserved</div>
+<div id="footer">Copyright &copy; 2012 Crewpuk-Soft. All Rights Reserved.</div>
 </body>
 <?php } ?>

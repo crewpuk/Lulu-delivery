@@ -51,6 +51,70 @@ dojo.ready(function(){
 			}
 	});
 
+	var chekbok_customer = dijit.byId('enableEditCustomer');
+	dojo.connect(chekbok_customer, "onClick", function(){
+			var resetEditCustomer = dijit.byId('resetEditCustomer');
+			var simpan_customer1 = dijit.byId('simpan_customer1');
+			if(chekbok_customer.checked == true){
+				resetEditCustomer.set('disabled', false);	
+				simpan_customer1.set('disabled', false);	
+			}else{
+				resetEditCustomer.set('disabled', true);
+				simpan_customer1.set('disabled', true);
+			}
+	});
+
+	var edit_product = dijit.byId('enableEditProduct');
+	dojo.connect(edit_product, "onClick", function(){
+			var editProduct = dijit.byId('editProduct');
+			var resetEditProduct = dijit.byId('resetEditProduct');
+			if(edit_product.checked == true){
+				editProduct.set('disabled', false);	
+				resetEditProduct.set('disabled', false);	
+			}else{
+				editProduct.set('disabled', true);
+				resetEditProduct.set('disabled', true);
+			}
+	});
+
+	var edit_cabang = dijit.byId('enableEditCabang');
+	dojo.connect(edit_cabang, "onClick", function(){
+			var editCabang = dijit.byId('editCabang');
+			var resetCabang = dijit.byId('resetCabang');
+			if(edit_cabang.checked == true){
+				editCabang.set('disabled', false);	
+				resetCabang.set('disabled', false);	
+			}else{
+				editCabang.set('disabled', true);
+				resetCabang.set('disabled', true);
+			}
+	});
+
+	var edit_delivery = dijit.byId('enableEditDelivery');
+	dojo.connect(edit_delivery, "onClick", function(){
+			var editDelivery = dijit.byId('editDelivery');
+			var resetDelivery = dijit.byId('resetDelivery');
+			if(edit_delivery.checked == true){
+				editDelivery.set('disabled', false);	
+				resetDelivery.set('disabled', false);	
+			}else{
+				editDelivery.set('disabled', true);
+				resetDelivery.set('disabled', true);
+			}
+	});
+
+	var edit_akun = dijit.byId('enableEditAkun');
+	dojo.connect(edit_akun, "onClick", function(){
+			var ubahAkun = dijit.byId('ubahAkun');
+			var resetAkun = dijit.byId('resetAkun');
+			if(edit_akun.checked == true){
+				ubahAkun.set('disabled', false);	
+				resetAkun.set('disabled', false);	
+			}else{
+				ubahAkun.set('disabled', true);
+				resetAkun.set('disabled', true);
+			}
+	});
 	dojo.connect(dijit.byId('contactUs'), "onClick", function(){
 		var contentIsi = '<div align="center"><img src="images/Lulu@delivery_login.png" height="100px" width="100px" /></div>'+
 						'<br /><div align="center" style="padding-bottom: 150px;">Jika Ingin daftar Hubungi kontak Dibawah Ini! </div>';
@@ -62,59 +126,15 @@ dojo.ready(function(){
 		})
 		dialogDaftar.show();
 	});
-	//dijit.byId('tagDelete').set('href','ee');
-			//dijit.byId('filter_product').store = storeFil;
 
+	dojo.query(".imgBounce").instantiate(dojox.widget.FisheyeLite,{
+				// all the images need a width and a height (well, not need,
+				// but to scale you do)				
+				properties: {
+					height:1.75,
+					width:1.75
+				}
+			});
 
-			//~ 
-		//~ var ebel = dijit.byId('id_genso').get('value');
-		//~ console.log("isi "+ ebel);
-		//~ var storeTable = dojo.store.JsonRest({
-					//~ target: 'system/generate_table.php?genso='+ebel
-		//~ });
-		//~ //dijit.byId('tableTrans').store = storeTable;
-	//~ var layout = [{
-			//~ field: 'name_product',
-			//~ name: 'Produk',
-			//~ width: 'auto'
-		//~ }, {
-			//~ field: 'quantity_detail_transaction',
-			//~ name: 'Quantity',
-			//~ width: 'auto'
-		//~ }, {
-			//~ field: 'harga',
-			//~ name: 'Harga',
-			//~ width: 'auto'
-		//~ },{
-			//~ field: 'description_detail_transaction',
-			//~ name: 'Keterangan',
-			//~ width: 'auto'
-		//~ }];
- //~ 
-	//~ var grid = dojox.grid.EnhancedGrid({
-			//~ query : { },
-			//~ id: 'tblTransaksi',
-			//~ store: gridStore = dojo.data.ObjectStore({
-				   //~ objectStore: storeTable
-			//~ }),
-			//~ columnReordering: 'true',
-			//~ loadingMessage: 'Loading data ...',
-			//~ selectionMode: 'single',
-			//~ structure: layout,
-			//~ plugins: {
-				//~ pagination: {
-					//~ pageSizes: ["25", "50", "100"],
-                    //~ description: true,
-                    //~ sizeSwitch: true,
-                    //~ pageStepper:  true,
-                    //~ gotoButton: true,
-                    //~ maxPageStep: 7,
-                    //~ position: "bottom"
-		        //~ }
-//~ 
-			//~ }
-		//~ }, document.createElement('div'));
-		//~ //dojo.byId("gridDivTransCust").appendChild(grid.domNode);
-		//~ grid.startup();
 		
 });

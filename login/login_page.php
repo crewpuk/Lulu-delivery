@@ -1,5 +1,5 @@
 	<div align="center">
-		<div align="center"><img src="images/Lulu@delivery_login.png" /></div><br />
+		<div align="center"><img src="images/Lulu@delivery_login.png" style="width: 400px; height: 400px"/></div><br />
 		<div id="testPane1" data-dojo-id="pane1" data-dojo-type="dijit.TitlePane" data-dojo-props='title:"Login ",
 				style:"width: 50%;" '>
 			

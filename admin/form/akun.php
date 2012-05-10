@@ -1,28 +1,31 @@
-<?php if(!isset($_POST['tambah_user'])) { ?>
+<?php if(!isset($_POST['tambah_user']) and !isset($_GET['upd'])) { ?>
 <form id="form4" name="form4" method="post" action="">
   <button dojoType="dijit.form.Button" type="submit" name="tambah_user" id="tambah_user">Tambah Akun</button>
 </form>
-<?php }if(isset($_POST['tambah_user'])) { ?>
+<?php }if(isset($_POST['tambah_user']) and !isset($_GET['upd'])) { ?>
 <form id="form1" name="form1" method="post" action="system/proses_akun.php">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
-      <th style="padding:5px;" colspan="2">Tambah User</th>
+      <th style="padding:5px;" colspan="3">Tambah User</th>
     </tr>
     <tr>
       <td style="padding:5px;">Nama Lengkap</td>
-      <td style="padding:5px;"><input placeholder="Nama Lengkap" type="text" name="txtFull" id="txtFull" /></td>
+      <td>:</td>
+      <td style="padding:5px;"><input dojoType="dijit.form.TextBox" placeholder="Nama Lengkap" type="text" name="txtFull" id="txtFull" /></td>
     </tr>
     <tr>
       <td style="padding:5px;" width="33%">Nama Pengguna</td>
+      <td>:</td>
       <td style="padding:5px;" width="67%"><label for="txtUser"></label>
-      <input placeHolder="Nama User" type="text" name="txtUser" id="txtUser" /></td>
+      <input dojoType="dijit.form.TextBox" placeHolder="Nama User" type="text" name="txtUser" id="txtUser" /></td>
     </tr>
     <tr>
       <td style="padding:5px;" class="Ustext">Kata Sandi</td>
-      <td style="padding:5px;"><input placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
+      <td>:</td>
+      <td style="padding:5px;"><input dojoType="dijit.form.TextBox" placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
     </tr>
     <tr>
-      <td colspan="2" align="center" style="padding:5px;">
+      <td colspan="3" align="center" style="padding:5px;">
       <button dojoType="dijit.form.Button" name="save" type="submit" class="useTextAddNew" id="save">Save</button>
       <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
 	  Reset
@@ -37,7 +40,7 @@
 <form id="form2" name="form1" method="post" action="system/proses_akun.php">
   <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0" class="Ustext" style="border:solid 1px;">
     <tr>
-      <th style="padding:5px;" colspan="2">Ubah User</th>
+      <th style="padding:5px;" colspan="3">Ubah User</th>
     </tr>
      <?php
 		$sql = mysql_query("SELECT id_account,username_account,fullname_account,password_account,status_account FROM user_account where id_account = '$_REQUEST[idakun]' ");
@@ -46,21 +49,25 @@
 	  ?>
     <tr>
        <td style="padding:5px;">Nama Lengkap</td>
-       <td style="padding:5px;"><input name="txtFullUpd" type="text" id="txtFullUpd" value="<?php echo $array['fullname_account']; ?>" /></td>
+       <td>:</td>
+       <td style="padding:5px;"><input dojoType="dijit.form.TextBox" name="txtFullUpd" type="text" id="txtFullUpd" value="<?php echo $array['fullname_account']; ?>" /></td>
     </tr>
     <tr>
       <td style="padding:5px;" width="24%">Nama Pengguna</td>
-      <td style="padding:5px;" width="76%"><input name="txtUserUpd" type="text" id="txtUserUpd" value="<?php echo $array['username_account']; ?>" />
+      <td>:</td>
+      <td style="padding:5px;" width="76%"><input dojoType="dijit.form.TextBox" name="txtUserUpd" type="text" id="txtUserUpd" value="<?php echo $array['username_account']; ?>" />
       <input type="hidden" name="id" id="id" value="<?php echo $array['id_account']; ?>" /></td>
     </tr>
     <tr>
       <td style="padding:5px;">Kata Sandi</td>
+      <td>:</td>
       <td style="padding:5px;"><label for="txtPassUpd"></label>
-      <input name="txtPassUpd" type="text" id="txtPassUpd" value="<?php echo $array['password_account']; ?>" /></td>
+      <input dojoType="dijit.form.TextBox" name="txtPassUpd" type="text" id="txtPassUpd" value="<?php echo $array['password_account']; ?>" /></td>
     </tr>
     <?php if($t['id_account']!='1'){?>
     <tr>
       <td style="padding:5px;">Status</td>
+      <td>:</td>
       <td style="padding:5px;"><label>
       <input type="radio" name="radYa" id="radio" value="1"<?php if($array[status_account]=='1'){echo " checked='checked'";}?> />
       Aktif</label>
@@ -71,11 +78,12 @@
     </tr>
     <?php }?>
     <tr>
-      <td style="padding:5px;" colspan="2" align="center">
-      <button dojoType="dijit.form.Button" name="ubah_akun" type="submit" class="useTextAddNew" id="ubah_akun">Save</button>
-      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+      <td style="padding:5px;" colspan="3" align="center">
+      <button dojoType="dijit.form.Button" disabled="disabled" name="ubah_akun" type="submit" class="useTextAddNew" id="ubahAkun">Update</button>
+      <button dojotype="dijit.form.Button" disabled="disabled" type="reset" name="reset" id="resetAkun">
 	  Reset
 	  </button>
+    <input dojoType="dijit.form.CheckBox" id="enableEditAkun"/> Ubah Data Ini ?
       </td>
     </tr>
 	

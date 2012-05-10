@@ -17,6 +17,8 @@ $q_user = mysql_query("SELECT fullname_account FROM user_account WHERE id_accoun
 $data_user = mysql_fetch_array($q_user);
 
 ?>
+<div id="ribbon"><?php include "ribbon.php"; ?></div>
+
 <div id="headerMenu">Anda Login Sebagai : <?php echo $data_user['fullname_account']; ?>.
 <div id='jam'>
 <script language='javascript'>
@@ -43,10 +45,10 @@ setTimeout('jam()', 1000);
 jam();
 </script></div>
 </div>
-<div id="ribbon"><?php include "ribbon.php"; ?></div>
+
 <div id="container">
 	<div id="content">
-		<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
+		<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:500px; ">
 			<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">	
 			    <?php 
 				$page = (isset($_GET['page']))?$_GET['page']:"";
@@ -69,6 +71,5 @@ jam();
 		</div>
     </div>
 </div>
-<div id="footer">Copyright &copy; 2012 Lulu Delivery App <br />
-All Rights Reserved</div>
+<div id="footer">Copyright &copy; 2012 Crewpuk-Soft. All Rights Reserved.</div>
 <?php } ?>

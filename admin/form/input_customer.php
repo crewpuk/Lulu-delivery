@@ -3,13 +3,13 @@
 $LINK = ($_SESSION['level']=='admin')?rawurlencode('[admin]'):'';
 $LINK_INC = ($_SESSION['level']=='admin')?'admin/':'';
 
-if(!isset($_POST['tambah'])){?>
+if(!isset($_POST['tambah']) and !isset($_GET['vwUbah'])){?>
 <form id="inCust1" name="inCust1" method="post" action="">
 	<button dojotype="dijit.form.Button" type="submit" name="tambah" id="tambahCust">
 		Tambah Customer
 	</button>
 </form>
-<?php } if(isset($_POST['tambah'])) { ?>
+<?php } if(isset($_POST['tambah']) and !isset($_GET['vwUbah'])) { ?>
 <form id="inCust2" name="inCust2" method="post" action="">
   <table width="50%" border="0" align="center" cellpadding="5" cellspacing="3" style="border:solid 1px;">
     <tr>
@@ -210,7 +210,7 @@ if(!isset($_POST['tambah'])){?>
 		<tr>
 		  <td style="padding: 5px;">Status</td>
 		  <td style="padding: 5px;">:</td>
-		  <td style="padding: 5px;"><select name="status_cust" id="status_cust1">
+		  <td style="padding: 5px;"><select dojoType="dijit.form.Select" style="width: 100px;" name="status_cust" id="status_cust1">
 			<option value="1" <?php if($dataSQL['status_customer'] == '1'){echo "selected";}?>>Aktif</option>
 			<option value="0" <?php if($dataSQL['status_customer'] == '0'){echo "selected";}?>>Tidak Aktif</option>
 		  </select></td>
@@ -218,19 +218,20 @@ if(!isset($_POST['tambah'])){?>
 		<?
 		}
 		else{
-			echo('<input name="status_cust" id="status_cust1" value="1" />');
+			echo('<input dojoType="dijit.form.TextBox" type="hidden" name="status_cust" id="status_cust1" value="1" />');
 		}
 		?>
 		<tr>
 		  <td style="padding: 5px;">&nbsp;</td>
 		  <td style="padding: 5px;">&nbsp;</td>
 		  <td style="padding: 5px;">
-			<button dojotype="dijit.form.Button" type="submit" name="edit_customer" id="simpan_customer1">
-			Save
+			<button dojotype="dijit.form.Button" disabled="disabled" type="submit" name="edit_customer" id="simpan_customer1">
+			Update
 			</button>
-			<button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+			<button dojotype="dijit.form.Button" disabled="disabled" type="reset" name="reset" id="resetEditCustomer">
 			Reset
 			</button>
+			<input dojoType="dijit.form.CheckBox" id="enableEditCustomer"/> Ubah Data Ini ?
 		</td>
 		</tr>
 	  </table>
@@ -274,7 +275,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 		<tr>
 			<td colspan="7">
 				Cari Berdasarkan:
-				<select name="cariPro" >
+				<select dojoType="dijit.form.Select" style="width: 130px;" name="cariPro" >
                 	<option value="">--Pilih--</option>
 					<option value="code_customer" <?php if($cari3 == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
 					<option value="name_customer" <?php if($cari3 == 'name_customer'){echo "selected";}?>>Nama Customer</option>
@@ -359,6 +360,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
         <th style="padding: 5px;">No. Telepon Rumah</th>
         <th style="padding: 5px;">Contact Online</th>
         <th style="padding: 5px;">Email</th>
+        <th style="padding: 5px;">Produk Favorite</th>
         <?php
         // for su_admin
         if($_SESSION['level']=='su_admin'){
@@ -386,6 +388,9 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 		<td align="center" style="padding: 5px;"><?php echo $data['home_phone_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['contact_customer'];?></td>
 		<td style="padding: 5px;"><?php echo $data['email_customer'];?></td>
+		<td style="padding: 5px;">
+			<a href="javascript:;" onclick="window.open('<?php echo BASE; ?>admin/form/produk_favorite.php?s=10&c=<?php echo $data['code_customer']; ?>','favorite','width=800,height=700,scrollbars=yes');">Detail</a>
+		</td>
 		<?php
         // for su_admin
         if($_SESSION['level']=='su_admin'){
@@ -422,7 +427,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 		<?php } } ?>
 	</table>
     <br />
-	<div align="center"><a href="#" onClick="window.open('form/print_all_customer.php?sql=<?php echo rawurlencode($sql);?>&tglF=<?php echo $first3; ?>&tglL=<?php echo $last3; ?>','Print','width=700px, height=800px, scrollbars=yes');"><img title="Print" src="<?php echo BASE; ?>images/64x64/printer.png" width="64" height="64" alt="print" /></a></div>
+	<div align="center"><a href="#" onClick="window.open('<?php echo BASE;?>admin/form/print_all_customer.php?sql=<?php echo rawurlencode($sql);?>&tglF=<?php echo $first3; ?>&tglL=<?php echo $last3; ?>','Print','width=700px, height=800px, scrollbars=yes');"><img title="Print" src="<?php echo BASE; ?>images/64x64/printer.png" width="64" height="64" alt="print" /></a></div>
 </form>
 
 <?php

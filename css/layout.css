@@ -2,7 +2,7 @@
 /* CSS Document */
 
 #ribbon {
-	top:50px;
+	top:0;
 	width:100%;
 	position:absolute;
 }
@@ -28,7 +28,7 @@
 #container {
 	width:98%;
 	padding:10px;
-	margin-top:120px;
+	height:520px;
 }
 
 #content {

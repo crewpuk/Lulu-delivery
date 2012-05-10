@@ -67,7 +67,7 @@ if(isset($_POST['btnFilter'])){
 					$addSql order by
 					m_detail_transaction.code_transaction ASC";
 		$cek = mysql_query($sql) or die("salah".mysql_error().$sql);
-		echo $sql;
+		//echo $sql;
 			$i=0;
 			while($arrSql=mysql_fetch_array($cek)){
 			$i++;

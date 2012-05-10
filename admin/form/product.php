@@ -1,6 +1,6 @@
 <?php 
 error_reporting(E_ALL);
-if(!isset($_POST['tambah'])) { ?>
+if(!isset($_POST['tambah']) and !isset($_GET['ubah'])) { ?>
 <form name="form1" method="post" action="">
   <button dojotype="dijit.form.Button" type="submit" name="tambah" id="tambah">
 		Tambah Produk
@@ -20,20 +20,41 @@ function update_info_product(val){
 }
 </script>
 <form name="form1" method="post" enctype="multipart/form-data" action="">
-  Pilih File : <input type="file" name="excel_file" id="excel_file" /><br />
-  Update <span id="info_update_product">data</span> : <select name="id_sub_office" onchange="update_info_product(this.value)">
-  <option value='product'>Product</option>
   <?php
-  $sub_office_q = mysql_query("SELECT * FROM m_sub_office");
-  while($data_sub_office = mysql_fetch_array($sub_office_q)){
-    echo "<option value='".$data_sub_office['id_sub_office']."'>".$data_sub_office['name_sub_office']."</option>\n";
-  }
+  if(!isset($_POST['tambah']) AND !isset($_GET['ubah'])) {
+
   ?>
-  </select><br />
-  <button dojoType="dijit.form.Button" type="submit" name="tambah_excel" id="tambah_excel">Update Produk</button>
+  <div align="right">
+    <table border='0' width="400" cellpadding="3" cellspacing="3" style="border: solid 2px #efefef;">
+        <tr>
+            <td width="150">Pilih File </td>
+            <td>:</td>
+            <td><input type="file" name="excel_file" id="excel_file" /></td>
+        </tr>
+        <tr>
+            <td>Update <span id="info_update_product">data</span></td>
+            <td>:</td>
+            <td><select dojoType="dijit.form.Select" style="width: 100px;" name="id_sub_office" onchange="update_info_product(this.value)">
+                <option value='product'>Product</option>
+                <?php
+                $sub_office_q = mysql_query("SELECT * FROM m_sub_office");
+                while($data_sub_office = mysql_fetch_array($sub_office_q)){
+                  echo "<option value='".$data_sub_office['id_sub_office']."'>".$data_sub_office['name_sub_office']."</option>\n";
+                }
+                ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button dojoType="dijit.form.Button" type="submit" name="tambah_excel" id="tambah_excel">Update Produk</button></td>
+        </tr>
+    </table>
+  </div>
+  <?php } ?>
 </form>
 <br />
-
 <?php if(isset($_POST['tambah_excel'])&&!empty($_FILES['excel_file'])){
 
 require("system/import_product.php");
@@ -171,10 +192,11 @@ $dataSQL = mysql_fetch_array($exeSQL);
     </tr>
     <tr>
       <td colspan="2" align="center" style="padding: 5px;">
-      <button dojoType="dijit.form.Button" type="submit" name="ubah" id="ubah">Save</button>
-      <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
+      <button dojoType="dijit.form.Button" disabled="disabled" type="submit" name="ubah" id="editProduct">Update</button>
+      <button dojotype="dijit.form.Button" disabled="disabled" type="reset" name="reset" id="resetEditProduct">
 	  Reset
 	  </button>
+    <input dojoType="dijit.form.CheckBox" id="enableEditProduct"/> Ubah Data Ini ?
       </td>
       
     </tr>
@@ -205,13 +227,13 @@ if($cari1){$cari3=$cari1;}elseif($cari2){$cari3=$cari2;}
 <form name="form1" method="post" action="">
     <table width="100%" border="1" cellspacing="0" cellpadding="10">
       <tr>
-        <td colspan="12">Cari Berdasarkan 
-          <select name="cariPro" id="cariPro">
+        <td colspan="13">Cari Berdasarkan 
+          <select dojoType="dijit.form.Select" style="width: 110px;" name="cariPro" id="cariPro">
           <option value="">--Pilih--</option>
           <option value="grup" <?php if($cari3 == 'grup'){echo "selected";}?>>Grup Produk</option>
           <option value="nama" <?php if($cari3 == 'nama'){echo "selected";}?>>Nama Produk</option>
           </select>
-          <input type="text" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
+          <input dojoType="dijit.form.TextBox" type="text" name="txtkey" id="txtkey" value="<?php echo $key3; ?>">
           <button dojoType="dijit.form.Button" type="submit" name="cmdcari" id="cmdcari">Cari</button>
         <a href="index.php?page=dashboard&sub=product"><img src="<?php echo BASE; ?>images/32x32/book.png" title="Lihat Semua" width="24" height="24" alt="Lihat Semua" style="position: absolute;" /></a></td>
       </tr>
