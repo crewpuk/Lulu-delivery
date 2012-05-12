@@ -23,7 +23,23 @@ dojo.ready(function(){
 		
 	var storeFil = dojo.data.ItemFileReadStore({
 				url: 'system/generate_produk.php'
-			});
+	});
+
+	dojo.connect(dijit.byId('filter_product'), 'onChange', function(value){
+		var storeFilSel = storeFil;
+		storeFil.fetch({
+			query:{id: value},
+			onItem: function(item){
+				var valueSrc = storeFilSel.getValue(item, 'id');
+				var setSrc = dojo.byId('idImage').src = 'images/product/'+valueSrc;
+				dijit.byId('feldyZoom').set('href', 'images/product/'+valueSrc);
+				//dojo.byId('feldyZoom').href = 'images/product/'+valueSrc;
+				console.log('isi item -> '+  setSrc);
+			}
+		});
+		console.log('masuk di onchange -> ', value );
+		
+	});
 			//~ 
 	//~ var storeCabang = dojo.data.ItemFileReadStore({
 				//~ url: 'admin/system/generate_data_cabang.php'

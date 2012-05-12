@@ -72,6 +72,7 @@
 							<td>
 								<input name="txt_search" class="myTextField" dojoType="dijit.form.TextBox" id="txt_search" value="<?php echo $code;?>" />
 								<button dojoType="dijit.form.Button" type="submit" name="cari" >Cari</button>
+								<a id="feldyZoom" dojoType="dojox.image.Lightbox" style="width: 50px; height: 50px;" href="images/no_image.jpg"><img src="images/no_image.jpg" id="idImage" style="width: 50px; height: 50px; " /></a>
 							</td>
 						</tr>
 						<tr>
