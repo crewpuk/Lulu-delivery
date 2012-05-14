@@ -279,6 +279,7 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
                 	<option value="">--Pilih--</option>
 					<option value="code_customer" <?php if($cari3 == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
 					<option value="name_customer" <?php if($cari3 == 'name_customer'){echo "selected";}?>>Nama Customer</option>
+					<option value="no_hp" <?php if($cari3 == 'no_hp'){echo "selected";}?>>No. HP</option>
 				</select>
 				<input dojoType="dijit.form.TextBox" name="txtkey" value="<?php echo $key3;?>" />
 				<button type="submit" dojoType="dijit.form.Button" name="btnCariCust">Cari</button>
@@ -336,6 +337,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
 					$sql = "SELECT * FROM `m_customer` where `code_customer` = '$key3' LIMIT $offset,$batas";
 				}elseif($cari3 == 'name_customer'){
 					$sql = "SELECT * FROM `m_customer` where `name_customer` LIKE '%$key3%' LIMIT $offset,$batas";
+				}elseif ($cari3 == 'no_hp') {
+					$sql = "SELECT * FROM `m_customer` where `phone_customer` LIKE '%$key3%' LIMIT $offset,$batas";
 				}
 			}
 		}elseif(isset($btnFilter)){
@@ -462,6 +465,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
                 $q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where `code_customer` = '$key3'"));    
                 }elseif($cari3 == 'name_customer'){
 				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where `name_customer` LIKE '%$key3%'"));  
+				}elseif ($cari3 == 'no_hp') {
+				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where `phone_customer` LIKE '%$key3%'"));  
 				}elseif($first3 != null || $last3 != null){
 				$q = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS `jumData` From `m_customer` where DATE(`created_date`) BETWEEN '$first3' AND '$last3'"));
 				}else{
@@ -547,6 +552,8 @@ if($last1){$last3=$last1;}elseif($last2){$last3=$last2;}
     $sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `code_customer` = '$key3'"));
     }elseif($cari3 == 'name_customer'){
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `name_customer` LIKE '%$key3%'"));
+	}elseif ($cari3 == 'no_hp') {
+	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where `phone_customer` LIKE '%$key3%'"));	
 	}elseif($first3 != null || $last3 != null){
 	$sumCustomer = mysql_fetch_array(mysql_query("SELECT count(`code_customer`) FROM `m_customer` where DATE(`created_date`) BETWEEN '$first3' AND '$last3'"));
 	}else{
