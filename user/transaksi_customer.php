@@ -16,123 +16,144 @@
 	}
 ?>
 
-<div dojoType="dijit.layout.BorderContainer" splitter="true" style="width: 100%; height:400px; ">
-<div dojoType="dijit.layout.ContentPane" overflow="true" region="center" style="width: 70%; ">
-<div align="center"><br />
-	<div class="paneTransaksi"> 
-		<div class="contentTransaksi" >
-			<div id="dataPerusahaan" 
-				data-dojo-type="dijit.TitlePane" 
-				data-dojo-props='title:"Data Lulu@delivery" '
-				>
-					<?php
-					$q_data = mysql_query("SELECT * FROM m_data");
-					$data_lulu = array();
-					while($d = mysql_fetch_array($q_data)){
-						$index = $d['name'];
-						$data_lulu[$index] = $d['value'];
-					}
-					?>
-					<div class="alignTable">
-						<?php echo $data_lulu['company_name']; ?> <br />
-						<?php echo nl2br($data_lulu['company_address']); ?> <br />
-						<?php echo nl2br($data_lulu['company_phone']); ?> <br />
-						<a href="#" ><?php echo $data_lulu['company_url']; ?></a> <br />
-						<?php echo $data_lulu['company_email']; ?> <br /><br /><br /><br /><br />
-					</div>
-			</div>
+<div dojoType="dijit.layout.BorderContainer" style="width:100%;height:400px;margin:0px;padding:0px;">
+	<div dojoType="dijit.layout.ContentPane" region="top">
+		<div style="width:49%;float:left;">
+			<?php
+			$q_data = mysql_query("SELECT * FROM m_data");
+			$data_lulu = array();
+			while($d = mysql_fetch_array($q_data)){
+				$index = $d['name'];
+				$data_lulu[$index] = $d['value'];
+			}
+			?>
+			<table cellpadding="2" cellspacing="0" border="0">
+				<tr>
+					<td colspan="3"><h3 style="margin-top:0;"><?php echo $data_lulu['company_name']; ?></h3></td>
+				</tr>
+				<tr>
+					<td valign="top" style="max-width:220px;">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td><?php echo nl2br($data_lulu['company_address']); ?></td>
+							</tr>
+							<tr>
+								<td><?php echo nl2br($data_lulu['company_phone']); ?></td>
+							</tr>
+						</table>
+					</td>
+					<td width="20"></td>
+					<td valign="top">
+						<table cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<td><a href="#" ><?php echo $data_lulu['company_url']; ?></td>
+							</tr>
+							<tr>
+								<td><?php echo $data_lulu['company_email']; ?></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div class="contentTransaksi" >
-			<div  id="dataPelanggan"
-					
-				data-dojo-type="dijit.TitlePane" 
-				data-dojo-props='title:"Data Pelanggan" '>
-				 <?php
-					if($code != null and $were != null){
-						$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND ".$were." = '".$code."' ";
-					} else {
-						$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND name_customer = '".$getCust."' ";
-					}
-					//echo $sql."<br>";
-					$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
-					$num = mysql_num_rows($x);
-					$ax = mysql_fetch_array($x);
-				?>
-				<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
-				  <table cellspacing="3" cellpadding="3">
-						<tr>
-							<td>
-								<select style="width: 120px;" dojoType="dijit.form.Select" class="myTextField" name="data_cust" id="data_cust">
-								  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected=selected";}?>>No. Pelanggan</option>
-								  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected=selected";}?>>Nama</option>
-								  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected=selected";}?>>No. HP</option>
-								</select> 
-							</td>
-							<td>:</td>
-							<td>
-								<input name="txt_search" class="myTextField" dojoType="dijit.form.TextBox" id="txt_search" value="<?php echo $code;?>" />
-								<button dojoType="dijit.form.Button" type="submit" name="cari" >Cari</button>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3"><hr /></td>
-						</tr>
-						<?php
-							if($num == null and $kode_transaction == null){
-								echo "<tr>
-										<td colspan='3'><font color='red' >Data Belum Ditemukan</font></td>
-									  </tr>";
-							} else {
-						?>
-						<tr>
-							<td>Nama</td>
-							<td>:</td>
-							<td><label id="nmCustTransaksi"><?php echo $ax['name_customer'];?></label><input type="hidden" value="<?php echo $ax['code_customer'];?>" id="codeCustTransaksi" /></td>
-						</tr>
-						<tr>
-							<td>Alamat</td>
-							<td>:</td>
-							<td><label id="alamatCustTransaksi"><?php echo $ax['address_customer'];?></label></td>
-						</tr>
-						<tr>
-							<td>Kode Pos</td>
-							<td>:</td>
-							<td><?php echo $ax['postal_code_customer'];?></td>
-						</tr>
-						<tr>
-							<td>Telepon</td>
-							<td>:</td>
-							<td><label id="tlpCustTransaksi"><?php echo $ax['phone_customer'];?></label></td>
-						</tr>
-						<tr>
-							<td>Telepon Rumah</td>
-							<td>:</td>
-							<td><?php echo $ax['home_phone_customer'];?></td>
-						</tr>
-						<tr>
-							<td>Email</td>
-							<td>:</td>
-							<td><?php echo $ax['email_customer'];?></td>
-						</tr>
-						<?php } ?>					
-					</table>
-				</form>
-			</div>
+		<div style="width:49%;float:right;">
+			<?php
+				if($code != null and $were != null){
+					$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND ".$were." = '".$code."' ";
+				} else {
+					$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND name_customer = '".$getCust."' ";
+				}
+				//echo $sql."<br>";
+				$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
+				$num = mysql_num_rows($x);
+				$ax = mysql_fetch_array($x);
+			?>
+			<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
+			  <table cellspacing="0" cellpadding="2" border="0" width="100%">
+					<tr>
+						<td colspan="3">
+							<table>
+								<tr>
+									<td>
+										<select class="myTextField" name="data_cust" id="data_cust">
+										  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected";}?>>No. Pelanggan</option>
+										  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected";}?>>Nama</option>
+										  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected";}?>>No. HP</option>
+										</select> 
+									</td>
+									<td>:</td>
+									<td>
+										<input name="txt_search" class="myTextField" dojoType="dijit.form.TextBox" id="txt_search" value="<?php echo $code;?>" />
+										<button dojoType="dijit.form.Button" type="submit" name="cari" >Cari</button>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"><hr /></td>
+					</tr>
+					<?php
+						if($num == null and $kode_transaction == null){
+							echo "<tr>
+									<td colspan='3'><font color='red' >Data Belum Ditemukan</font></td>
+								  </tr>";
+						} else {
+					?>
+					<tr>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>Nama</td>
+									<td>:</td>
+									<td><?php echo $ax['name_customer'];?></td>
+								</tr>
+								<tr>
+									<td>Telepon</td>
+									<td>:</td>
+									<td><?php echo $ax['phone_customer'];?></td>
+								</tr>
+								<tr>
+									<td>Telepon Rumah</td>
+									<td>:</td>
+									<td><?php echo $ax['home_phone_customer'];?></td>
+								</tr>
+								<tr>
+									<td>Email</td>
+									<td>:</td>
+									<td><?php echo $ax['email_customer'];?></td>
+								</tr>
+							</table>
+						</td>
+						<td width="20"></td>
+						<td valign="top">
+							<table>
+								<tr>
+									<td>Alamat</td>
+									<td>:</td>
+									<td><?php echo $ax['address_customer'];?></td>
+								</tr>
+								<tr>
+									<td>Kode Pos</td>
+									<td>:</td>
+									<td><?php echo $ax['postal_code_customer'];?></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<?php } ?>					
+				</table>
+			</form>
 		</div>
 	</div>
-	<div style="clear: both;"></div>
+	<div style="clear:both;"></div>
+	<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:auto;">
+
 	<?php if($num == null and $kode_transaction == null){
 		echo "";
 
 	}else{	?>
-	<div class="contentInputTransaksi">
-		<div	data-dojo-type="dijit.TitlePane" 
-				data-dojo-props='title:"Transaksi"'
-				overFlow="true"
-				style="height: 300px; width:90%;"
-				>
-			
-			SO No: <?php
+		  	SO No : <?php
 				$sqlTrans = "SELECT * FROM `m_transaction` order by `id_code_customer` DESC LIMIT 0,1 ";
 				$exeSql = mysql_query($sqlTrans);
 				$arr = mysql_fetch_array($exeSql);
@@ -147,16 +168,13 @@
 				$date = date('d/m/y');
 				$kode_cust = $ax['code_customer'];
 				if($code != null){
-					$genSo = $date."/LLD/".$id;
+					$genSo = $nama."-".$id."-".$date;
 				}elseif($kode_transaction != null){
 					$genSo = $kode_transaction;
 				}
 				echo $genSo;
 				?>
-		  <form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
-					<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
-			  <table width="90%" border="1" align="center" cellpadding="0" cellspacing="0">
-				  
+			 <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0">
 				<tr>
 					<th width="48%" align="center" class="headerTab">Nama Barang</th>
 				   
@@ -180,7 +198,7 @@
 											or die("query product salah");					
 						$length = mysql_num_rows($cek);
 						if($length == null){
-							echo "";
+							echo '<tr align="center"><td colspan="5"><h3 style="margin-top:2px;color:#550d0d;">Belum Ada Barang Yang Dibeli.</h3></td></tr>';
 						}else{
 						$total = 0;
 						while($arr = mysql_fetch_array($cek)){
@@ -199,47 +217,17 @@
 				  <?php 
 						$total = $total + $arr["totalHarga"];
 					  
-						}} 
-						$sale = 5000;
-						?>
-						
-					  <tr>
-						<td>
-							 <span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
-							<input class="myTextField" id="filter_product" placeHolder="Nama Produk"
-								style="width: 30em;"
-								dojoType="dijit.form.FilteringSelect"
-								pageSize="5"
-								store="storeFilterSelect"
-								searchAttr="nama"
-								name="produk"  />
-							<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
-							<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
-							<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
-							<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
-					    </td>
-						
-						<td colspan="2">
-						  <input name="qty" class="myTextField" id="qty" maxlength="3"
-									placeHolder="Quantity"
-									dojoType="dijit.form.NumberTextBox"
-									required="true" /></td>
-						<td>
-							<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_data_cabang.php' jsid="storeCabangFil"></span>
-							<input class="myTextField" id="filter_cabang_cmb" placeHolder="Pilih Cabang"
-								style="width: 10em;"
-								dojoType="dijit.form.FilteringSelect"
-								store="storeCabangFil"
-								searchAttr="name_sub_office"
-								name="cabangfilter"  />
-						</td>
-						<td bgcolor="#CEE2F4" colspan="2" align="center"><button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >Save</button></td>
-					  </tr>
-						
-			  </table></form>
+						}} ?>						
+			  </table>
 			  <br />
 				<script type="text/javascript">
 				// Fungsi untuk simpan transaksi dan pengontrol kirim email atau tidak
+				/*
+				Notice: Undefined index: codePrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 27 
+				Notice: Undefined index: nmPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 28 
+				Notice: Undefined index: alamatPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 29 
+				Notice: Undefined index: tlpPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 30
+				*/
 				function save_transaction(){
 					if(confirm("Anda yakin?")){
 						if(confirm("Kirim email?")){
@@ -253,17 +241,11 @@
 					else return false;
 				}
 				function print_preview(){
-					//set data di print preview
-					var codeTrx = document.getElementById("codeCustTransaksi").value;
-					var nmTrx = document.getElementById("nmCustTransaksi").innerHTML;
-					var alamatTrx = document.getElementById("alamatCustTransaksi").innerHTML;
-					var tlpTrx = document.getElementById("tlpCustTransaksi").innerHTML;
-
 					var var_kc = document.getElementById("txt_search").value;
 					var var_kt = document.getElementById("id_genso").value;
 					var var_pembayaran = document.getElementById("model_pembayaran").value;
 					var var_delivery = document.getElementById("delivery_man").value;
-					window.open("user/cetak.php?codePrint="+codeTrx+"&nmPrint="+nmTrx+"&alamatPrint="+alamatTrx+"&tlpPrint="+tlpTrx+"&kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
+					window.open("user/cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
 				}
 				</script>
 			<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">
@@ -286,7 +268,7 @@
 			  	<tr>
 			  		<td align="right">Delivery-Man</td>
 			  		<td>:</td>
-			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="delivery_man" id="delivery_man">
+			  		<td><select name="delivery_man" id="delivery_man">
 															<?php
 															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery");
 															while($data_dm = mysql_fetch_array($q_dm)){
@@ -298,7 +280,7 @@
 			  	<tr>
 			  		<td align="right">Model Pembayaran</td>
 			  		<td>:</td>
-			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="model_pembayaran" id="model_pembayaran">
+			  		<td><select name="model_pembayaran" id="model_pembayaran">
 																	<option value="Transfer" selected="selected">Transfer</option>
 																	<option value="COD">COD</option>
 																	<option value="CashToko">Cash Toko</option>
@@ -319,9 +301,46 @@
 			<input type="hidden" name="simpan_transaction" value="1" />
 			<input type="hidden" name="send_email" id="send_email" value="0" />
 			</form>
-		</div>
+	<?php } ?>
+
 	</div>
-</div>
-</div>
-<?php } ?>
+	<div dojoType="dijit.layout.ContentPane" region="right" splitter="false" style="width:400px;margin:0px;padding:1px;">
+		<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
+			<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
+			<div style="width:400px;margin:5px;">
+				<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
+				<input id="filter_product" placeHolder="Pilih Produk"
+					style="width:388px;"
+					dojoType="dijit.form.FilteringSelect"
+					store="storeFilterSelect"
+					searchAttr="nama"
+					name="produk"  />
+				<input type="hidden" name="kode" id="kode" value="<?php echo $genSo;?>" />
+				<input type="hidden" name="kodeCust" id="kodeCust" value="<?php echo $kode_cust;?>" />
+				<input type="hidden" name="txt_search" value="<?php echo $code;?>" />
+				<input type="hidden" name="data_cust" value="<?php echo $were;?>" />
+			</div>
+			<br />
+			<div style="width:50%;float:left;">gambar</div>
+			<div style="width:45%;float:right;">
+				<input name="qty" id="qty" maxlength="3"
+					style="width:55px;"
+					placeHolder="Jumlah"
+					dojoType="dijit.form.NumberTextBox"
+					required="true" />
+				<br />
+				<br />
+				<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_data_cabang.php' jsid="storeCabangFil"></span>
+				<input id="filter_cabang_cmb" placeHolder="Pilih Cabang"
+					style="width: 10em;"
+					dojoType="dijit.form.FilteringSelect"
+					store="storeCabangFil"
+					searchAttr="name_sub_office"
+					name="cabangfilter"  />
+				<br />
+				<br />
+				<button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" >Save</button>
+			</div>
+		</form>
+	</div>
 </div>
