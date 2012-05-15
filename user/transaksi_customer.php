@@ -14,6 +14,8 @@
 	}else{
 		$were = $_GET['data_cust'];
 	}
+
+	$sale = BIAYA_ANTAR;
 ?>
 
 <div dojoType="dijit.layout.BorderContainer" style="width:100%;height:400px;margin:0px;padding:0px;">
@@ -68,6 +70,8 @@
 				$num = mysql_num_rows($x);
 				$ax = mysql_fetch_array($x);
 			?>
+			<!--code customer which sent to cetak-->
+			<input type="hidden" name="id_customer" id="id_customer" value="<?php echo $ax['code_customer'];?>">
 			<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
 			  <table cellspacing="0" cellpadding="2" border="0" width="100%">
 					<tr>
@@ -221,13 +225,6 @@
 			  </table>
 			  <br />
 				<script type="text/javascript">
-				// Fungsi untuk simpan transaksi dan pengontrol kirim email atau tidak
-				/*
-				Notice: Undefined index: codePrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 27 
-				Notice: Undefined index: nmPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 28 
-				Notice: Undefined index: alamatPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 29 
-				Notice: Undefined index: tlpPrint in /home/rian/Project/Lulu-delivery/user/cetak.php on line 30
-				*/
 				function save_transaction(){
 					if(confirm("Anda yakin?")){
 						if(confirm("Kirim email?")){
@@ -241,7 +238,7 @@
 					else return false;
 				}
 				function print_preview(){
-					var var_kc = document.getElementById("txt_search").value;
+					var var_kc = document.getElementById("id_customer").value;
 					var var_kt = document.getElementById("id_genso").value;
 					var var_pembayaran = document.getElementById("model_pembayaran").value;
 					var var_delivery = document.getElementById("delivery_man").value;
@@ -288,7 +285,7 @@
 			  	</tr>
 			  	<tr>
 			  		<td align="right">
-			  			&emsp;<a href="javascript:print_preview();" target="_blank"><img src="images/32x32/searchdoc.png" style="vertical-align: middle;">Print Preview</a>
+			  			&emsp;<a href="javascript:print_preview();"><img src="images/32x32/searchdoc.png" style="vertical-align: middle;">Print Preview</a>
 			  		</td>
 			  		<td> </td>
 			  		<td>

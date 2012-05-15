@@ -24,15 +24,14 @@ while($data = mysql_fetch_array($q_data_perusahaan)){
 
 $kode_transaction = urldecode($_GET['kT']);
 $kode_customer = urldecode($_GET['kC']);
-$codePrint = urldecode($_GET['codePrint']);
-$nmPrint = urldecode($_GET['nmPrint']);
-$alamatPrint = urldecode($_GET['alamatPrint']);
-$tlpPrint = urldecode($_GET['tlpPrint']);
 $sql = "SELECT * FROM `m_customer` Where `code_customer` = '$kode_customer'";
 $x = mysql_query($sql) or die("Query Salah -> ".mysql_error());
 $ax = mysql_fetch_array($x);
 
-
+$codePrint    =(isset($ax['code_customer']))?   $ax['code_customer']    :"";
+$nmPrint      =(isset($ax['name_customer']))?   $ax['name_customer']    :"";
+$alamatPrint  =(isset($ax['address_customer']))?$ax['address_customer'] :"";
+$tlpPrint     =(isset($ax['phone_customer']))?  $ax['phone_customer']   :"";
 
 $sqlA = "SELECT * FROM `m_transaction` Where `m_transaction`.`code_transaction` = '$kode_transaction'";
 $xa = mysql_query($sqlA) or die("Query Salah -> ".mysql_error()); 
@@ -73,10 +72,10 @@ $html.='
       <strong>Alamat Pengiriman</strong>  <br>
       <strong>No Telp</strong> <br>
       <strong>Pembayaran</strong>	</td>
-    <td valign="top">: '.$ax['name_customer'].'<label id="nmCustPrint">'.$nmPrint.'</label><br>
-      : '.$ax['code_customer'].'<label id="kodeCustPrint">'.$codePrint.'</label><br>
-      : '.$ax['address_customer'].'<label id="alamatCustPrint">'.$alamatPrint.'</label><br>
-      : '.$ax['phone_customer'].'<label id="tlpCustPrint">'.$tlpPrint.'</label><br>
+    <td valign="top">: '.$nmPrint.'<br>
+      : '.$codePrint.'<br>
+      : '.$alamatPrint.'<br>
+      : '.$tlpPrint.'<br>
       : '.$pembayaran.'</td>
     <td valign="top"><br>
     <br>
@@ -142,7 +141,7 @@ $html.='
           <td class="align1234">&nbsp;</td>
         </tr>';
 
-  	if($sumPrice[0] >= 200000 ){ $sale = 0;}else{ $sale = 5000;}
+      $sale = BIAYA_ANTAR;
       $grandTotal = ($sumPrice[0] + $sale); 
 
     $html.='
@@ -154,7 +153,7 @@ $html.='
         </tr>
         <tr>
           <td class="align1234"><strong>GRAND TOTAL</strong></td>
-          <td class="align1234" >'.$sumQty[0].'</td>
+          <td class="align1234" align="center">'.$sumQty[0].'</td>
           <td class="align1234" >Rp. '.number_format($grandTotal, 0,",",".").'</td>
           <td class="align1234" >&nbsp;</td>
         </tr>
