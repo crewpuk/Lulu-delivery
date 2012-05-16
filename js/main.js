@@ -27,12 +27,21 @@ dojo.ready(function(){
 
 	dojo.connect(dijit.byId('filter_product'), 'onChange', function(value){
 		var storeFilSel = storeFil;
+
+		var globalCheckProduct = dijit.byId('globalCheckProduct').get('value');
+		var splitGlobal = globalCheckProduct.split('+');
+		//console.log(splitGlobal);
+		var a = '';
+		for(i=0;i<splitGlobal.length;i++){
+			a += splitGlobal[i].split('/') + ';';
+		}
+			console.log('-> '+ splitGlobal);
 		storeFil.fetch({
 			query:{id: value},
 			onItem: function(item){
 				var valueSrc = storeFilSel.getValue(item, 'id');
 				var setSrc = dojo.byId('idImage').src = 'images/product/'+valueSrc;
-				dijit.byId('feldyZoom').set('href', 'images/product/'+valueSrc);
+				dijit.byId('imageLightBox').set('href', 'images/product/'+valueSrc);
 				//dojo.byId('feldyZoom').href = 'images/product/'+valueSrc;
 				console.log('isi item -> '+  setSrc);
 			}
