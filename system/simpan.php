@@ -6,7 +6,7 @@
 		$code_transaction 	= $_POST['code_transaction'];
 		$code_customer		= $_POST['code_customer'];
 		$model_pembayaran 	= $_POST['model_pembayaran'];
-		$delivery_man 		= $_POST['delivery_man'];
+		$delivery_man 		= ($_SESSION['level']=='user')?'1':$_POST['delivery_man'];
 		$send_email		 	= $_POST['send_email'];
 		$id_account			= $_SESSION['id'];
 

@@ -21,6 +21,7 @@ $pass=$_REQUEST['kunci'];
 	$username	= $lock['username_account'];
 	$password	= $lock['password_account'];
 	$level		= $lock['name_role'];
+	$code_cust	= $lock['code_customer'];
 	
 		if($user==$username and $pass==$password)
 		{
@@ -47,8 +48,9 @@ $pass=$_REQUEST['kunci'];
 			elseif ($level == 'user') {
 			$_SESSION['user']		= $username;
 			$_SESSION['pass']		= $password;
+			$_SESSION['code_customer']=$code_cust;
 			echo"<script>
-			location='../u_online/index.php?page=dashboard';
+			location='../u_online/index.php?page=dashboard&sub=transaksi_customer';
 			</script>";
 			}
 		}

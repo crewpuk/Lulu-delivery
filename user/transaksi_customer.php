@@ -268,7 +268,7 @@
 			  		<td>:</td>
 			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="delivery_man" id="delivery_man">
 															<?php
-															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery");
+															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery WHERE id_delivery > 2");
 															while($data_dm = mysql_fetch_array($q_dm)){
 																echo("<option value='".$data_dm['id_delivery']."'>".$data_dm['name_delivery']."</option>");
 															}

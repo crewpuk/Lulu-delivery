@@ -11,8 +11,10 @@
 		$web 		= $_POST['web_cust'];
 		$email 		= $_POST['email_cust'];	
 		$status 	= $_POST['status_cust'];
+		$password 	= $_POST['password_cust'];
 		
 		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$alamat','$kode_pos','$tlp','$tlpRmh','$email','$status')") or die("Salah Query");
+		
 		if($x){
 			echo "<script>
 					alert('Data BERHASIL disimpan')

@@ -105,6 +105,11 @@ if(!isset($_POST['tambah']) and !isset($_GET['vwUbah'])){?>
       <td style="padding: 5px;"><input placeHolder="Contact Online" dojoType="dijit.form.ValidationTextBox" name="contact_cust" id="contact_cust" /></td>
     </tr>
     <tr>
+      <td style="padding: 5px;">Password</td>
+      <td style="padding: 5px;">:</td>
+      <td style="padding: 5px;"><input placeHolder="Password" dojoType="dijit.form.ValidationTextBox" name="password_cust" id="password_cust" value="<?php echo(password_maker(6));?>" readonly="readonly" /></td>
+    </tr>
+    <tr>
       <td style="padding: 5px;">&nbsp;</td>
       <td style="padding: 5px;">&nbsp;</td>
       <td style="padding: 5px;">
@@ -588,6 +593,7 @@ $kodeDB = $sqlDB['code_customer'];
 		$status 	= $_POST['status_cust'];
 // Proses Simpan Customer
 if(isset($_POST['simpan_customer'])){
+	$password = $_POST['password_cust'];
 		if($kode == null || $nama == null || $pengenal == null || $kota == null || $hp == null){
 		location('index.php?page=dashboard&sub=input_customer'.$LINK.'&e=1');
 	}elseif($kode==$kodeDB){
@@ -595,13 +601,19 @@ if(isset($_POST['simpan_customer'])){
 	}else{
 		$x = mysql_query("INSERT INTO `m_customer` values('$kode','$nama','$pengenal','$alamat','$kota','$provinsi','$kode_pos','$hp','$tlpRmh','$contact','$email',CURRENT_TIMESTAMP,'1')") or die("Salah Query Simpan".mysql_error());
 
+		//	id_account	username_account	fullname_account	password_account	name_role	status_account
+		$e=explode(" ",$nama);
+		$username = strtolower($e[0]);
+		mysql_query("INSERT INTO user_account VALUES(NULL,'$username','$nama','$password','user','1','$kode')");
+
 		 if($x){
 			alert('Data Berhasil Disimpan');
 			location('index.php?page=dashboard&sub=input_customer'.$LINK);
 		 }else{
 			alert('Terjadi Kesalahan Pada Server');
 			location('index.php?page=dashboard&sub=input_customer'.$LINK);	 
-		 }}
+		 }
+	}
 }elseif(isset($_GET['hapus'])){
 	$id = $_GET['no'];
 	$sql = "UPDATE `m_customer` SET `status_customer` = '0' Where `code_customer` = '$id'";

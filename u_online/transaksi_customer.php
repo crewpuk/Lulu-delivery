@@ -1,9 +1,12 @@
 <?php 
+	// print_r($_SESSION);
 	include ("../system/created.php");
 	include ("../system/simpan.php");
 	include ("../system/delete_detail_transaction.php");
 
-	if(isset($_POST['txt_search'])){
+	$code = $_SESSION['code_customer'];
+	$were = 'code_customer';
+	/*if(isset($_POST['txt_search'])){
 		$code = $_POST['txt_search'];
 	}else{
 		$code = $_GET['txt_search'];
@@ -13,7 +16,7 @@
 		$were = $_POST['data_cust'];
 	}else{
 		$were = $_GET['data_cust'];
-	}
+	}*/
 
 	$sale = 5000;
 ?>
@@ -65,45 +68,14 @@
 				} else {
 					$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND name_customer = '".$getCust."' ";
 				}
-				//echo $sql."<br>";
+				// echo $sql."<br>";
 				$x = mysql_query($sql) or die("query Salah -> ".mysql_error());
 				$num = mysql_num_rows($x);
 				$ax = mysql_fetch_array($x);
 			?>
 			<!--code customer which sent to cetak-->
 			<input type="hidden" name="id_customer" id="id_customer" value="<?php echo $ax['code_customer'];?>">
-			<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST" >
 			  <table cellspacing="0" cellpadding="2" border="0" width="100%">
-					<tr>
-						<td colspan="3">
-							<table>
-								<tr>
-									<td>
-										<select style="width: 120px;" dojoType="dijit.form.Select" name="data_cust" id="data_cust">
-										  <option value="code_customer" <?php if($were == 'code_customer'){echo "selected='selected'";}?>>No. Pelanggan</option>
-										  <option value="name_customer" <?php if($were == 'name_customer'){echo "selected='selected'";}?>>Nama</option>
-										  <option value="phone_customer"<?php if($were == 'phone_customer'){echo "selected='selected'";}?>>No. HP</option>
-										</select> 
-									</td>
-									<td>:</td>
-									<td>
-										<input name="txt_search" dojoType="dijit.form.TextBox" id="txt_search" value="<?php echo $code;?>" />
-										<button dojoType="dijit.form.Button" type="submit" name="cari" >Cari</button>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3"><hr /></td>
-					</tr>
-					<?php
-						if($num == null and $kode_transaction == null){
-							echo "<tr>
-									<td colspan='3'><font color='red' >Data Belum Ditemukan</font></td>
-								  </tr>";
-						} else {
-					?>
 					<tr>
 						<td valign="top">
 							<table>
@@ -144,10 +116,8 @@
 								</tr>
 							</table>
 						</td>
-					</tr>
-					<?php } ?>					
+					</tr>				
 				</table>
-			</form>
 		</div>
 	</div>
 	<div style="clear:both;"></div>
@@ -264,18 +234,6 @@
 			  		<td><strong><?php echo "Rp. ".number_format($total + $sale, 0,",","."); ?></strong></td>
 			  	</tr>
 			  	<tr>
-			  		<td align="right">Delivery-Man</td>
-			  		<td>:</td>
-			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="delivery_man" id="delivery_man">
-															<?php
-															$q_dm = mysql_query("SELECT id_delivery,name_delivery FROM m_delivery");
-															while($data_dm = mysql_fetch_array($q_dm)){
-																echo("<option value='".$data_dm['id_delivery']."'>".$data_dm['name_delivery']."</option>");
-															}
-															?>
-															</select></td>
-			  	</tr>
-			  	<tr>
 			  		<td align="right">Model Pembayaran</td>
 			  		<td>:</td>
 			  		<td><select dojoType="dijit.form.Select" style="width: 100px;" name="model_pembayaran" id="model_pembayaran">
@@ -311,7 +269,7 @@
 		<form action="index.php?page=dashboard&sub=transaksi_customer" method="POST">
 			<input dojoType="dijit.form.TextBox" type="hidden" value="<?php echo $genSo;?>" id="id_genso" />
 			<div style="width:400px;margin:5px;">
-				<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_produk.php' jsid="storeFilterSelect"></span>
+				<span dojoType="dojo.data.ItemFileReadStore" url='../system/generate_produk_customer.php' jsid="storeFilterSelect"></span>
 				<input id="filter_product" placeHolder="Pilih Produk"
 					style="width:388px;"
 					dojoType="dijit.form.FilteringSelect"
@@ -336,19 +294,6 @@
 					constraints="{min:0,max:999}"
 					dojoType="dijit.form.NumberTextBox"
 					required="false" />
-				<br />
-				<br />
-				<span dojoType="dojo.data.ItemFileReadStore" url='system/generate_data_cabang.php' jsid="storeCabangFil"></span>
-				Pilih Cabang :
-				<input id="filter_cabang_cmb" placeHolder="Pilih Cabang"
-					style="width: 10em;"
-					dojoType="dijit.form.FilteringSelect"
-					pageSize="5"
-					required="false"
-					invalidMessage="Data Tidak Ditemukan, Harap Pilih Melalui Dropdown !"
-					store="storeCabangFil"
-					searchAttr="name_sub_office"
-					name="cabangfilter"  />
 				<br />
 				<br />
 				<button dojoType="dijit.form.Button" type="submit" name="save_product" id="save_product" style="width: 40px;"><img src="../images/32x32/add.png" width="23px"> Beli !</button>
