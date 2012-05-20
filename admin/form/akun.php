@@ -25,6 +25,15 @@
       <td style="padding:5px;"><input dojoType="dijit.form.TextBox" placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
     </tr>
     <tr>
+      <td style="padding:5px;" class="Ustext">Level</td>
+      <td>:</td>
+      <td style="padding:5px;">
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="su_admin" />Admin</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="admin" />Operator</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="user" />User</label>
+      </td>
+    </tr>
+    <tr>
       <td colspan="3" align="center" style="padding:5px;">
       <button dojoType="dijit.form.Button" name="save" type="submit" class="useTextAddNew" id="save">Save</button>
       <button dojotype="dijit.form.Button" type="reset" name="reset" id="reset1">
@@ -43,9 +52,10 @@
       <th style="padding:5px;" colspan="3">Ubah User</th>
     </tr>
      <?php
-		$sql = mysql_query("SELECT id_account,username_account,fullname_account,password_account,status_account FROM user_account where id_account = '$_REQUEST[idakun]' ");
+		$sql = mysql_query("SELECT id_account,username_account,fullname_account,password_account,name_role,status_account FROM user_account where id_account = '$_REQUEST[idakun]' ");
 		$array = mysql_fetch_array($sql);
-		$t = $array['id_account']
+		$t = $array['id_account'];
+    $r = $array['name_role'];
 	  ?>
     <tr>
        <td style="padding:5px;">Nama Lengkap</td>
@@ -66,13 +76,21 @@
     </tr>
     <?php if($t['id_account']!='1'){?>
     <tr>
+      <td style="padding:5px;">Level</td>
+      <td>:</td>
+      <td style="padding:5px;">
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="roleUpd" value="admin" <?php if($r=="admin"){ echo " checked='checked' "; } ?> />Operator</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="roleUpd" value="user" <?php if($r=="user"){ echo " checked='checked' "; } ?> />User</label>
+      </td>
+    </tr>
+    <tr>
       <td style="padding:5px;">Status</td>
       <td>:</td>
       <td style="padding:5px;"><label>
-      <input type="radio" name="radYa" id="radio" value="1"<?php if($array[status_account]=='1'){echo " checked='checked'";}?> />
+      <input dojoType="dijit.form.RadioButton" type="radio" name="radYa" id="radio" value="1"<?php if($array[status_account]=='1'){echo " checked='checked'";}?> />
       Aktif</label>
       <label>
-      <input type="radio" name="radYa" id="radio2" value="0"<?php if($array[status_account]=='0'){echo " checked='checked'";}?> />      
+      <input dojoType="dijit.form.RadioButton" type="radio" name="radYa" id="radio2" value="0"<?php if($array[status_account]=='0'){echo " checked='checked'";}?> />      
       Tidak Aktif
       </label></td>
     </tr>
@@ -83,7 +101,7 @@
       <button dojotype="dijit.form.Button" disabled="disabled" type="reset" name="reset" id="resetAkun">
 	  Reset
 	  </button>
-    <input dojoType="dijit.form.CheckBox" id="enableEditAkun"/> Ubah Data Ini ?
+    <label><input dojoType="dijit.form.CheckBox" id="enableEditAkun"/> Ubah Data Ini ?</label>
       </td>
     </tr>
 	
@@ -94,15 +112,16 @@
 <form id="form3" name="form3" method="post" action="">
 <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0" class="Ustext">
   <tr>
-    <th style="padding:5px;" width="143">No</th>
+    <th style="padding:5px;" width="30">No</th>
     <th style="padding:5px;" width="143">Nama Lengkap</th>
     <th style="padding:5px;" width="143">Nama Pengguna</th>
     <th style="padding:5px;" width="163"><span class="Ustext" style="padding:5px;">Kata Sandi</span></th>
+    <th style="padding:5px;" width="77">Level</th>
     <th style="padding:5px;" width="77">Status Aktif</th>
     <th style="padding:5px;" colspan="2">Tindakan</th>
     </tr>
   <?php
-  $sql = ("SELECT id_account,username_account,fullname_account,password_account,status_account FROM user_account ORDER BY id_account asc");
+  $sql = ("SELECT id_account,username_account,fullname_account,password_account,name_role,status_account FROM user_account ORDER BY id_account asc");
   $exeSQL = @mysql_query($sql) or die('Query Salah -> '.mysql_error());
   $i = 0;
   while($array = mysql_fetch_array($exeSQL)){
@@ -116,6 +135,7 @@
     <td style="padding:5px;" align="center"><?php echo $array['fullname_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['username_account'];?></td>
     <td style="padding:5px;" align="center"><?php echo $array['password_account'];?></td>
+    <td style="padding:5px;" align="center"><?php echo $array['name_role'];?></td>
     <td style="padding:5px;" align="center"><?php if($rrq=='1'){echo"<span style='color: #3f679e;'>Aktif</span>";}else{echo"<span style='color: #9e3f3f;'>Tidak Aktif</span>";}?>&nbsp;
       <input type="hidden" name="idDel" id="idDel" value="<?php echo $array['id_account']; ?>" /></td>
     <td style="padding:5px;" width="90" align="center"><a href="index.php?page=dashboard&sub=akun&upd&idakun=<?php echo $array['id_account'];?>" class="Usetext2"><img src="<?php echo BASE; ?>images/16x16/edit.png" width="16" height="16" alt="ubah" title="Ubah"></a></td>
