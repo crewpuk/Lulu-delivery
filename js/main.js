@@ -142,12 +142,19 @@ dojo.ready(function(){
 	});
 	dojo.connect(dijit.byId('contactUs'), "onClick", function(){
 		var contentIsi = '<div align="center"><img src="images/Lulu@delivery_login.png" height="100px" width="100px" /></div>'+
-						'<br /><div align="center" style="padding-bottom: 150px;">Jika Ingin daftar Hubungi kontak Dibawah Ini! </div>';
+						'<br /><h3 align="center">Jika Ingin daftar Hubungi kontak Dibawah Ini!</h3><br />'+
+							'<table cellpadding="2" cellspacing="0" border="0" width="80%" align="center">'+
+							'<tr><td width="50%">No. HP/SMS/GSM</td><td>:</td><td>081310409300</td></tr>'+
+							'<tr><td>Hunting</td><td>:</td><td>(021) 87745432</td></tr>'+
+							'<tr><td>Facebook</td><td>:</td><td>lulukids</td></tr>'+
+							'<tr><td>Email/YM</td><td>:</td><td>luluplus_delivery@yahoo.com</td></tr>'+
+							'<tr><td>Twitter</td><td>:</td><td>@lulu_delivery</td></tr>'+
+							'<tr><td>PIN BB</td><td>:</td><td>2197CEE1</td></tr></table>';
 		var dialogDaftar = new dijit.Dialog({
 			content: contentIsi,
 			title: 'Daftar',
 			draggable: false,
-			style: 'width: 500px; height: 300px;'
+			style: 'width: 500px; height: 320px;'
 		})
 		dialogDaftar.show();
 	});
