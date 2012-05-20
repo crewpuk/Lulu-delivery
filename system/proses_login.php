@@ -44,6 +44,13 @@ $pass=$_REQUEST['kunci'];
 			location='../index.php?page=dashboard';
 			</script>";
 			}
+			elseif ($level == 'user') {
+			$_SESSION['user']		= $username;
+			$_SESSION['pass']		= $password;
+			echo"<script>
+			location='../u_online/index.php?page=dashboard';
+			</script>";
+			}
 		}
 		elseif($user!=$username and $pass!=$password)
 		{
