@@ -110,10 +110,7 @@ if(strtolower($file_excel_name['ext'])=="dbf"&&$_POST['id_sub_office']!="product
   echo("Import Excel telah selesai.<br>\nSebanyak $non_product product tidak terdapat pada data product.<br>\nSebanyak $num_insert telah berhasil diimport.<br>\nSebanyak $num_update telah berhasil diperbarui.<br>\nSebanyak $num_error gagal.<br><br>");
 
 }
-elseif((strtolower($file_excel_name["ext"])=="xls"||
-      strtolower($file_excel_name["ext"])=="xlsx"||
-      strtolower($file_excel_name["ext"])=="csv")&&
-				$_POST['id_sub_office']=="product"){
+elseif((strtolower($file_excel_name["ext"])=="xls"||strtolower($file_excel_name["ext"])=="xlsx"||strtolower($file_excel_name["ext"])=="csv")&&$_POST['id_sub_office']=="product"){
 
 	require_once("../lib/phpexcel/PHPExcel.php");
 	require_once("../lib/phpexcel/PHPExcel/IOFactory.php");
@@ -163,9 +160,9 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
       $col_for_row=array();
       $cell_number = 1;
       foreach($cellIterator as $cell){
-        if($cell_number<=6){
+        if($cell_number<=8){
         	if($cell->getValue()==NULL&&$cell->getValue()==""){
-        		if($cell_number==5)$col_for_row[]="1";
+        		if($cell_number==7)$col_for_row[]="1";
         	}
         	else $col_for_row[] = $cell->getValue();
         }
@@ -177,7 +174,7 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
       // echo('<br>');
 
       if(count($col_for_row)==$check_field_num_fld&&
-        (!preg_match("#[^0-9]+#", $col_for_row[5]))){
+        (!preg_match("#[^0-9]+#", $col_for_row[7]))){
         $row_for_query[]=$col_for_row;
       }
       else $error_row[]=$row_number;
@@ -189,11 +186,11 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
       //code_product  group_product name_product  size_product  price_product status_product
         $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
         if($check_CP>0){
-          $query_import = "UPDATE m_product SET group_product = '".$row_for_query[$i][1]."', name_product = '".$row_for_query[$i][2]."', size_product = '".$row_for_query[$i][3]."', `sum-pcs_product` = '".$row_for_query[$i][4]."', price_product = '".$row_for_query[$i][5]."', status_product = '1' WHERE code_product = '".$row_for_query[$i][0]."';\n";
+          $query_import = "UPDATE m_product SET  code_group = '".$row_for_query[$i][0]."',barcode = '".$row_for_query[$i][2]."', group_product = '".$row_for_query[$i][3]."', name_product = '".$row_for_query[$i][4]."', size_product = '".$row_for_query[$i][5]."', `sum-pcs_product` = '".$row_for_query[$i][6]."', price_product = '".$row_for_query[$i][7]."', status_product = '1' WHERE code_product = '".$row_for_query[$i][1]."';\n";
           $action="update";
         }
         else{
-          $query_import = "INSERT INTO m_product VALUES('".$row_for_query[$i][0]."','".$row_for_query[$i][1]."','".$row_for_query[$i][2]."','".$row_for_query[$i][3]."','".$row_for_query[$i][4]."','".$row_for_query[$i][5]."','".$row_for_query[$i][6]."');\n";
+          $query_import = "INSERT INTO m_product VALUES('".$row_for_query[$i][0]."','".$row_for_query[$i][1]."','".$row_for_query[$i][2]."','".$row_for_query[$i][3]."','".$row_for_query[$i][4]."','".$row_for_query[$i][5]."','".$row_for_query[$i][6]."','".$row_for_query[$i][7]."','".$row_for_query[$i][8]."');\n";
           $q_sub_office = mysql_query("SELECT id_sub_office FROM m_sub_office");
           while($a_sub_office = mysql_fetch_array($q_sub_office)){
             mysql_query("INSERT INTO m_stock VALUES('','".$row_for_query[$i][0]."','".$a_sub_office['id_sub_office']."','0',CURRENT_TIMESTAMP)");
@@ -215,6 +212,9 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||
     echo("Import Excel telah selesai.<br>\nSebanyak $num_insert telah berhasil diimport.<br>\nSebanyak $num_update telah berhasil diperbarui.<br>\nSebanyak $num_error gagal.<br>\nDan sebanyak $num_row_error baris gagal diimport dari $row_number baris pada excel.<br><br>");
 
 	}
+  else{
+    echo("Format file tidak sesuai!<br><br>");
+  }
 }
 else{
   echo("Format file tidak sesuai!<br><br>");
