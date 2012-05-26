@@ -4493,3 +4493,9 @@ body .dojoSplitPane {
   margin-left: 10px;
   background: rgba(206, 225, 247, 8);
 }
+
+.iconDelivered{
+    background-image: url(../images/32x32/delivered.png);
+    width: 30px;
+    height: 30px;
+}
