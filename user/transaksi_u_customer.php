@@ -15,6 +15,19 @@
 					<td>Status</td>
 					<td>Delete</td>
 				</tr>
+				<tr align="center">
+					<td width="60">
+						<input dojoType="dijit.form.CheckBox" name="" id="" value="" />
+					</td>
+					<td>No.</td>
+					<td>No. Transaction</td>
+					<td>Tanggal Transaction</td>
+					<td>Detail Transaction</td>
+					<td>Nama Customer</td>
+					<td>Delivery</td>
+					<td>Status</td>
+					<td>Delete</td>
+				</tr>
 			</table>
 			<button dojoType="dijit.form.Button">Kirim</button>
 	</div>
