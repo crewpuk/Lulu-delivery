@@ -107,7 +107,7 @@ if(!isset($_POST['tambah']) and !isset($_GET['vwUbah'])){?>
     <tr>
       <td style="padding: 5px;">Password</td>
       <td style="padding: 5px;">:</td>
-      <td style="padding: 5px;"><input placeHolder="Password" dojoType="dijit.form.ValidationTextBox" name="password_cust" id="password_cust" value="<?php echo(password_maker(6));?>" readonly="readonly" /></td>
+      <td style="padding: 5px;"><input placeHolder="Password" dojoType="dijit.form.ValidationTextBox" name="password_cust" id="password_cust" /></td>
     </tr>
     <tr>
       <td style="padding: 5px;">&nbsp;</td>
@@ -604,7 +604,7 @@ if(isset($_POST['simpan_customer'])){
 		//	id_account	username_account	fullname_account	password_account	name_role	status_account
 		$e=explode(" ",$nama);
 		$username = strtolower($e[0]);
-		mysql_query("INSERT INTO user_account VALUES(NULL,'$username','$nama','$password','user','1','$kode')");
+		$x = mysql_query("INSERT INTO user_account VALUES(NULL,'$kode','$nama','$password','user','1','$kode')");
 
 		 if($x){
 			alert('Data Berhasil Disimpan');

@@ -92,7 +92,7 @@ if(strtolower($file_excel_name['ext'])=="dbf"&&$_POST['id_sub_office']!="product
       }
       else{
         $success1 = mysql_query("UPDATE m_product SET price_product = '".$price_product."' WHERE code_product = '".$code_product."';\n");
-        $success = mysql_query("INSERT INTO m_stock VALUES('','$code_product','$id_sub_office','$stock_product','$time');\n");
+        $success = mysql_query("INSERT INTO m_stock(id_stock,code_product,id_sub_office,stock,last_edit) VALUES('','$code_product','$id_sub_office','$stock_product','$time');\n");
         $action="insert";
         if($success){
           if($action=="update")$num_update++;

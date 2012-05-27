@@ -211,8 +211,8 @@
 					var var_kc = document.getElementById("id_customer").value;
 					var var_kt = document.getElementById("id_genso").value;
 					var var_pembayaran = document.getElementById("model_pembayaran").value;
-					var var_delivery = document.getElementById("delivery_man").value;
-					window.open("cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
+					// var var_delivery = document.getElementById("delivery_man").value;
+					window.open("cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran,"dsds","width=800,height=700,scrollbars=yes");
 				}
 				</script>
 
@@ -253,7 +253,7 @@
 			  	</tr>
 			  </table>
 			<input type="hidden" name="code_transaction" value="<?php echo $genSo;?>" />
-			<input type="hidden" name="code_customer" value="<?php echo $kode_cust;?>" />
+			<input type="hidden" id="id_customer" name="code_customer" value="<?php echo $kode_cust;?>" />
 			<input type="hidden" name="simpan_transaction" value="1" />
 			<input type="hidden" name="send_email" id="send_email" value="0" />
 			</form>

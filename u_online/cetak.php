@@ -46,7 +46,7 @@ $employee_fullname = $data_user['fullname_account'];
 if(isset($_GET['delivery'])){
   $id_delivery = $_GET['delivery'];
 }
-$q_delivery = mysql_query("SELECT * FROM m_delivery WHERE id_delivery = '$id_delivery'");
+$q_delivery = mysql_query("SELECT `m_transaction`.`id_delivery`,`m_delivery`.`id_delivery`,`m_delivery`.`name_delivery` FROM `m_delivery`,`m_transaction` WHERE `m_transaction`.`id_delivery` = `m_delivery`.`id_delivery`");
 $data_delivery = mysql_fetch_array($q_delivery);
 $delivery_man = $data_delivery['name_delivery'];
 

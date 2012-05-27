@@ -1,9 +1,10 @@
 <?php
 
-@mysql_connect("localhost","root","admin") or die("Gagal Koneksi");
+@mysql_connect("localhost","root","root") or die("Gagal Koneksi");
 @mysql_select_db("db_lulu") or die ("Database Tidak Ditemukan");
 
 define ("BASE",'http://'.$_SERVER['HTTP_HOST'].'/Lulu-delivery/');
+define ("BIAYA_ANTAR",'5000');
 
 function alert($psn){
 	echo "<script>alert('$psn');</script>";
@@ -96,4 +97,5 @@ class eMail{
 		return $headers;
 	}
 }
+
 ?>
