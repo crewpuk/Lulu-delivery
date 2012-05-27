@@ -240,7 +240,7 @@
 				function print_preview(){
 					var var_kc = document.getElementById("id_customer").value;
 					var var_kt = document.getElementById("id_genso").value;
-					var var_pembayaran = document.getElementById("model_pembayaran").value;
+					var var_pembayaran = dijit.byId('model_pembayaran').get('value');
 					var var_delivery = document.getElementById("delivery_man").value;
 					window.open("user/cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
 				}
