@@ -63,6 +63,7 @@
 		</div>
 		<div style="width:49%;float:right;">
 			<?php
+				echo "1-> ".$were."  2-> ".$code;
 				if($code != null and $were != null){
 					$sql = "SELECT * FROM `m_customer` where `status_customer` = '1' AND ".$were." = '".$code."' ";
 				} else {

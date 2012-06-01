@@ -30,6 +30,7 @@
       <td style="padding:5px;">
         <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="su_admin" />Admin</label>
         <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="admin" />Operator</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="user" />User</label>
         
       </td>
     </tr>

@@ -363,7 +363,7 @@
 					}
 					//echo $data;
 				?>
-				<input type="hidden" dojoType="dijit.form.SimpleTextarea" id="globalCheckProduct" value="<?php echo $data;?>"/> 
+				
 
 			</div>
 		</form>

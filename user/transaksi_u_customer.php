@@ -4,7 +4,7 @@
 				<tr align="center">
 					<td width="60">
 						Select All <br />
-						<input dojoType="dijit.form.CheckBox" />
+						<input dojoType="dijit.form.CheckBox" id="masterCheck"/>
 					</td>
 					<td>No.</td>
 					<td>No. Transaction</td>
@@ -15,12 +15,18 @@
 					<td>Status</td>
 					<td>Delete</td>
 				</tr>
+				<?php 
+					$res = mysql_query("SELECT * FROM m_transaction") or die(mysql_error());
+					$i = 1;
+					while($arrRes = mysql_fetch_array($res)) { 				
+					
+				?>
 				<tr align="center">
 					<td width="60">
-						<input dojoType="dijit.form.CheckBox" name="" id="" value="" />
+						<input dojoType="dijit.form.CheckBox" name="" disabled="disabled" id="<?php echo $arrRes['code_transaction']; ?>" value="" />
 					</td>
-					<td>No.</td>
-					<td>No. Transaction</td>
+					<td><?php echo $i;?></td>
+					<td><?php echo $arrRes['code_transaction'];?></td>
 					<td>Tanggal Transaction</td>
 					<td>Detail Transaction</td>
 					<td>Nama Customer</td>
@@ -28,8 +34,9 @@
 					<td>Status</td>
 					<td>Delete</td>
 				</tr>
+				<?php $i++; } ?>
 			</table>
-			<button dojoType="dijit.form.Button">Kirim</button>
+			<button dojoType="dijit.form.Button" id="kirimCoba">Kirim</button>
 	</div>
 	<div id="contentNotDelivered" dojoType="dijit.layout.ContentPane" title="Not Delivered" >
 			<table>
@@ -39,8 +46,11 @@
 					</td>
 					<td>
 						Kode Customer
+
 					</td>
 				</tr>
 			</table>
+			<input dojoType="dijit.form.Textarea" type="hidden" id="handleCheckBox" />
 	</div>
+
 </div>

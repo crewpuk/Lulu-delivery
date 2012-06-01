@@ -28,14 +28,14 @@ dojo.ready(function(){
 	dojo.connect(dijit.byId('filter_product'), 'onChange', function(value){
 		var storeFilSel = storeFil;
 
-		var globalCheckProduct = dijit.byId('globalCheckProduct').get('value');
-		var splitGlobal = globalCheckProduct.split('+');
-		//console.log(splitGlobal);
-		var a = '';
-		for(i=0;i<splitGlobal.length;i++){
-			a += splitGlobal[i].split('/') + ';';
-		}
-			console.log('-> '+ splitGlobal);
+		// var globalCheckProduct = dijit.byId('globalCheckProduct').get('value');
+		// var splitGlobal = globalCheckProduct.split('+');
+		// //console.log(splitGlobal);
+		// var a = '';
+		// for(i=0;i<splitGlobal.length;i++){
+		// 	a += splitGlobal[i].split('/') + ';';
+		// }
+		// 	console.log('-> '+ splitGlobal);
 		storeFil.fetch({
 			query:{id: value},
 			onItem: function(item){
@@ -168,5 +168,79 @@ dojo.ready(function(){
 				}
 			});
 
+			
+			
+	 	// 	var storeUndel = dojo.data.ItemFileReadStore({url: 'system/generate_undelivered.php'});
+	 	// 	var store = storeUndel;
+	 	// 	storeUndel.fetch({
+			// 	query: {code: "*"},
+			// 	onItem: function(item){
+			// 		var valueSrc = store.getValue(item, 'code');
+			// 		console.log('isi item -> '+  valueSrc);
+			// 	}
+			// });
+			 	
+
 		
+
+		var mainTab = dijit.byId('mainTabContainer');
+		if (mainTab != undefined || mainTab != null){
+			var timing = new dojox.timing.Timer(10000);
+			
+			timing.onTick = function(){
+				var storeUndel = dojo.data.ItemFileReadStore({url: 'system/generate_undelivered.php'});
+				var store = storeUndel;
+				var a = '';
+				storeUndel.fetch({
+					query: {code: '*'},
+					onItem: function(items){
+						var valueSrc = store.getValue(items, 'code');
+						//console.log('isi item -> '+  valueSrc);
+						dijit.byId(valueSrc).set('disabled', false);
+						a += valueSrc+';';
+						dijit.byId('handleCheckBox').set('value', a);
+					}
+				});	
+			}
+			timing.onStart = function(){
+			 	var storeUndel = dojo.data.ItemFileReadStore({url: 'system/generate_undelivered.php'});
+				var store = storeUndel;
+				var a = '';
+				storeUndel.fetch({
+					query: {code: '*'},
+					onItem: function(items){
+						var valueSrc = store.getValue(items, 'code');
+						//console.log('isi item -> '+  valueSrc);
+						dijit.byId(valueSrc).set('disabled', false);
+						a += valueSrc+';';
+						dijit.byId('handleCheckBox').set('value', a);
+					}
+				});	
+			}
+			timing.start();		
+
+
+
+		}
+
+		// var masterCheck = dijit.byId('masterCheck').get('checked');
+		// if(masterCheck == true){
+		// 	dijit.byId(valueSrc).set('checked', true);
+		// }else{
+		// 	dijit.byId(valueSrc).set('checked', false);
+		// // }
+		// var c = dijit.byId('handleCheckBox').get('value');
+		// //console.log('isi handle -> '+ c);
+		
+		// var split = c.split(';');
+		// console.log('isi length -> '+ split.length);
+		// for(var i = 0; i <= split.length; i++ ){
+		// 	console.log('isi for -> '+ split[i]);
+		// 	var masterCheck = dijit.byId('masterCheck').get('checked');
+		// 	// if(masterCheck == true){
+		// 	// 	dijit.byId(split[i]).set('checked', true);
+		// 	// }else{
+		// 	// 	dijit.byId(split[i]).set('checked', false);
+		// 	// }
+		// }
 });

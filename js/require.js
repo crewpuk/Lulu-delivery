@@ -20,6 +20,7 @@ dojo.require('dijit.form.Button');
 dojo.require('dijit.layout.AccordionContainer');
 dojo.require('dijit.layout.AccordionPane');
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dojox.timing');
 dojo.require('dojo.store.JsonRest');
 dojo.require('dojo.data.ObjectStore');
 dojo.require("dijit.form.DateTextBox");
