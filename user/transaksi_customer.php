@@ -244,6 +244,13 @@
 					var var_delivery = document.getElementById("delivery_man").value;
 					window.open("user/cetak.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran+"&delivery="+var_delivery,"_blank","width=800,height=700,scrollbars=yes");
 				}
+				function pdf(){
+					var var_kc = document.getElementById("id_customer").value;
+					var var_kt = document.getElementById("id_genso").value;
+					var var_pembayaran = document.getElementById("model_pembayaran").value;
+					// var var_delivery = document.getElementById("delivery_man").value;
+					window.location="pdf/pdf.php?kT="+var_kt+"&kC="+var_kc+"&email=0&pembayaran="+var_pembayaran,"dsds","width=800,height=700,scrollbars=yes";
+				}
 				</script>
 
 			<form action="index.php?page=dashboard&sub=transaksi_customer" id="form_transaction" method="POST">
@@ -291,6 +298,10 @@
 			  		<td> </td>
 			  		<td>
 			  			<button dojoType="dijit.form.Button" type="button" name="simpan_transaction" onclick="save_transaction()">&emsp;&emsp;Save&emsp;&emsp;</button>
+			  		</td>
+			  		<td> </td>
+			  		<td> 
+			  			&emsp;<a href="javascript:pdf();">Download PDF</a>
 			  		</td>
 			  	</tr>
 			  </table>
