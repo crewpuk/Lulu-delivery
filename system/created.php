@@ -1,5 +1,4 @@
 <?php
-
 	$save_product 		= $_POST['save_product'];
 	$kode_transaction	= $_POST['kode'];
 	$codeCust			= $_POST['kodeCust'];
@@ -22,8 +21,20 @@
 		if($qty > $stokDB){
 			alert('Stok Tidak Cukup');	
 		}else{
-		$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$qty','ok','$cabang',CURRENT_TIMESTAMP,'1')");
-		$x = $qty * $harga;
+
+			// check for double product
+			$res_double_product = mysql_query("SELECT id_detail_transaction AS id_detail FROM m_detail WHERE code_transaction = '$kode_transaction' AND code_product = '$produk' AND id_sub_office = '$cabang'");
+			$nmr_double_product = mysql_num_rows($res_double_product);
+
+			if($nmr_double_product==0){
+				$simpan_pro = mysql_query("INSERT INTO `m_detail_transaction` values('','$kode_transaction','$produk','$qty','ok','$cabang',CURRENT_TIMESTAMP,'1')");
+			}
+			else{
+				$simpan_pro = mysql_query("UPDATE `m_detail_transaction` SET quantity_detail_transaction = (quantity_detail_transaction	+ $qty) WHERE code_transaction = '$kode_transaction' AND code_product = '$produk' AND id_sub_office = '$cabang'");
+			}
+
+			// ini buat apa?
+			$x = $qty * $harga;
 		}
 	}
 ?>

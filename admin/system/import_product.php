@@ -1,6 +1,10 @@
 <?php
+ini_set("memory_limit", "1024M");
 $tmp_path = ".tmp/";
-if(!file_exists($tmp_path))mkdir($tmp_path);
+if(!file_exists($tmp_path))mkdir($tmp_path, 0755);
+// else chmod($tmp_path, 0755);
+
+// print_r(($tmp_path));
 
 $file_excel_name = image_name($tmp_path,$_FILES['excel_file']['name'],TRUE);
 
@@ -146,8 +150,121 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||strtolower($file_excel_name[
     // Update all product into non-active
     mysql_query("UPDATE m_product SET status_product = '0'");
     $error_row=array();
-    $row_for_query=array();
     $row_number=0;
+
+    $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+    $highestRow = $objWorksheet->getHighestRow();
+    $highestColumn = $objWorksheet->getHighestColumn();
+
+    $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
+    $headingsArray = $headingsArray[1];
+
+    $r = -1;
+    $namedDataArray = array();
+    for ($row = 2; $row <= $highestRow; ++$row) {
+        $dataRow = $objWorksheet->rangeToArray('A'.$row.':'.$highestColumn.$row,null, true, true, true);
+            ++$r;
+            foreach($headingsArray as $columnKey => $columnHeading) {
+                $namedDataArray[$r][$columnHeading] = $dataRow[$row][$columnKey];
+         
+                $objWorksheet = $objPHPExcel->setActiveSheetIndex(0);
+                $highestRow = $objWorksheet->getHighestRow();
+                $highestColumn = $objWorksheet->getHighestColumn();
+
+                $headingsArray = $objWorksheet->rangeToArray('A1:'.$highestColumn.'1',null, true, true, true);
+                $headingsArray = $headingsArray[1];
+
+                $r = -1;
+                $namedDataArray = array();
+                for ($row = 2; $row <= $highestRow; ++$row) {
+                    $dataRow = $objWorksheet->rangeToArray('A'.$row.':'.$highestColumn.$row,null, true, true, true);
+                    if ((isset($dataRow[$row]['A'])) && ($dataRow[$row]['A'] > '')) {
+                        ++$r;
+                        foreach($headingsArray as $columnKey => $columnHeading) {
+                            $namedDataArray[$r][$columnHeading] = $dataRow[$row][$columnKey];
+                        }
+                    }
+                }
+                /*
+
+                echo '<pre>';
+                var_dump($namedDataArray);
+                echo '</pre><hr />';
+                
+                [FLT] => 
+                [B_DATETD] => 2/6/2012
+                [B_TIMETD] => 09:13:03
+                [B_DATETC] => 1/5/2012
+                [B_TIMETC] => 17:39:11
+                [B_DATETS] => 20120416
+                [B_TIMETS] => 09:46:56
+                [B_DATETK] => 
+                [B_TIMETK] => 
+                [B_DATEGD] => 20120513
+                [B_TIMEGD] => 10:57:14
+                [B_GRP] => S002
+                [KODE] => 2497
+                [GROUP] => SIROP
+                [NAMA] => RIA SIROP KODIAL RUTBIR
+                [SIZE] => 2L
+                [KRT] => 1x6
+                [HARGA] => 31000
+                [DEPOK] => 0
+                [CIBUBUR] => 0
+                [SAWANGAN] => 0
+                [GUDANG] => 0
+                [KOMSEN] => 0
+                [TOTAL] => 0
+                [PAKAI] => 0
+                [] => 
+                */
+
+                }
+            }
+            
+            /*$num_update=0;
+            $num_insert=0;
+            $num_error=0;
+            for($i=0;$i<count($namedDataArray);$i++){
+
+              $namedDataArray[$i]["NAMA"] = mysql_real_escape_string($namedDataArray[$i]["NAMA"]);
+
+              // B_GRP  KODE  GROUP NAMA  SIZE  KRT HARGA DEPOK CIBUBUR SAWANGAN  GUDANG  KOMSEN  TOTAL PAKAI
+                $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$namedDataArray[$i]["KODE"]."'"));
+                if($check_CP>0){
+                  $success = mysql_query("UPDATE m_product SET  code_group = '".$namedDataArray[$i]["B_GRP"]."', group_product = '".$namedDataArray[$i]["GROUP"]."', name_product = '".$namedDataArray[$i]["NAMA"]."', size_product = '".$namedDataArray[$i]["SIZE"]."', `sum-pcs_product` = '".$namedDataArray[$i]["KRT"]."', price_product = '".$namedDataArray[$i]["HARGA"]."', status_product = '1' WHERE code_product = '".$namedDataArray[$i]["KODE"]."'") or die(mysql_error());
+
+                  mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["DEPOK"]."' WHERE id_sub_office = '1';\n") or die(mysql_error());
+                  mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["CIBUBUR"]."' WHERE id_sub_office = '2';\n") or die(mysql_error());
+                  mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["SAWANGAN"]."' WHERE id_sub_office = '3';\n") or die(mysql_error());
+                  mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["GUDANG"]."' WHERE id_sub_office = '4';\n") or die(mysql_error());
+                  mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["KOMSEN"]."' WHERE id_sub_office = '5';\n") or die(mysql_error());
+                  $action="update";
+                }
+                else{
+                  // code_group code_product  barcode group_product name_product  size_product  sum-pcs_product price_product status_product
+                  $success = mysql_query("INSERT INTO m_product VALUES('".$namedDataArray[$i]["B_GRP"]."','".$namedDataArray[$i]["KODE"]."','','".$namedDataArray[$i]["GROUP"]."','".$namedDataArray[$i]["NAMA"]."','".$namedDataArray[$i]["SIZE"]."','".$namedDataArray[$i]["KRT"]."','".$namedDataArray[$i]["HARGA"]."','1')") or die(mysql_error());
+                  //id_stock  code_product  id_sub_office stock last_edit
+                    mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i]["KODE"]."','1','".$namedDataArray[$i]["DEPOK"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+                    mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i]["KODE"]."','1','".$namedDataArray[$i]["CIBUBUR"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+                    mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i]["KODE"]."','1','".$namedDataArray[$i]["SAWANGAN"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+                    mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i]["KODE"]."','1','".$namedDataArray[$i]["GUDANG"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+                    mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i]["KODE"]."','1','".$namedDataArray[$i]["KOMSEN"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+                  $action="insert";
+                }
+                if($success){
+                  if($action=="update")$num_update++;
+                  else $num_insert++;
+                }
+                else $num_error++;*/
+        }
+
+    // echo '<pre>';
+    // print_r($namedDataArray);
+    // echo '</pre><hr />';
+    
+
+    /*
     foreach ($objWorksheet->getRowIterator() as $row) {
       $row_number++;
         
@@ -158,53 +275,59 @@ elseif((strtolower($file_excel_name["ext"])=="xls"||strtolower($file_excel_name[
                                                          // that are set will be
                                                          // iterated.
       $col_for_row=array();
+
       $cell_number = 1;
       foreach($cellIterator as $cell){
-        if($cell_number<=8){
+        if($cell_number>11&&$cell_number<=23){
         	if($cell->getValue()==NULL&&$cell->getValue()==""){
-        		if($cell_number==7)$col_for_row[]="1";
+        		if($cell_number==17)$col_for_row[]="1";
+            if($cell_number>18)$col_for_row[]="0";
+            else $col_for_row[]=" ";
         	}
         	else $col_for_row[] = $cell->getValue();
         }
         $cell_number++;
       }
-      $col_for_row[] = "1"; // status
-      
-      // print_r($col_for_row);
-      // echo('<br>');
-
-      if(count($col_for_row)==$check_field_num_fld&&
-        (!preg_match("#[^0-9]+#", $col_for_row[7]))){
-        $row_for_query[]=$col_for_row;
-      }
-      else $error_row[]=$row_number;
+      $namedDataArray[]=$col_for_row;
     }
+    print_r($namedDataArray);
+    /*
     $num_update=0;
     $num_insert=0;
     $num_error=0;
-    for($i=0;$i<count($row_for_query);$i++) {
-      //code_product  group_product name_product  size_product  price_product status_product
-        $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$row_for_query[$i][0]."'"));
+    for($i=0;$i<count($namedDataArray);$i++){
+
+      $namedDataArray[$i]["NAMA"] = mysql_real_escape_string($namedDataArray[$i]["NAMA"]);
+
+      // B_GRP  KODE  GROUP NAMA  SIZE  KRT HARGA DEPOK CIBUBUR SAWANGAN  GUDANG  KOMSEN  TOTAL PAKAI
+        $check_CP = mysql_num_rows(mysql_query("SELECT code_product FROM m_product WHERE code_product = '".$namedDataArray[$i][1]."'"));
         if($check_CP>0){
-          $query_import = "UPDATE m_product SET  code_group = '".$row_for_query[$i][0]."',barcode = '".$row_for_query[$i][2]."', group_product = '".$row_for_query[$i][3]."', name_product = '".$row_for_query[$i][4]."', size_product = '".$row_for_query[$i][5]."', `sum-pcs_product` = '".$row_for_query[$i][6]."', price_product = '".$row_for_query[$i][7]."', status_product = '1' WHERE code_product = '".$row_for_query[$i][1]."';\n";
+          $success = mysql_query("UPDATE m_product SET  code_group = '".$namedDataArray[$i]["B_GRP"]."', group_product = '".$namedDataArray[$i]["GROUP"]."', name_product = '".$namedDataArray[$i]["NAMA"]."', size_product = '".$namedDataArray[$i]["SIZE"]."', `sum-pcs_product` = '".$namedDataArray[$i]["KRT"]."', price_product = '".$namedDataArray[$i]["HARGA"]."', status_product = '1' WHERE code_product = '".$namedDataArray[$i][1]."'") or die(mysql_error());
+
+          mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["DEPOK"]."' WHERE id_sub_office = '1';\n") or die(mysql_error());
+          mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["CIBUBUR"]."' WHERE id_sub_office = '2';\n") or die(mysql_error());
+          mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["SAWANGAN"]."' WHERE id_sub_office = '3';\n") or die(mysql_error());
+          mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["GUDANG"]."' WHERE id_sub_office = '4';\n") or die(mysql_error());
+          mysql_query("UPDATE m_stock SET stock = '".$namedDataArray[$i]["KOMSEN"]."' WHERE id_sub_office = '5';\n") or die(mysql_error());
           $action="update";
         }
         else{
-          $query_import = "INSERT INTO m_product VALUES('".$row_for_query[$i][0]."','".$row_for_query[$i][1]."','".$row_for_query[$i][2]."','".$row_for_query[$i][3]."','".$row_for_query[$i][4]."','".$row_for_query[$i][5]."','".$row_for_query[$i][6]."','".$row_for_query[$i][7]."','".$row_for_query[$i][8]."');\n";
-          $q_sub_office = mysql_query("SELECT id_sub_office FROM m_sub_office");
-          while($a_sub_office = mysql_fetch_array($q_sub_office)){
-            mysql_query("INSERT INTO m_stock VALUES('','".$row_for_query[$i][0]."','".$a_sub_office['id_sub_office']."','0',CURRENT_TIMESTAMP)");
-          }
+          // code_group code_product  barcode group_product name_product  size_product  sum-pcs_product price_product status_product
+          $success = mysql_query("INSERT INTO m_product VALUES('".$namedDataArray[$i]["B_GRP"]."','".$namedDataArray[$i][1]."','','".$namedDataArray[$i]["GROUP"]."','".$namedDataArray[$i]["NAMA"]."','".$namedDataArray[$i]["SIZE"]."','".$namedDataArray[$i]["KRT"]."','".$namedDataArray[$i]["HARGA"]."','1')") or die(mysql_error());
+          //id_stock  code_product  id_sub_office stock last_edit
+            mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i][1]."','1','".$namedDataArray[$i]["DEPOK"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+            mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i][1]."','1','".$namedDataArray[$i]["CIBUBUR"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+            mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i][1]."','1','".$namedDataArray[$i]["SAWANGAN"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+            mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i][1]."','1','".$namedDataArray[$i]["GUDANG"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
+            mysql_query("INSERT INTO m_stock VALUES('','".$namedDataArray[$i][1]."','1','".$namedDataArray[$i]["KOMSEN"]."',CURRENT_TIMESTAMP)") or die(mysql_error());
           $action="insert";
         }
-        //echo($query_import.'<br>');
-        $success=@mysql_query($query_import);
         if($success){
           if($action=="update")$num_update++;
           else $num_insert++;
         }
         else $num_error++;
-    }
+    }*/
 
     @unlink($file_path);
 
