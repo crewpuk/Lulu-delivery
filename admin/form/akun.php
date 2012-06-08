@@ -25,12 +25,17 @@
       <td style="padding:5px;"><input dojoType="dijit.form.TextBox" placeHolder="Password" type="password" name="txtPass" id="txtPass" /></td>
     </tr>
     <tr>
+		<td style="padding:5px;" class="Ustext"><label id="lblAccountUser"></label>&nbsp;</td>
+		<td><label id="lblAccountUserSeparator"></label></td>
+		<td style="padding:5px;"><input dojoType="dijit.form.TextBox" style="visibility: hidden;" placeholder="Kode Customer" id="kodeCustomerAccount" /></td>
+    </tr>
+    <tr>
       <td style="padding:5px;" class="Ustext">Level</td>
       <td>:</td>
       <td style="padding:5px;">
-        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="su_admin" />Admin</label>
-        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="admin" />Operator</label>
-        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="user" />User</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="su_admin" id="radioAdminAccount" />Admin</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="admin" id="radioOptAccount"/>Operator</label>
+        <label><input dojoType="dijit.form.RadioButton" type="radio" name="role" value="user" id="radioUserAccount"/>User</label>
         
       </td>
     </tr>

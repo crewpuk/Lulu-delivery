@@ -3,7 +3,29 @@
 
 dojo.ready(function(){
 	
-		
+	var radioOptAccount = dijit.byId('radioOptAccount');
+	var radioAdminAccount = dijit.byId('radioAdminAccount');
+	var radioUserAccount = dijit.byId('radioUserAccount');
+	
+	dojo.connect(radioUserAccount, "onClick", function(){	
+		dojo.byId('lblAccountUser').innerHTML = 'Kode Customer';
+		dojo.byId('lblAccountUserSeparator').innerHTML = ':';
+		dijit.byId('kodeCustomerAccount').domNode.style.visibility = 'visible';
+	});
+	dojo.connect(radioAdminAccount, "onClick", function(){	
+		dojo.byId('lblAccountUser').innerHTML = '';
+		dojo.byId('lblAccountUserSeparator').innerHTML = '';
+		dijit.byId('kodeCustomerAccount').set('value', '');
+		dijit.byId('kodeCustomerAccount').domNode.style.visibility = 'hidden';
+	});
+	dojo.connect(radioOptAccount, "onClick", function(){	
+		dojo.byId('lblAccountUser').innerHTML = '';
+		dojo.byId('lblAccountUserSeparator').innerHTML = '';
+		dijit.byId('kodeCustomerAccount').set('value', '');
+		dijit.byId('kodeCustomerAccount').domNode.style.visibility = 'hidden';
+	});
+	
+	
 	var borderPane = new dijit.layout.BorderContainer({
 		id: 'panelUtama',
 		style: 'height:600px;width:100%'
@@ -24,7 +46,7 @@ dojo.ready(function(){
 	var storeFil = dojo.data.ItemFileReadStore({
 				url: 'system/generate_produk.php'
 	});
-
+	
 	dojo.connect(dijit.byId('filter_product'), 'onChange', function(value){
 		var storeFilSel = storeFil;
 
